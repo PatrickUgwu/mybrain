@@ -1,0 +1,26 @@
+<div class="day-view">
+        <div class="day-header"><p>01 Jan 2025</p></div>
+        
+        <div class="day-content">
+            <div class="roadmap-items">
+                <!-- later through roadmap data structure-->
+                @for (depth of ["actions","todos"]; track $index) {
+                    <div class="depth">
+                        <p class="depth-title">{{depth}}</p>
+                        
+                        
+                        <div class="depth-items">
+                            
+                            
+                            @for (item of getItems(depth); track $index) {
+                                <p class="item-title">{{item}}</p>
+                                <p class="item-duration">2h</p>
+                                <div class="item-progress"></div>
+                            }
+                        </div>
+                    </div>
+                }
+                    
+            </div>
+        </div>
+</div>
