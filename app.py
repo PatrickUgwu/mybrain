@@ -103,6 +103,25 @@ SAMPLE_TODOS = [
 def index():
     return "You found the backend."
 
+@app.route("/api/actions", methods=["GET"])
+def get_actions():
+    actions = []
+    for roadmap in SAMPLE_ROADMAPS:
+        for milestone in roadmap["milestones"]:
+            for goal in milestone["goals"]:
+                for action in goal["actions"]:
+                    actions.append(action)
+    return actions
+
+@app.route("/api/todos", methods=["GET"])
+def get_todos():
+    return SAMPLE_TODOS
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
