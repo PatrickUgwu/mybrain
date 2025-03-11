@@ -1,0 +1,12 @@
+.week-view {
+    display: flex;
+    height: 80vh;
+    padding: 0.5rem;
+    background-color: greenyellow;  
+}
+
+.medium-tile {
+    width: calc(100%/7);
+    height: 100%;
+    background-color: red;
+}
