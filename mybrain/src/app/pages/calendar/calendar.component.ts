@@ -3,11 +3,12 @@ import { CalendarService } from '../../services/calendar.service';
 import { Action } from '../../models/interfaces/action.interface';
 import { ToDo } from '../../models/interfaces/todo.interface';
 import { CalenderDayComponent } from "../../components/calendar/calendar-day/calender-day.component";
+import { CalendarWeekComponent } from "../../calendar-week/calendar-week.component";
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CalenderDayComponent],
+  imports: [CalenderDayComponent, CalendarWeekComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
