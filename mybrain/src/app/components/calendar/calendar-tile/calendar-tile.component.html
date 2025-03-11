@@ -1,0 +1,29 @@
+<div class="tile-container">
+    <div class="tile">
+        <div class="header">
+            <p>{{view()}}</p>
+            @if (currentView() == "day") {<button>extra content</button>}
+        </div>
+        
+        <div class="content">
+
+            <!-- Show content only for day and week view -->
+            @if (currentView() == "day" || currentView() == "week" ) {
+                <div class="action-container">
+                    @for (action of actions(); track $index) {
+                            <app-calendar-action class="action" [style.min-height]="minHeight"[style.max-height]="maxHeight" [title]="action.title"></app-calendar-action>     
+                        }    
+                </div>        
+
+                <div class="todo-container">
+                    @for (todo of todos(); track $index) {
+                        <app-calendar-todo class="todo" [title]="todo.title"></app-calendar-todo>
+                            
+                    }
+                </div>
+            }
+                
+
+        </div>
+    </div>
+</div>
