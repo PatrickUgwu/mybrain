@@ -1,20 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { CalendarTileComponent } from "../calendar-tile/calendar-tile.component";
+import { Action } from '../../../models/interfaces/action.interface';
+import { ToDo } from '../../../models/interfaces/todo.interface';
 
 @Component({
   selector: 'app-calender-day',
   standalone: true,
-  imports: [],
+  imports: [CalendarTileComponent],
   templateUrl: './calender-day.component.html',
   styleUrl: './calender-day.component.css'
 })
 export class CalenderDayComponent {
-  actions = ["a1", "a2", "a3"]
-  todos = ["td1", "td2"]
-
-  getItems(depth:string){
-    if (depth === "actions") {return this.actions;}
-    else if (depth === "todos") {return this.todos;}
-    else {return "no items found"}
-  }
+  VIEW = "day"
+  actions = input.required<Action[]>()
+  todos = input.required<ToDo[]>()
 
 }
