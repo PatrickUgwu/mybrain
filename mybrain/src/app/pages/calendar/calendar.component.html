@@ -1,0 +1,17 @@
+<div class="calendar-container">
+    <nav class="navbar-container">
+        <ul class="navbar">
+            <li class="day" (click)="setView('day')">D</li>
+            <li class="week" (click)="setView('week')">W</li>
+            <li class="month" (click)="setView('month')">M</li>
+            <li class="quarter" (click)="setView('quarter')">Q</li>
+            <li class="year" (click)="setView('year')">Y</li>
+        </ul>
+    </nav>
+
+    <div class="calendar">    
+        @if (view() == "day") {<app-calender-day [actions]="actions()" [todos]="todos()"></app-calender-day>}
+        @else {<p style="color: white;">not implemented yet</p>}
+    </div>
+</div>
+
