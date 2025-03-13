@@ -14,5 +14,5 @@ export class CalendarMonthComponent {
   VIEW = "month"
   actions = input.required<Action[]>()
   todos = input.required<ToDo[]>()
-  days = Array.from({ length: 30 }, (_, i) => i + 1);
+  days = Array.from({ length: 35 }, (_, i) => i + 1);
 }
