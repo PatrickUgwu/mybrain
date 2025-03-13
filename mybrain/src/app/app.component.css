@@ -1,0 +1,16 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    height: 5vh;
+    gap: 2rem;
+    padding-left: 1rem;
+}
+
+.content {
+    flex-grow: 1; 
+}
