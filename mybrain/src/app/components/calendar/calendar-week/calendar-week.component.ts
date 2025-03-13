@@ -1,7 +1,8 @@
 import { Component, input } from '@angular/core';
-import { Action } from '../models/interfaces/action.interface';
-import { ToDo } from '../models/interfaces/todo.interface';
-import { CalendarTileComponent } from "../components/calendar/calendar-tile/calendar-tile.component";
+import { Action } from '../../../models/interfaces/action.interface';
+import { ToDo } from '../../../models/interfaces/todo.interface';
+import { CalendarTileComponent } from '../calendar-tile/calendar-tile.component';
+
 
 @Component({
   selector: 'app-calendar-week',

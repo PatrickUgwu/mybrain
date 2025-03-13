@@ -3,7 +3,7 @@ import { CalendarService } from '../../services/calendar.service';
 import { Action } from '../../models/interfaces/action.interface';
 import { ToDo } from '../../models/interfaces/todo.interface';
 import { CalenderDayComponent } from "../../components/calendar/calendar-day/calender-day.component";
-import { CalendarWeekComponent } from "../../calendar-week/calendar-week.component";
+import { CalendarWeekComponent } from '../../components/calendar/calendar-week/calendar-week.component';
 
 @Component({
   selector: 'app-calendar',
