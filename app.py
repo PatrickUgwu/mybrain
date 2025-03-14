@@ -1,9 +1,16 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
-from flask import Flask
-from flask_cors import CORS
 
-app = Flask(__name__)
-CORS(app)
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],  
+)
 
 SAMPLE_ROADMAPS = [
     {
@@ -99,12 +106,8 @@ SAMPLE_TODOS = [
 
 
 
-@app.route("/")
-def index():
-    return "You found the backend."
-
-@app.route("/api/actions", methods=["GET"])
-def get_actions():
+@app.get("/actions")
+async def get_actions():
     actions = []
     for roadmap in SAMPLE_ROADMAPS:
         for milestone in roadmap["milestones"]:
@@ -113,16 +116,11 @@ def get_actions():
                     actions.append(action)
     return actions
 
-@app.route("/api/todos", methods=["GET"])
-def get_todos():
+@app.get("/todos")
+async def get_todos():
     return SAMPLE_TODOS
 
 
-
-
-
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.get("/")
+async def root():
+    return "You found the backend."

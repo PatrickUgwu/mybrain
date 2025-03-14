@@ -9,7 +9,7 @@ import { ToDo } from '../models/interfaces/todo.interface';
 })
 export class CalendarService {
 
-  url = "http://127.0.0.1:5000/api"
+  url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
 
   getActions(): Observable<Action[]> {
