@@ -1,8 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input, OnInit } from '@angular/core';
 import { CalendarActionComponent } from '../calendar-action/calendar-action.component';
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
 import { Action } from '../../../models/interfaces/action.interface';
 import { ToDo } from '../../../models/interfaces/todo.interface';
+import { CalendarService } from '../../../services/calendar.service';
 
 
 @Component({
@@ -12,24 +13,31 @@ import { ToDo } from '../../../models/interfaces/todo.interface';
   templateUrl: './calendar-tile.component.html',
   styleUrl: './calendar-tile.component.css'
 })
-export class CalendarTileComponent {
-  currentView = input.required<string>(); 
+export class CalendarTileComponent implements OnInit {
+  calendarService = inject(CalendarService)
+  view = input.required<string>(); 
+  day = input.required<string>()
+  name = ""
+  todos: ToDo[] = []
   actions = input<Action[]>([])
-  todos = input<ToDo[]>([])
   minHeight = "30%";
   maxHeight = "35%";
 
-  
-  
-  view = computed( () => {
-    let view = this.currentView()
-    if (view === "day") {return "Day"}
-    else if (view === "week") {
+  ngOnInit(): void {
+    if (this.view() == "week") {
       this.minHeight = "20%";
       this.maxHeight = "25%";
-      return "Weekday";
     }
-    else if (view === "month") {return "Monthday"}
-    else {return "view not found"}
-  })
+
+    this.calendarService.getToDos(this.day()).subscribe(data => {
+      this.todos = data
+      console.log("in tile: " + this.day())
+      console.log(this.todos)
+    })
+
+    this.calendarService.getWeekDay(this.day()).subscribe(data => {
+      this.name = data
+    })
+    
+  }
 }
