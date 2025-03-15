@@ -140,6 +140,14 @@ async def get_weekdays():
     print("week: ", week)
     return week
 
+@app.get("/weekday") # for tile
+async def get_weekday(day:str):
+    if day == "":
+        day = date.today().__str__()
+    print("the current day: ",day)
+    weekday = date.fromisoformat(day).strftime("%a")
+    print(weekday)
+    return weekday
 
 @app.get("/")
 async def root():
