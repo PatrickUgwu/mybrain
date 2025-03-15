@@ -16,13 +16,14 @@ export class HomeComponent implements OnInit {
   calendarService = inject(CalendarService)
   actions = signal<Action[]>([])
   todos = signal<ToDo[]>([])
+  day = ""
   
   ngOnInit(): void {
     this.calendarService.getActions().subscribe(data => {
       this.actions.set(data)
     })
 
-    this.calendarService.getToDos().subscribe(data => {
+    this.calendarService.getToDos(this.day).subscribe(data => {
       this.todos.set(data)
     })
   }

@@ -12,6 +12,7 @@ import { ToDo } from '../../../models/interfaces/todo.interface';
 })
 export class CalenderDayComponent {
   VIEW = "day"
+  day = input.required<string>()
   actions = input.required<Action[]>()
   todos = input.required<ToDo[]>()
 

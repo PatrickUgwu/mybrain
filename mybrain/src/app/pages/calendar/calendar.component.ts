@@ -17,13 +17,14 @@ export class CalendarComponent implements OnInit {
   actions = signal<Action[]>([])
   todos = signal<ToDo[]>([])
   view = signal("day")
+  day = signal("")
   
   ngOnInit(): void {
     this.calendarService.getActions().subscribe(data => {
       this.actions.set(data)
     })
 
-    this.calendarService.getToDos().subscribe(data => {
+    this.calendarService.getToDos(this.day()).subscribe(data => {
       this.todos.set(data)
     })
   }
