@@ -89,21 +89,23 @@ SAMPLE_TODOS = [
         "title": "Sketch",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
+        "deadline": date(2025,3,15),
     },
     {
         "id": "t2",
         "title": "concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
+        "deadline": date(2025,3,16),
     },
     {
         "id": "t3",
         "title": "Sketch concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
+        "deadline": date(2025,3,20),
     },
 ]
-
 
 
 @app.get("/actions")
@@ -116,9 +118,18 @@ async def get_actions():
                     actions.append(action)
     return actions
 
-@app.get("/todos")
-async def get_todos():
-    return SAMPLE_TODOS
+
+@app.get("/todos") # tile if week or day view
+async def get_todos(day: str):    
+    if day == "" or day == "today":
+        day = date.today().__str__()
+
+    todos = []
+    for todo in SAMPLE_TODOS:
+        if todo["deadline"].__str__() == day:
+            todos.append(todo) 
+    print(todos)
+    return todos
 
 
 @app.get("/")
