@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import date, datetime, timedelta
+import calendar
 
 app = FastAPI()
 
@@ -149,6 +150,17 @@ async def get_weekday(day:str):
     print(weekday)
     return weekday
 
+@app.get("/monthdays") # for month comp
+async def get_monthdays():
+    print("get my days")    
+    today = date.today()
+    first_day_of_month = today.__sub__(timedelta(days = today.replace(day=1)))  
+    number_of_days = calendar.monthrange(today.year, today.month)[1]
+    month = [first_day_of_month.__add__(timedelta(days=i)) for i in range(number_of_days)]
+    print("month: ", month)
+    return month
+
 @app.get("/")
 async def root():
     return "You found the backend."
+
