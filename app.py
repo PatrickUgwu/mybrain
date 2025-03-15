@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 app = FastAPI()
 
@@ -130,6 +130,15 @@ async def get_todos(day: str):
             todos.append(todo) 
     print(todos)
     return todos
+
+@app.get("/weekdays") # for week
+async def get_weekdays():
+    print("get my days")    
+    today = date.today()
+    monday = today.__sub__(timedelta(days = today.weekday()))  
+    week = [monday.__add__(timedelta(days=i)) for i in range(7)]
+    print("week: ", week)
+    return week
 
 
 @app.get("/")
