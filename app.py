@@ -1,9 +1,17 @@
-from datetime import datetime
-from flask import Flask
-from flask_cors import CORS
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from datetime import date, datetime, timedelta
+import calendar
 
-app = Flask(__name__)
-CORS(app)
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],  
+)
 
 SAMPLE_ROADMAPS = [
     {
@@ -82,29 +90,27 @@ SAMPLE_TODOS = [
         "title": "Sketch",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
+        "deadline": date(2025,3,15),
     },
     {
         "id": "t2",
         "title": "concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
+        "deadline": date(2025,3,16),
     },
     {
         "id": "t3",
         "title": "Sketch concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
+        "deadline": date(2025,3,20),
     },
 ]
 
 
-
-@app.route("/")
-def index():
-    return "You found the backend."
-
-@app.route("/api/actions", methods=["GET"])
-def get_actions():
+@app.get("/actions")
+async def get_actions():
     actions = []
     for roadmap in SAMPLE_ROADMAPS:
         for milestone in roadmap["milestones"]:
@@ -113,16 +119,48 @@ def get_actions():
                     actions.append(action)
     return actions
 
-@app.route("/api/todos", methods=["GET"])
-def get_todos():
-    return SAMPLE_TODOS
 
+@app.get("/todos") # tile if week or day view
+async def get_todos(day: str):    
+    if day == "" or day == "today":
+        day = date.today().__str__()
 
+    todos = []
+    for todo in SAMPLE_TODOS:
+        if todo["deadline"].__str__() == day:
+            todos.append(todo) 
+    print(todos)
+    return todos
 
+@app.get("/weekdays") # for week
+async def get_weekdays():
+    print("get my days")    
+    today = date.today()
+    monday = today.__sub__(timedelta(days = today.weekday()))  
+    week = [monday.__add__(timedelta(days=i)) for i in range(7)]
+    print("week: ", week)
+    return week
 
+@app.get("/weekday") # for tile
+async def get_weekday(day:str):
+    if day == "":
+        day = date.today().__str__()
+    print("the current day: ",day)
+    weekday = date.fromisoformat(day).strftime("%a")
+    print(weekday)
+    return weekday
 
+@app.get("/monthdays") # for month comp
+async def get_monthdays():
+    print("get my days")    
+    today = date.today()
+    first_day_of_month = today.__sub__(timedelta(days = today.replace(day=1)))  
+    number_of_days = calendar.monthrange(today.year, today.month)[1]
+    month = [first_day_of_month.__add__(timedelta(days=i)) for i in range(number_of_days)]
+    print("month: ", month)
+    return month
 
+@app.get("/")
+async def root():
+    return "You found the backend."
 
-
-if __name__ == "__main__":
-    app.run(debug=True)

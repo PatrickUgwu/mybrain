@@ -3,8 +3,9 @@ import { CalendarService } from '../../services/calendar.service';
 import { Action } from '../../models/interfaces/action.interface';
 import { ToDo } from '../../models/interfaces/todo.interface';
 import { CalenderDayComponent } from "../../components/calendar/calendar-day/calender-day.component";
-import { CalendarWeekComponent } from "../../calendar-week/calendar-week.component";
+import { CalendarWeekComponent } from '../../components/calendar/calendar-week/calendar-week.component';
 import { CalendarMonthComponent } from '../../components/calendar/calendar-month/calendar-month.component';
+
 
 @Component({
   selector: 'app-calendar',
@@ -18,13 +19,14 @@ export class CalendarComponent implements OnInit {
   actions = signal<Action[]>([])
   todos = signal<ToDo[]>([])
   view = signal("day")
+  day = signal("")
   
   ngOnInit(): void {
     this.calendarService.getActions().subscribe(data => {
       this.actions.set(data)
     })
 
-    this.calendarService.getToDos().subscribe(data => {
+    this.calendarService.getToDos(this.day()).subscribe(data => {
       this.todos.set(data)
     })
   }
