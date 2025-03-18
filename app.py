@@ -151,13 +151,11 @@ async def get_weekday(day:str):
     return weekday
 
 @app.get("/monthdays") # for month comp
-async def get_monthdays():
-    print("get my days")    
+async def get_monthdays():  
     today = date.today()
-    first_day_of_month = today.__sub__(timedelta(days = today.replace(day=1)))  
+    first_day_of_month = today - timedelta(days = today.day -1)
     number_of_days = calendar.monthrange(today.year, today.month)[1]
     month = [first_day_of_month.__add__(timedelta(days=i)) for i in range(number_of_days)]
-    print("month: ", month)
     return month
 
 @app.get("/")

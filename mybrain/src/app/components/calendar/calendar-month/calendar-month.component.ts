@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { Action } from '../../../models/interfaces/action.interface';
 import { ToDo } from '../../../models/interfaces/todo.interface';
 import { CalendarTileComponent } from '../calendar-tile/calendar-tile.component';
+import { CalendarService } from '../../../services/calendar.service';
 
 @Component({
   selector: 'app-calendar-month',
@@ -10,9 +11,16 @@ import { CalendarTileComponent } from '../calendar-tile/calendar-tile.component'
   templateUrl: './calendar-month.component.html',
   styleUrl: './calendar-month.component.css'
 })
-export class CalendarMonthComponent {
+export class CalendarMonthComponent implements OnInit{
   VIEW = "month"
+  calendarService = inject(CalendarService)
   actions = input.required<Action[]>()
   todos = input.required<ToDo[]>()
-  days = Array.from({ length: 35 }, (_, i) => i + 1);
+  month:string[] = [];
+
+  ngOnInit(): void {
+    this.calendarService.getMonthDays().subscribe(data => {
+      this.month = data
+    })
+  }
 }

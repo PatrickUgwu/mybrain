@@ -28,5 +28,9 @@ export class CalendarService {
     return this.httpClient.get<string>(this.url + "/weekday?day=" + day)
   }
 
+  getMonthDays():Observable<string[]> {
+    return this.httpClient.get<string[]>(this.url + "/monthdays")
+  }
+
   constructor() { }
 }
