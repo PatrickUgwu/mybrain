@@ -110,7 +110,7 @@ SAMPLE_TODOS = [
 
 
 @app.get("/actions")
-async def get_actions():
+def get_actions():
     actions = []
     for roadmap in SAMPLE_ROADMAPS:
         for milestone in roadmap["milestones"]:
@@ -121,7 +121,7 @@ async def get_actions():
 
 
 @app.get("/todos") # tile if week or day view
-async def get_todos(day: str):    
+def get_todos(day: str):    
     if day == "" or day == "today":
         day = date.today().__str__()
 
@@ -129,36 +129,40 @@ async def get_todos(day: str):
     for todo in SAMPLE_TODOS:
         if todo["deadline"].__str__() == day:
             todos.append(todo) 
-    print(todos)
     return todos
 
+@app.get("/weekday") # for tile
+def get_weekday(day:str):
+    if day == "":
+        day = date.today().__str__()
+    weekday = date.fromisoformat(day).strftime("%a")
+    return weekday
+
 @app.get("/weekdays") # for week
-async def get_weekdays():
-    print("get my days")    
+def get_weekdays():   
     today = date.today()
     monday = today.__sub__(timedelta(days = today.weekday()))  
     week = [monday.__add__(timedelta(days=i)) for i in range(7)]
     print("week: ", week)
     return week
 
-@app.get("/weekday") # for tile
-async def get_weekday(day:str):
-    if day == "":
-        day = date.today().__str__()
-    print("the current day: ",day)
-    weekday = date.fromisoformat(day).strftime("%a")
-    print(weekday)
-    return weekday
-
 @app.get("/monthdays") # for month comp
-async def get_monthdays():  
+def get_monthdays():  
     today = date.today()
     first_day_of_month = today - timedelta(days = today.day -1)
     number_of_days = calendar.monthrange(today.year, today.month)[1]
     month = [first_day_of_month.__add__(timedelta(days=i)) for i in range(number_of_days)]
     return month
 
+@app.get("/quarter") # for quarter
+def quarter():  
+    today = date.today()
+    first_quarter_month = 1 - (today.month//4) * 3
+    quarter_start = date(today.year, first_quarter_month, 1) 
+    quarter = [quarter_start.replace(month=quarter_start.month + i).strftime("%h") for i in range(3)]
+    return quarter
+
 @app.get("/")
-async def root():
+def root():
     return "You found the backend."
 
