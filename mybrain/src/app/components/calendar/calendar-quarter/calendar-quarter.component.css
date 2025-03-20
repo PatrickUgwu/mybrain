@@ -1,0 +1,11 @@
+.quarter-view {
+    display: flex;
+    height: 80vh;
+    padding: 0.5rem;
+    background-color: greenyellow;  
+}
+
+.extra-small-tile {
+    width: calc(100%/3);
+    background-color: red;
+}
