@@ -16,7 +16,8 @@ import { CalendarService } from '../../../services/calendar.service';
 export class CalendarTileComponent implements OnInit {
   calendarService = inject(CalendarService)
   view = input.required<string>(); 
-  day = input.required<string>()
+  day = input<string>("")
+  month = input<string>("")
   name = ""
   todos: ToDo[] = []
   actions = input<Action[]>([])
@@ -28,6 +29,9 @@ export class CalendarTileComponent implements OnInit {
       this.minHeight = "20%";
       this.maxHeight = "25%";
     }
+    if (this.view() === "quarter") {
+      this.name = this.month()
+    }
 
     this.calendarService.getToDos(this.day()).subscribe(data => {
       this.todos = data
@@ -35,9 +39,11 @@ export class CalendarTileComponent implements OnInit {
       console.log(this.todos)
     })
 
-    this.calendarService.getWeekDay(this.day()).subscribe(data => {
-      this.name = data
-    })
+    if (this.view() !== "quarter") {
+      this.calendarService.getWeekDay(this.day()).subscribe(data => {
+        this.name = data
+      })
+    }
     
   }
 }
