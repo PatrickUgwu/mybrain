@@ -32,5 +32,9 @@ export class CalendarService {
     return this.httpClient.get<string[]>(this.url + "/monthdays")
   }
 
+  getQuarter():Observable<string[]> {
+    return this.httpClient.get<string[]>(this.url + "/quarter")
+  }
+
   constructor() { }
 }

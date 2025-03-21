@@ -5,12 +5,13 @@ import { ToDo } from '../../models/interfaces/todo.interface';
 import { CalenderDayComponent } from "../../components/calendar/calendar-day/calender-day.component";
 import { CalendarWeekComponent } from '../../components/calendar/calendar-week/calendar-week.component';
 import { CalendarMonthComponent } from '../../components/calendar/calendar-month/calendar-month.component';
+import { CalendarQuarterComponent } from '../../components/calendar/calendar-quarter/calendar-quarter.component';
 
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CalenderDayComponent, CalendarWeekComponent, CalendarMonthComponent],
+  imports: [CalenderDayComponent, CalendarWeekComponent, CalendarMonthComponent, CalendarQuarterComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })

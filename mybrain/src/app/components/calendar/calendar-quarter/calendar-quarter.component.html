@@ -1,0 +1,5 @@
+<div class="quarter-view">
+    @for (month of quarter; track $index) {
+        <app-calendar-tile class="extra-small-tile" [month]="month" [view]="VIEW"></app-calendar-tile>
+    }
+</div>
