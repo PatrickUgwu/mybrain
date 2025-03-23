@@ -1,0 +1,12 @@
+.year-view {
+    display: flex;
+    flex-wrap: wrap;
+    height: 80vh;
+    padding: 0.5rem;
+    background-color: greenyellow;  
+}
+
+.year-tile {
+    width: calc(100%/3);
+    background-color: red;
+}
