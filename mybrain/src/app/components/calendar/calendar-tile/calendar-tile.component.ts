@@ -29,8 +29,12 @@ export class CalendarTileComponent implements OnInit {
       this.minHeight = "20%";
       this.maxHeight = "25%";
     }
-    if (this.view() === "quarter") {
+    if (this.view() === "quarter" || this.view() === "year") {
       this.name = this.month()
+    } else{
+      this.calendarService.getWeekDay(this.day()).subscribe(data => {
+        this.name = data
+      })
     }
 
     this.calendarService.getToDos(this.day()).subscribe(data => {
@@ -39,11 +43,5 @@ export class CalendarTileComponent implements OnInit {
       console.log(this.todos)
     })
 
-    if (this.view() !== "quarter") {
-      this.calendarService.getWeekDay(this.day()).subscribe(data => {
-        this.name = data
-      })
-    }
-    
   }
 }
