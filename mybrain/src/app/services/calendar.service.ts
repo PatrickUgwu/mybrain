@@ -36,5 +36,9 @@ export class CalendarService {
     return this.httpClient.get<string[]>(this.url + "/quarter")
   }
 
+  getYear():Observable<string[]> {
+    return this.httpClient.get<string[]>(this.url + "/year")
+  }
+
   constructor() { }
 }

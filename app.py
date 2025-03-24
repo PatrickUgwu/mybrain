@@ -155,12 +155,19 @@ def get_monthdays():
     return month
 
 @app.get("/quarter") # for quarter
-def quarter():  
+def get_quarter():  
     today = date.today()
     first_quarter_month = 1 - (today.month//4) * 3
     quarter_start = date(today.year, first_quarter_month, 1) 
     quarter = [quarter_start.replace(month=quarter_start.month + i).strftime("%h") for i in range(3)]
     return quarter
+
+@app.get("/year") # for year
+def get_year():  
+    today = date.today()
+    january = date(today.year, 1, 1) 
+    year = [january.replace(month = 1 + i).strftime("%h") for i in range(12)]
+    return year
 
 @app.get("/")
 def root():

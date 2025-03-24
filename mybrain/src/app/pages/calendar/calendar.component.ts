@@ -6,12 +6,13 @@ import { CalenderDayComponent } from "../../components/calendar/calendar-day/cal
 import { CalendarWeekComponent } from '../../components/calendar/calendar-week/calendar-week.component';
 import { CalendarMonthComponent } from '../../components/calendar/calendar-month/calendar-month.component';
 import { CalendarQuarterComponent } from '../../components/calendar/calendar-quarter/calendar-quarter.component';
+import { CalendarYearComponent } from "../../components/calendar/calendar-year/calendar-year.component";
 
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CalenderDayComponent, CalendarWeekComponent, CalendarMonthComponent, CalendarQuarterComponent],
+  imports: [CalenderDayComponent, CalendarWeekComponent, CalendarMonthComponent, CalendarQuarterComponent, CalendarYearComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })

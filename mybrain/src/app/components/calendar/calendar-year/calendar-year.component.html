@@ -1,0 +1,5 @@
+<div class="year-view">
+    @for (month of year; track $index) {
+        <app-calendar-tile class="year-tile" [month]="month" [view]="VIEW"></app-calendar-tile>
+    }
+</div>
