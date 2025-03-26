@@ -1,11 +1,9 @@
 .quarter-view {
     display: flex;
+    gap: 1rem;
     height: 80vh;
-    padding: 0.5rem;
-    background-color: greenyellow;  
 }
 
 .extra-small-tile {
-    width: calc(100%/3);
-    background-color: red;
+    width: calc((100% - 2rem) / 3);
 }
