@@ -33,13 +33,12 @@ SAMPLE_ROADMAPS = [
                 "goals": [
                     {
                         "id": "g1",
-                        "title": "Take course on portfolio building",
-                        "description": "Learn best practices for art portfolio creation",
-                        "color": "#7986CB",
-                        "milestoneId": "m1",
-                        "startDate": datetime(2025, 1, 1),
-                        "endDate": datetime(2025, 1, 31),
-                        "timeframe": "month",
+                        "title": "Create works",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "week",
+                        "deadline": date(2025, 3, 28).__str__(),
                         "actions": [
                             {
                                 "id": "a1",
@@ -63,11 +62,10 @@ SAMPLE_ROADMAPS = [
                         "id": "g2",
                         "title": "Create 5 digital artworks",
                         "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "color": "#7986CB",
-                        "milestoneId": "m1",
-                        "startDate": datetime(2025, 2, 1),
-                        "endDate": datetime(2025, 2, 28),
-                        "timeframe": "month",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "week",
+                        "deadline": date(2025, 3, 29).__str__(),
                         "actions": [
                             {
                                 "id": "a3",
@@ -90,21 +88,21 @@ SAMPLE_TODOS = [
         "title": "Sketch",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,15),
+        "deadline": date(2025,3,27),
     },
     {
         "id": "t2",
         "title": "concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,16),
+        "deadline": date(2025,3,28),
     },
     {
         "id": "t3",
         "title": "Sketch concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,20),
+        "deadline": date(2025,3,30),
     },
 ]
 
