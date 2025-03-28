@@ -12,6 +12,10 @@ export class CalendarService {
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
 
+  getGoals(): Observable<any> {
+    return this.httpClient.get(this.url + "/goals")
+  }
+  
   getActions(): Observable<Action[]> {
     return this.httpClient.get<Action[]>(this.url + "/actions")
   }

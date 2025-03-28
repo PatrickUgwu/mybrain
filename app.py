@@ -107,6 +107,15 @@ SAMPLE_TODOS = [
 ]
 
 
+@app.get("/goals")
+def get_goals():
+    goals = []
+    for roadmap in SAMPLE_ROADMAPS:
+        for milestone in roadmap["milestones"]:
+            for goal in milestone["goals"]:
+                goals.append(goal)
+    return goals
+
 @app.get("/actions")
 def get_actions():
     actions = []
