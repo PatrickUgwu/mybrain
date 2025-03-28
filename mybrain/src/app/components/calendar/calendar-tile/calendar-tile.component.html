@@ -8,14 +8,33 @@
         <div class="content">
 
             <!-- Show content only for day and week view -->
-            @if (view() == "day" || view() == "week" ) {
+            @if (view() == "day") {
                 <div class="action-container">
                     @for (action of actions(); track $index) {
-                            <app-calendar-action class="action" [style.min-height]="minHeight"[style.max-height]="maxHeight" [title]="action.title"></app-calendar-action>     
-                        }    
+                        <app-calendar-action class="action" [style.min-height]="minHeight"[style.max-height]="maxHeight" [title]="action.title"></app-calendar-action>     
+                    }    
                 </div>        
 
                 <div class="todo-container">
+                    @for (todo of todos; track $index) {
+                        <app-calendar-todo class="todo" [title]="todo.title"></app-calendar-todo>
+                            
+                    }
+                </div>
+            }
+            @else if (view() == "week" ) {
+                <div class="goal-container" style="height: 33%;">
+                    @for (goal of goals(); track $index) {
+                        <app-calendar-goal class="goal" [title]="goal.title" [type]="goal.type"></app-calendar-goal>     
+                    }   
+                </div>  
+                <div class="action-container" style="height: 33%;">
+                    @for (action of actions(); track $index) {
+                        <app-calendar-action class="action" [style.min-height]="minHeight"[style.max-height]="maxHeight" [title]="action.title"></app-calendar-action>     
+                    }    
+                </div>        
+
+                <div class="todo-container" style="height: 34%;">
                     @for (todo of todos; track $index) {
                         <app-calendar-todo class="todo" [title]="todo.title"></app-calendar-todo>
                             

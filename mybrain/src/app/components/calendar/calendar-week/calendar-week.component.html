@@ -1,5 +1,6 @@
 <div class="week-view">
     @for (day of week; track $index) {
-        <app-calendar-tile class="medium-tile" [day]="day" [view]="VIEW" [actions]="actions()"></app-calendar-tile>
+        <app-calendar-tile class="medium-tile" [day]="day[0]" [view]="VIEW" [goals]="day[1]" [actions]="actions()"></app-calendar-tile>
     }
+    
 </div>
