@@ -7,6 +7,7 @@ import { CalendarWeekComponent } from '../../components/calendar/calendar-week/c
 import { CalendarMonthComponent } from '../../components/calendar/calendar-month/calendar-month.component';
 import { CalendarQuarterComponent } from '../../components/calendar/calendar-quarter/calendar-quarter.component';
 import { CalendarYearComponent } from "../../components/calendar/calendar-year/calendar-year.component";
+import { Goal } from '../../models/interfaces/goal.interface';
 
 
 @Component({
@@ -18,12 +19,42 @@ import { CalendarYearComponent } from "../../components/calendar/calendar-year/c
 })
 export class CalendarComponent implements OnInit {
   calendarService = inject(CalendarService)
+  allGoals: Goal[] = []
+  weekGoals = signal<Goal[]>([])
+  monthGoals = signal<Goal[]>([])
+  quarterGoals = signal<Goal[]>([])
   actions = signal<Action[]>([])
   todos = signal<ToDo[]>([])
   view = signal("day")
   day = signal("")
   
   ngOnInit(): void {
+    this.calendarService.getGoals().subscribe(data => {
+      this.allGoals = data
+
+      this.allGoals.forEach( goal => {
+        switch (goal.type) {
+          case "week": {
+            this.weekGoals().push(goal)
+            break
+          }
+          case "month": {
+            this.monthGoals().push(goal)
+            break
+          }
+          case "quarter": {
+            this.quarterGoals().push(goal)
+            break
+          }
+          default: {
+            console.warn("Wrong goal type!")
+          }
+        }
+        
+      })
+      
+    })
+
     this.calendarService.getActions().subscribe(data => {
       this.actions.set(data)
     })
@@ -31,6 +62,8 @@ export class CalendarComponent implements OnInit {
     this.calendarService.getToDos(this.day()).subscribe(data => {
       this.todos.set(data)
     })
+    
+    
   }
 
   setView(view:string): void {
