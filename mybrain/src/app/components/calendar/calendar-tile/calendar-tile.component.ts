@@ -4,12 +4,14 @@ import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component"
 import { Action } from '../../../models/interfaces/action.interface';
 import { ToDo } from '../../../models/interfaces/todo.interface';
 import { CalendarService } from '../../../services/calendar.service';
+import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
+import { Goal } from '../../../models/interfaces/goal.interface';
 
 
 @Component({
   selector: 'app-calendar-tile',
   standalone: true,
-  imports: [CalendarActionComponent, CalendarTodoComponent],
+  imports: [CalendarActionComponent, CalendarTodoComponent, CalendarGoalComponent],
   templateUrl: './calendar-tile.component.html',
   styleUrl: './calendar-tile.component.css'
 })
@@ -21,6 +23,7 @@ export class CalendarTileComponent implements OnInit {
   name = ""
   todos: ToDo[] = []
   actions = input<Action[]>([])
+  goals = input<Goal[]>([])
   minHeight = "30%";
   maxHeight = "35%";
 
@@ -39,8 +42,6 @@ export class CalendarTileComponent implements OnInit {
 
     this.calendarService.getToDos(this.day()).subscribe(data => {
       this.todos = data
-      console.log("in tile: " + this.day())
-      console.log(this.todos)
     })
 
   }

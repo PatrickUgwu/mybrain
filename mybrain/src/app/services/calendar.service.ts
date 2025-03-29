@@ -12,6 +12,10 @@ export class CalendarService {
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
 
+  getGoals(): Observable<any> {
+    return this.httpClient.get(this.url + "/goals")
+  }
+  
   getActions(): Observable<Action[]> {
     return this.httpClient.get<Action[]>(this.url + "/actions")
   }
@@ -32,12 +36,12 @@ export class CalendarService {
     return this.httpClient.get<string[]>(this.url + "/monthdays")
   }
 
-  getQuarter():Observable<string[]> {
-    return this.httpClient.get<string[]>(this.url + "/quarter")
+  getQuarter():Observable<[string[]]> {
+    return this.httpClient.get<[string[]]>(this.url + "/quarter")
   }
 
-  getYear():Observable<string[]> {
-    return this.httpClient.get<string[]>(this.url + "/year")
+  getYear():Observable<[string[]]> {
+    return this.httpClient.get<[string[]]>(this.url + "/year")
   }
 
   constructor() { }

@@ -33,13 +33,12 @@ SAMPLE_ROADMAPS = [
                 "goals": [
                     {
                         "id": "g1",
-                        "title": "Take course on portfolio building",
-                        "description": "Learn best practices for art portfolio creation",
-                        "color": "#7986CB",
-                        "milestoneId": "m1",
-                        "startDate": datetime(2025, 1, 1),
-                        "endDate": datetime(2025, 1, 31),
-                        "timeframe": "month",
+                        "title": "Create works",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "month",
+                        "deadline": date(2025, 2, 28).__str__(),
                         "actions": [
                             {
                                 "id": "a1",
@@ -61,13 +60,12 @@ SAMPLE_ROADMAPS = [
                     },
                     {
                         "id": "g2",
-                        "title": "Create 5 digital artworks",
+                        "title": "Create 5 digital artworks fefefefe efefefef",
                         "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "color": "#7986CB",
-                        "milestoneId": "m1",
-                        "startDate": datetime(2025, 2, 1),
-                        "endDate": datetime(2025, 2, 28),
-                        "timeframe": "month",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "month",
+                        "deadline": date(2025, 3, 29).__str__(),
                         "actions": [
                             {
                                 "id": "a3",
@@ -76,6 +74,102 @@ SAMPLE_ROADMAPS = [
                                 "parent": "g2",
                                 "completed": False,
                             }
+                        ],
+                    },
+                    {
+                        "id": "g3",
+                        "title": "Create 5 digital artworks fefefefe efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 4, 30).__str__(),
+                        "actions": [
+                            {
+                                "id": "a5",
+                                "title": "Skefefefecepts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g4",
+                        "title": "Create 5 digital artworksfefefefe efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 8, 28).__str__(),
+                        "actions": [
+                            {
+                                "id": "a6",
+                                "title": "effefef cefefefts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g7",
+                        "title": "gggggg efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 1, 30).__str__(),
+                        "actions": [
+                            {
+                                "id": "a5",
+                                "title": "Skefefefecepts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g8",
+                        "title": "Cre efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 2, 28).__str__(),
+                        "actions": [
+                            {
+                                "id": "a6",
+                                "title": "effefef cefefefts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g17",
+                        "title": "bbbbb",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "week",
+                        "deadline": date(2025, 1, 13).__str__(),
+                        "actions": [
+                            
+                        ],
+                    },
+                    {
+                        "id": "g18",
+                        "title": "aaaaaa",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "week",
+                        "deadline": date(2025, 2, 28).__str__(),
+                        "actions": [
+                            
                         ],
                     },
                 ],
@@ -90,24 +184,33 @@ SAMPLE_TODOS = [
         "title": "Sketch",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,15),
+        "deadline": date(2025,3,27),
     },
     {
         "id": "t2",
         "title": "concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,16),
+        "deadline": date(2025,3,28),
     },
     {
         "id": "t3",
         "title": "Sketch concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,20),
+        "deadline": date(2025,3,30),
     },
 ]
 
+
+@app.get("/goals")
+def get_goals():
+    goals = []
+    for roadmap in SAMPLE_ROADMAPS:
+        for milestone in roadmap["milestones"]:
+            for goal in milestone["goals"]:
+                goals.append(goal)
+    return goals
 
 @app.get("/actions")
 def get_actions():
@@ -159,14 +262,14 @@ def get_quarter():
     today = date.today()
     first_quarter_month = 1 - (today.month//4) * 3
     quarter_start = date(today.year, first_quarter_month, 1) 
-    quarter = [quarter_start.replace(month=quarter_start.month + i).strftime("%h") for i in range(3)]
+    quarter = [[quarter_start.replace(month=quarter_start.month + i).strftime("%h"), quarter_start.replace(month=quarter_start.month + i).__str__()[5:7]] for i in range(3)]
     return quarter
 
 @app.get("/year") # for year
 def get_year():  
     today = date.today()
     january = date(today.year, 1, 1) 
-    year = [january.replace(month = 1 + i).strftime("%h") for i in range(12)]
+    year = [[january.replace(month = 1 + i).strftime("%h"), january.replace(month = 1 + i).__str__()[5:7]] for i in range(12)]
     return year
 
 @app.get("/")

@@ -1,5 +1,25 @@
 <div class="quarter-view">
-    @for (month of quarter; track $index) {
-        <app-calendar-tile class="extra-small-tile" [month]="month" [view]="VIEW"></app-calendar-tile>
-    }
+    <div class="top-bar">
+        @for (goal of quarterGoals(); track $index) {
+            <app-calendar-goal class="quarter-goal" [title]="goal.title" [type]="goal.type"></app-calendar-goal>
+        }
+    </div>
+    <div class="calendar">
+        
+        @for (month of quarter; track $index) {
+            <div class="month">
+                <div class="tile">
+                    <app-calendar-tile class="extra-small-tile" [goals]="month[2].flat()" [month]="month[0]" [view]="VIEW"></app-calendar-tile>
+                 </div>
+
+                <div class="side-bar">
+                    @for (goal of month[1]; track $index) {
+                        <app-calendar-goal class="month-goal" [title]="goal.title" [type]="goal.type"></app-calendar-goal>
+                    }
+                </div>
+            </div>
+        }
+        
+        
+    </div>
 </div>
