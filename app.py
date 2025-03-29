@@ -37,8 +37,8 @@ SAMPLE_ROADMAPS = [
                         "description": "Produce 5 high-quality digital pieces for portfolio",
                         "completed": False,
                         "parent": "m1",
-                        "type": "week",
-                        "deadline": date(2025, 3, 28).__str__(),
+                        "type": "month",
+                        "deadline": date(2025, 2, 28).__str__(),
                         "actions": [
                             {
                                 "id": "a1",
@@ -60,11 +60,11 @@ SAMPLE_ROADMAPS = [
                     },
                     {
                         "id": "g2",
-                        "title": "Create 5 digital artworks",
+                        "title": "Create 5 digital artworks fefefefe efefefef",
                         "description": "Produce 5 high-quality digital pieces for portfolio",
                         "completed": False,
                         "parent": "m1",
-                        "type": "week",
+                        "type": "month",
                         "deadline": date(2025, 3, 29).__str__(),
                         "actions": [
                             {
@@ -74,6 +74,102 @@ SAMPLE_ROADMAPS = [
                                 "parent": "g2",
                                 "completed": False,
                             }
+                        ],
+                    },
+                    {
+                        "id": "g3",
+                        "title": "Create 5 digital artworks fefefefe efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 4, 30).__str__(),
+                        "actions": [
+                            {
+                                "id": "a5",
+                                "title": "Skefefefecepts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g4",
+                        "title": "Create 5 digital artworksfefefefe efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 8, 28).__str__(),
+                        "actions": [
+                            {
+                                "id": "a6",
+                                "title": "effefef cefefefts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g7",
+                        "title": "gggggg efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 1, 30).__str__(),
+                        "actions": [
+                            {
+                                "id": "a5",
+                                "title": "Skefefefecepts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g8",
+                        "title": "Cre efefefef",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "quarter",
+                        "deadline": date(2025, 2, 28).__str__(),
+                        "actions": [
+                            {
+                                "id": "a6",
+                                "title": "effefef cefefefts",
+                                "description": "Develop initial sketches for digital pieces",
+                                "parent": "g2",
+                                "completed": False,
+                            }
+                        ],
+                    },
+                    {
+                        "id": "g17",
+                        "title": "bbbbb",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "week",
+                        "deadline": date(2025, 1, 13).__str__(),
+                        "actions": [
+                            
+                        ],
+                    },
+                    {
+                        "id": "g18",
+                        "title": "aaaaaa",
+                        "description": "Produce 5 high-quality digital pieces for portfolio",
+                        "completed": False,
+                        "parent": "m1",
+                        "type": "week",
+                        "deadline": date(2025, 2, 28).__str__(),
+                        "actions": [
+                            
                         ],
                     },
                 ],
