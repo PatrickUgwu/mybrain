@@ -13,7 +13,7 @@
         @if (view() == "day") {<app-calender-day [day]="day()" [actions]="actions()" [todos]="todos()"></app-calender-day>}
         @else if (view() == "week") {<app-calendar-week [goals]="weekGoals()" [actions]="actions()" [todos]="todos()"></app-calendar-week>}
         @else if (view() == "month") {<app-calendar-month [goals]="monthGoals()" [actions]="actions()" [todos]="todos()"></app-calendar-month>}
-        @else if (view() == "quarter") {<app-calendar-quarter [todos]="todos()"></app-calendar-quarter>}
+        @else if (view() == "quarter") {<app-calendar-quarter [quarterGoals]="quarterGoals()" [monthGoals]="monthGoals()" [weekGoals]="weekGoals()" [todos]="todos()"></app-calendar-quarter>}
         @else if (view() == "year") {<app-calendar-year></app-calendar-year>}
         @else {<p style="color: white;">not implemented yet</p>}
     </div>

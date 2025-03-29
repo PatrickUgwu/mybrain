@@ -166,7 +166,7 @@ def get_quarter():
     today = date.today()
     first_quarter_month = 1 - (today.month//4) * 3
     quarter_start = date(today.year, first_quarter_month, 1) 
-    quarter = [quarter_start.replace(month=quarter_start.month + i).strftime("%h") for i in range(3)]
+    quarter = [[quarter_start.replace(month=quarter_start.month + i).strftime("%h"), quarter_start.replace(month=quarter_start.month + i).__str__()[5:7]] for i in range(3)]
     return quarter
 
 @app.get("/year") # for year

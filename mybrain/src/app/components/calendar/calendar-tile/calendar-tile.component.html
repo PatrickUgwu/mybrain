@@ -3,12 +3,9 @@
         @if (view() !== "month") {
             <div class="header">
                 <p>{{name}}</p>
-                <!-- @if (view() == "day") {<button>extra content</button>} -->
             </div>
         }
-        
-        
-            <!-- Show content only for day and week view -->
+
             @if (view() == "day") {
                 <div class="content">
                     <div class="action-container">
@@ -61,6 +58,18 @@
                                 
                         }
                     </div>
+                </div>
+            }
+
+            @else if (view() == "quarter") {
+                <div class="content" style = "height: 100%; border-radius: 1rem; padding:0;">
+                    <div class="goal-container" style="height: 100%;">
+                        @for (goal of goals(); track $index) {
+                            <app-calendar-goal class="goal" [style.min-height]="'50%'" [style.max-height]="'50%'" [style.width]="'50%'" [title]="goal.title" [type]="goal.type"></app-calendar-goal>     
+                        }   
+                    </div>         
+
+                    
                 </div>
             }
                 
