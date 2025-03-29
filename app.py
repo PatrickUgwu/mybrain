@@ -173,7 +173,7 @@ def get_quarter():
 def get_year():  
     today = date.today()
     january = date(today.year, 1, 1) 
-    year = [january.replace(month = 1 + i).strftime("%h") for i in range(12)]
+    year = [[january.replace(month = 1 + i).strftime("%h"), january.replace(month = 1 + i).__str__()[5:7]] for i in range(12)]
     return year
 
 @app.get("/")
