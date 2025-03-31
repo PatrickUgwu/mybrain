@@ -1,10 +1,8 @@
 <div class="year-view">
 
     <div class="top-bar">
-        <!-- ToDo -->
-        Milestones
         @for (milestone of milestones(); track $index) {
-            
+            <app-calendar-milestone class="milestone" [title]="milestone.title"></app-calendar-milestone>
         }
     </div>
     <div class="calendar">
