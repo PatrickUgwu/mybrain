@@ -8,6 +8,7 @@ import { CalendarMonthComponent } from '../../components/calendar/calendar-month
 import { CalendarQuarterComponent } from '../../components/calendar/calendar-quarter/calendar-quarter.component';
 import { CalendarYearComponent } from "../../components/calendar/calendar-year/calendar-year.component";
 import { Goal } from '../../models/interfaces/goal.interface';
+import { Milestone } from '../../models/interfaces/milestone.interface';
 
 
 @Component({
@@ -20,6 +21,7 @@ import { Goal } from '../../models/interfaces/goal.interface';
 export class CalendarComponent implements OnInit {
   calendarService = inject(CalendarService)
   allGoals: Goal[] = []
+  milestones = signal<Milestone[]>([])
   weekGoals = signal<Goal[]>([])
   monthGoals = signal<Goal[]>([])
   quarterGoals = signal<Goal[]>([])
@@ -29,6 +31,10 @@ export class CalendarComponent implements OnInit {
   day = signal("")
   
   ngOnInit(): void {
+    this.calendarService.getMilestones().subscribe(data => {
+      this.milestones.set(data)
+    })
+    
     this.calendarService.getGoals().subscribe(data => {
       this.allGoals = data
 
