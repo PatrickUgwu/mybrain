@@ -1,0 +1,46 @@
+.calendar-container {
+    width: 100vw;
+    height: 95vh;
+    padding: 1rem;
+    background-color: #123;
+}
+
+.navbar-container {
+    height: 8%;
+    padding: 1rem;
+    border-bottom: 5px solid aliceblue;
+}
+
+.navbar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly;
+    gap: 1rem;
+    list-style-type: none;
+    border-radius: 20px;
+    
+}
+
+.navbar li {
+    width: calc(100%/5);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    font-family:"Lucida Console", monospace;
+    font-size:xx-large;
+    font-weight: bold;
+    border: 3px solid aliceblue;
+    background-color: aqua;
+    box-shadow: 2px 2px 3px 0 #123;
+    border-radius: 20px;
+}
+
+.calendar {
+    width: 100%;
+    height: 92%;
+    padding: 1rem;
+    overflow: auto;
+    
+}

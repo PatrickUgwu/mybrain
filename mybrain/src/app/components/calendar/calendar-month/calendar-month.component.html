@@ -1,0 +1,5 @@
+<div class="month-view">
+    @for (day of month; track $index) {
+        <app-calendar-tile class="small-tile" [day]="day[0]" [view]="VIEW" [goals]="day[1]" [actions]="actions()"></app-calendar-tile>
+    }
+</div>

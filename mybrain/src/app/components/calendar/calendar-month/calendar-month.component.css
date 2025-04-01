@@ -1,0 +1,11 @@
+.month-view {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    height: 80vh;
+}
+
+.small-tile {
+    width: calc((100% - (6 * 1rem)) / 7);
+    height: calc((100% - (4 * 1rem)) / 5);
+}

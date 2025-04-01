@@ -1,0 +1,21 @@
+<div class="calendar-container">
+    <nav class="navbar-container">
+        <ul class="navbar">
+            <li class="day" (click)="setView('day')">D</li>
+            <li class="week" (click)="setView('week')">W</li>
+            <li class="month" (click)="setView('month')">M</li>
+            <li class="quarter" (click)="setView('quarter')">Q</li>
+            <li class="year" (click)="setView('year')">Y</li>
+        </ul>
+    </nav>
+
+    <div class="calendar">    
+        @if (view() == "day") {<app-calender-day [day]="day()" [actions]="actions()" [todos]="todos()"></app-calender-day>}
+        @else if (view() == "week") {<app-calendar-week [goals]="weekGoals()" [actions]="actions()" [todos]="todos()"></app-calendar-week>}
+        @else if (view() == "month") {<app-calendar-month [goals]="monthGoals()" [actions]="actions()" [todos]="todos()"></app-calendar-month>}
+        @else if (view() == "quarter") {<app-calendar-quarter [quarterGoals]="quarterGoals()" [monthGoals]="monthGoals()" [weekGoals]="weekGoals()" [todos]="todos()"></app-calendar-quarter>}
+        @else if (view() == "year") {<app-calendar-year [milestones]="milestones()" [quarterGoals]="quarterGoals()" [monthGoals]="monthGoals()"></app-calendar-year>}
+        @else {<p style="color: white;">not implemented yet</p>}
+    </div>
+</div>
+
