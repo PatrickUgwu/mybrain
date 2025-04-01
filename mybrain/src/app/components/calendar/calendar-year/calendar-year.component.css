@@ -13,6 +13,11 @@
     justify-content: space-evenly;
 }
 
+.milestone {
+    width: 10%;
+    height: 60%;
+}
+
 .calendar {
     width: 100%;
     height: 92%;

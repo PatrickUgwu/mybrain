@@ -3,6 +3,8 @@ import { Action } from '../models/interfaces/action.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ToDo } from '../models/interfaces/todo.interface';
+import { Goal } from '../models/interfaces/goal.interface';
+import { Milestone } from '../models/interfaces/milestone.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,12 @@ export class CalendarService {
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
 
-  getGoals(): Observable<any> {
-    return this.httpClient.get(this.url + "/goals")
+  getMilestones(): Observable<Milestone[]> {
+    return this.httpClient.get<Milestone[]>(this.url + "/milestones")
+  }
+
+  getGoals(): Observable<Goal[]> {
+    return this.httpClient.get<Goal[]>(this.url + "/goals")
   }
   
   getActions(): Observable<Action[]> {

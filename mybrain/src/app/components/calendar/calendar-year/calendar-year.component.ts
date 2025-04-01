@@ -2,18 +2,20 @@ import { Component, inject, input } from '@angular/core';
 import { CalendarService } from '../../../services/calendar.service';
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
 import { Goal } from '../../../models/interfaces/goal.interface';
+import { Milestone } from '../../../models/interfaces/milestone.interface';
+import { CalendarMilestoneComponent } from "../calendar-milestone/calendar-milestone.component";
 
 @Component({
   selector: 'app-calendar-year',
   standalone: true,
-  imports: [CalendarGoalComponent],
+  imports: [CalendarGoalComponent, CalendarMilestoneComponent],
   templateUrl: './calendar-year.component.html',
   styleUrl: './calendar-year.component.css'
 })
 export class CalendarYearComponent {
   VIEW = "year"
   calendarService = inject(CalendarService)
-  milestones = input([])
+  milestones = input.required<Milestone[]>()
   quarterGoals = input.required<Goal[]>()
   monthGoals = input.required<Goal[]>()
   year:[string[], Goal[], Goal[][]][] = []
