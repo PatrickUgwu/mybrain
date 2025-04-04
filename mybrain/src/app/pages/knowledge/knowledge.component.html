@@ -1,0 +1,20 @@
+<div class="calendar-container">
+    <nav class="navbar-container">
+        <ul class="navbar">
+            <li (click)="setView('recent')">Recently</li>
+            <li (click)="setView('workspaces')">Workspaces</li>
+        </ul>
+    </nav>
+
+    <div class="library">
+        @if (view === "recent") {
+            <p>Recently edited</p>
+        }
+        @else if (view === "workspaces") {
+            <p>All workspaces</p>
+        }
+        @else {
+            <p>Unknown view</p>
+        }
+    </div>
+</div>
