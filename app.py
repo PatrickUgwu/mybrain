@@ -231,6 +231,10 @@ SAMPLE_WORKSPACES = [{
     }]
 }]
 
+@app.get("/knowledge")
+def get_knowledge():
+    return SAMPLE_WORKSPACES
+
 @app.get("/milestones")
 def get_milestones():
     milestones = []
@@ -296,7 +300,11 @@ def get_monthdays():
 @app.get("/quarter") # for quarter
 def get_quarter():  
     today = date.today()
-    first_quarter_month = 1 - (today.month//4) * 3
+    if x:=today.month%3 != 0:
+        first_quarter_month = today.month - (x - 1)
+    else:
+        first_quarter_month = today.month -2
+    print(first_quarter_month)
     quarter_start = date(today.year, first_quarter_month, 1) 
     quarter = [[quarter_start.replace(month=quarter_start.month + i).strftime("%h"), quarter_start.replace(month=quarter_start.month + i).__str__()[5:7]] for i in range(3)]
     return quarter
