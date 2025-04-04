@@ -202,6 +202,35 @@ SAMPLE_TODOS = [
     },
 ]
 
+SAMPLE_WORKSPACES = [{
+    "title" : "sample workspace",
+    "collections" : [{
+        "title" : "collection 1",
+        "pages" : [{
+            "title" : "Col1 Page1",
+            "content" : """
+            # page content
+            ## info 
+            ### text
+            here
+            """
+        },
+        {
+            "title" : "Col1 Page2",
+            "content" : "content of page" 
+        }
+            ]
+    },
+    {
+        "title" : "collection 2",
+        "pages" : [{
+            "title" : "Col2 Page1",
+            "content" : "the content" 
+        }
+        ]
+    }]
+}]
+
 @app.get("/milestones")
 def get_milestones():
     milestones = []
