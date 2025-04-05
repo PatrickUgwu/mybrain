@@ -7,12 +7,11 @@
     
     <div class="content">
         <section class="day-overview">
-            <label>Day Overview</label> 
             <app-calender-day [day]="day" [actions]="actions()" [todos]="todos()"></app-calender-day>
         </section>
         <section class="recent-pages">
             <!-- TODO -->
-            <p>Recent pages</p>
+            <markdown [data]="knowledge[0]['collections'][0]['pages'][0]['content']"></markdown>
         </section>
     </div>
 

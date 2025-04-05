@@ -8,10 +8,21 @@
 
     <div class="library">
         @if (view === "recent") {
-            <p>Recently edited</p>
+            
+            <p style="color: aliceblue;">{{knowledge[0]["collections"][0]["pages"][0]["title"]}}</p>
+            
         }
         @else if (view === "workspaces") {
-            <p>All workspaces</p>
+            @for (workspace of knowledge; track $index) {
+                <section class="workspace">
+                    <p class="workspace-header">{{workspace["title"]}}</p>
+                    @for (collection of workspace["collections"]; track $index) {
+                        <div class="collection">
+                            <p class="collection-header">{{collection["title"]}}</p>
+                        </div> 
+                    }
+                </section>
+            }
         }
         @else {
             <p>Unknown view</p>
