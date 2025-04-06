@@ -34,7 +34,17 @@ export class CalendarTileComponent implements OnInit {
     }
     if (this.view() === "quarter" || this.view() === "year") {
       this.name = this.month()
-    } else{
+    } 
+    else if (this.view() === "month") {
+      if (this.day() === null) {
+        this.name = "-"
+      }
+      else {
+        this.name = this.day().slice(8,10)
+      }
+      
+    }
+    else{
       this.calendarService.getWeekDay(this.day()).subscribe(data => {
         this.name = data
       })

@@ -292,9 +292,14 @@ def get_weekdays():
 @app.get("/monthdays") # for month comp
 def get_monthdays():  
     today = date.today()
-    first_day_of_month = today - timedelta(days = today.day -1)
-    number_of_days = calendar.monthrange(today.year, today.month)[1]
-    month = [first_day_of_month.__add__(timedelta(days=i)) for i in range(number_of_days)]
+    month_calendar = calendar.monthcalendar(today.year, today.month)
+    month = []
+    for week in month_calendar:
+        for day in week:
+            if day == 0:
+                month.append(None)
+            else:
+                month.append(date(today.year, today.month, day))
     return month
 
 @app.get("/quarter") # for quarter
@@ -304,7 +309,6 @@ def get_quarter():
         first_quarter_month = today.month - (x - 1)
     else:
         first_quarter_month = today.month -2
-    print(first_quarter_month)
     quarter_start = date(today.year, first_quarter_month, 1) 
     quarter = [[quarter_start.replace(month=quarter_start.month + i).strftime("%h"), quarter_start.replace(month=quarter_start.month + i).__str__()[5:7]] for i in range(3)]
     return quarter
