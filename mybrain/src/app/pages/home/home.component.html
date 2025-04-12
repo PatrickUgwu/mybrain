@@ -10,8 +10,9 @@
             <app-calender-day [day]="day" [actions]="actions()" [todos]="todos()"></app-calender-day>
         </section>
         <section class="recent-pages">
-            <!-- TODO -->
-            <markdown [data]="knowledge[0]['collections'][0]['pages'][0]['content']"></markdown>
+            @for (page of recentPages(); track $index) {
+                <p class="recent-page">{{page.title}} - {{page.lastEdit}}</p>
+            }
         </section>
     </div>
 

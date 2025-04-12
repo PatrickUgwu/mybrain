@@ -6,11 +6,12 @@ import { Action } from '../../models/interfaces/action.interface';
 import { ToDo } from '../../models/interfaces/todo.interface';
 import { KnowledgeService } from '../../services/knowledge.service';
 import { MarkdownComponent} from 'ngx-markdown';
+import { Page } from '../../models/interfaces/page.interface';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CalenderDayComponent, MarkdownComponent],
+  imports: [CalenderDayComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
   actions = signal<Action[]>([])
   todos = signal<ToDo[]>([])
   knowledge:any[] = []
+  recentPages = signal<Page[]>([])
   day = ""
   
   ngOnInit(): void {
@@ -33,6 +35,10 @@ export class HomeComponent implements OnInit {
 
     this.knowledgeService.getKnowledge().subscribe(data => {
       this.knowledge = data
+    })
+
+    this.knowledgeService.getRecentPages().subscribe(pages => {
+      this.recentPages.set(pages)
     })
   }
 }
