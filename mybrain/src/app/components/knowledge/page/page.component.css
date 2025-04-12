@@ -3,25 +3,75 @@
     height: 100%;
 }
 
+.navbar-container {
+    height: 5%;
+    border-bottom: 0.2rem solid aliceblue;
+}
+
+.navbar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    list-style-type: none;
+    border-radius: 20px;
+    
+}
+
+.navbar li {
+    width: 10%;
+    height: 75%;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    font-family:"Lucida Console", monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 3px solid aliceblue;
+    background-color: aqua;
+    box-shadow: 2px 2px 3px 0 #123;
+    border-radius: 1rem;
+}
+
+.navbar li.mode {
+    margin-left: auto;
+    background-color: orangered;
+}
+
 .content {
+    height: 95%;
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+}
+
+.view-mode, .edit-mode {
+    flex-grow: 1;
     display: flex;
     justify-content: space-evenly;
 }
 
-textarea{
+.view-mode .markdown { 
+    width: 60%;
+}
+
+.edit-mode .text{
     width: 45%;
-    height: 80vh;
     font-size: 1rem;
-    background-color: #bebebe;
+    background-color: #ccc;
     resize: none;
 }
 
-markdown{
-    display: block;
+.edit-mode .markdown {
     width: 45%;
-    height: 80vh;
+}
+
+.markdown{
+    display: block;
     overflow-y: auto;
-    background-color: #bebebe;
+    background-color: #234;
     border: 0.2rem solid orangered;
-    border-radius: 0.5rem;
+    border-radius: 0.2rem;
+    color: aliceblue;
+    font-size: 1.3rem;
 }

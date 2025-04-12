@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MarkdownComponent} from 'ngx-markdown';
 
@@ -10,5 +10,16 @@ import { MarkdownComponent} from 'ngx-markdown';
   styleUrl: './page.component.css'
 })
 export class PageComponent {
-  markdownContent = "# This is markdown!"
+  mode = "view"
+  markdownContent = input.required<string>()
+
+  setMode() {
+    // saveMarkdown() auto save changes before changing view
+    if (this.mode === "view") {
+      this.mode = "edit"
+    }
+    else {
+      this.mode = "view"
+    }
+  }
 }

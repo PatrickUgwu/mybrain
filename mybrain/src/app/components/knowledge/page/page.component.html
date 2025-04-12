@@ -1,6 +1,26 @@
 <div class="page">
-    <div class="content">
-        <textarea [(ngModel)]="markdownContent"></textarea>
-        <markdown [data]="markdownContent"></markdown>
+    <nav class="navbar-container">
+        <ul class="navbar">
+            <li class="back">back</li>
+            <li class="mode" (click)="setMode()">
+                @if (mode === "view"){ edit }
+                @else { view }
+            </li>
+            <li class="info">info</li>
+        </ul>
+    </nav>
+    <div class="content {{mode}}">
+        @if (mode == "view") {
+            <div class="view-mode">
+                <markdown class="markdown" [data]="markdownContent()"></markdown>
+            </div>
+        }
+        @else if (mode == "edit") {
+            <div class="edit-mode">
+                <textarea class="text" [(ngModel)]="markdownContent"></textarea>
+                <markdown class="markdown" [data]="markdownContent()"></markdown>
+            </div>
+        }
+        
     </div>
 </div>
