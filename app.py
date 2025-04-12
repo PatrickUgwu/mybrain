@@ -1,3 +1,4 @@
+import copy
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import date, datetime, timedelta
@@ -275,6 +276,24 @@ SAMPLE_WORKSPACES = [{
 def get_knowledge():
     return SAMPLE_WORKSPACES
 
+@app.get("/recent_pages")
+def get_recent_pages():
+    all_pages = []
+    for ws in SAMPLE_WORKSPACES:
+        for collection in ws["collections"]:
+            for page in collection["pages"]:
+                all_pages.append(page)
+    
+    all_pages.sort(key=lambda page: page["lastEdit"], reverse=True)
+
+    # deepcopy to change datetime into string
+    length = min(len(all_pages), 5)
+    most_recent_pages = copy.deepcopy(all_pages[:length])
+    for page in most_recent_pages:
+        page["lastEdit"] = page["lastEdit"].strftime("%a - %d / %m / %y - %H : %M : %S")
+
+    return (most_recent_pages)
+
 @app.get("/milestones")
 def get_milestones():
     milestones = []
@@ -363,4 +382,3 @@ def get_year():
 @app.get("/")
 def root():
     return "You found the backend."
-
