@@ -1,28 +1,32 @@
-<div class="calendar-container">
+<div class="knowledge-container">
     <nav class="navbar-container">
         <ul class="navbar">
-            <li (click)="setView('recent')">Recently</li>
-            <li (click)="setView('workspaces')">Workspaces</li>
+            <li (click)="setView('recent')">Recent</li>
+            <li (click)="setView('workspaces')">All</li>
         </ul>
     </nav>
 
     <div class="library">
         @if (view === "recent") {
-            
-            <p style="color: aliceblue;">{{knowledge[0]["collections"][0]["pages"][0]["title"]}}</p>
-            
+            <div class="recent">
+                @for (page of recentPages; track $index) {
+                    <p class="recent-page">{{page.title}} - {{page.lastEdit}}</p>
+                }
+            </div>
         }
         @else if (view === "workspaces") {
-            @for (workspace of knowledge; track $index) {
-                <section class="workspace">
-                    <p class="workspace-header">{{workspace["title"]}}</p>
-                    @for (collection of workspace["collections"]; track $index) {
-                        <div class="collection">
-                            <p class="collection-header">{{collection["title"]}}</p>
-                        </div> 
-                    }
-                </section>
-            }
+            <div class="overview">
+                @for (workspace of knowledge; track $index) {
+                    <section class="workspace">
+                        <p class="workspace-header">{{workspace["title"]}}</p>
+                        @for (collection of workspace["collections"]; track $index) {
+                            <div class="collection">
+                                <p class="collection-header">{{collection["title"]}}</p>
+                            </div> 
+                        }
+                    </section>
+                }
+            </div>    
         }
         @else {
             <p>Unknown view</p>

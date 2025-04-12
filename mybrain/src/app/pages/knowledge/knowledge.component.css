@@ -1,8 +1,7 @@
-.calendar-container {
+.knowledge-container {
     width: 100vw;
     height: 95vh;
     padding: 1rem;
-    background-color: #123;
 }
 
 .navbar-container {
@@ -32,7 +31,6 @@
     font-weight: bold;
     border: 3px solid aliceblue;
     background-color: aqua;
-    box-shadow: 2px 2px 3px 0 #123;
     border-radius: 20px;
 }
 
@@ -46,25 +44,66 @@
     overflow: auto;
 }
 
+.recent {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.recent-page {
+    height: 20%;
+    color: aliceblue;
+    background-color: #355;
+    border-radius: 0.5rem;
+    box-shadow: 0.2rem 0.2rem 0.2rem aliceblue;
+}
+
+.recent-page:hover {
+    background-color: #6aa;
+    color: black;
+}
+
+.overview {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    padding: 1rem;
+    color: white;
+}
+
 .workspace {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background-color: #bbb;
+    background-color: #355;
     padding: 1rem;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
 }
 
 .workspace-header {
     font-size: 3rem;
-    border-bottom: 0.2rem solid black;
+    border-bottom: 0.2rem solid aliceblue;
+    border-radius: 0.5rem;
+}
+
+.workspace-header:hover {
+    background-color: #6aa;
+    color: black;
 }
 
 .collection {
-    background-color: #ccc;
+    background-color: #577;
     padding-left: 2rem;
     border-radius: 0.5rem;
-    box-shadow: 0.2rem 0.2rem 0.2rem black;
+    box-shadow: 0.2rem 0.2rem 0.2rem aliceblue;
+}
+
+.collection:hover {
+    background-color: #6aa;
+    color: black;
 }
 
 .collection-header {
