@@ -203,7 +203,7 @@ SAMPLE_TODOS = [
 ]
 
 SAMPLE_WORKSPACES = [{
-    "title" : "sample workspace",
+    "title" : "sample workspace 1",
     "collections" : [{
         "title" : "collection 1",
         "pages" : [{
@@ -213,22 +213,62 @@ SAMPLE_WORKSPACES = [{
             ## info 
             ### text
             here
-            """
+            """,
+            "lastEdit" : datetime(2025,3,12)
         },
         {
             "title" : "Col1 Page2",
-            "content" : "content of page" 
+            "content" : "content of page",
+            "lastEdit" : datetime(2025,3,13)
         }
-            ]
+            ],
+        "lastEdit" : datetime(2025,3,13)
     },
     {
         "title" : "collection 2",
         "pages" : [{
             "title" : "Col2 Page1",
-            "content" : "the content" 
+            "content" : "the content" ,
+            "lastEdit" : datetime(2025,3,18)
         }
-        ]
-    }]
+        ],
+        "lastEdit" : datetime(2025,3,18)
+    }],
+    "lastEdit" : datetime(2025,3,18)
+},
+{
+    "title" : "sample workspace 2",
+    "collections" : [{
+        "title" : "collection 1",
+        "pages" : [{
+            "title" : "Col1 Page1",
+            "content" : """
+            # page content
+            ## info 
+            ### text
+            here
+            """,
+            "lastEdit" : datetime(2025,3,12)
+        },
+        {
+            "title" : "Col1 Page2",
+            "content" : "content of page",
+            "lastEdit" : datetime(2025,3,13)
+        }
+            ],
+        "lastEdit" : datetime(2025,3,12)
+    },
+    {
+        "title" : "collection 2",
+        "pages" : [{
+            "title" : "Col2 Page1",
+            "content" : "the content" ,
+            "lastEdit" : datetime(2025,3,18)
+        }
+        ],
+        "lastEdit" : datetime(2025,3,18)
+    }],
+    "lastEdit" : datetime(2025,3,18)
 }]
 
 @app.get("/knowledge")
