@@ -37,8 +37,8 @@ SAMPLE_ROADMAPS = [
                         "description": "Produce 5 high-quality digital pieces for portfolio",
                         "completed": False,
                         "parent": "m1",
-                        "type": "month",
-                        "deadline": date(2025, 2, 28).__str__(),
+                        "type": "quarter",
+                        "deadline": date(2025, 4, 26).__str__(),
                         "actions": [
                             {
                                 "id": "a1",
@@ -60,114 +60,24 @@ SAMPLE_ROADMAPS = [
                     },
                     {
                         "id": "g2",
-                        "title": "Create 5 digital artworks fefefefe efefefef",
+                        "title": "month gaul",
                         "description": "Produce 5 high-quality digital pieces for portfolio",
                         "completed": False,
                         "parent": "m1",
                         "type": "month",
-                        "deadline": date(2025, 3, 29).__str__(),
-                        "actions": [
-                            {
-                                "id": "a3",
-                                "title": "Sketch concepts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g3",
-                        "title": "Create 5 digital artworks fefefefe efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 4, 30).__str__(),
-                        "actions": [
-                            {
-                                "id": "a5",
-                                "title": "Skefefefecepts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g4",
-                        "title": "Create 5 digital artworksfefefefe efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 8, 28).__str__(),
-                        "actions": [
-                            {
-                                "id": "a6",
-                                "title": "effefef cefefefts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g7",
-                        "title": "gggggg efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 1, 30).__str__(),
-                        "actions": [
-                            {
-                                "id": "a5",
-                                "title": "Skefefefecepts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g8",
-                        "title": "Cre efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 2, 28).__str__(),
-                        "actions": [
-                            {
-                                "id": "a6",
-                                "title": "effefef cefefefts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g17",
-                        "title": "bbbbb",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "week",
-                        "deadline": date(2025, 1, 13).__str__(),
+                        "deadline": date(2025, 4, 23).__str__(),
                         "actions": [
                             
                         ],
                     },
                     {
-                        "id": "g18",
-                        "title": "aaaaaa",
+                        "id": "g3",
+                        "title": "week gaul",
                         "description": "Produce 5 high-quality digital pieces for portfolio",
                         "completed": False,
                         "parent": "m1",
                         "type": "week",
-                        "deadline": date(2025, 2, 28).__str__(),
+                        "deadline": date(2025, 4, 28).__str__(),
                         "actions": [
                             
                         ],
@@ -184,21 +94,35 @@ SAMPLE_TODOS = [
         "title": "Sketch",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,27),
+        "deadline": date(2025,4,27),
     },
     {
         "id": "t2",
         "title": "concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,28),
+        "deadline": date(2025,4,28),
     },
     {
         "id": "t3",
         "title": "Sketch concepts",
         "description": "Develop initial sketches for digital pieces",
         "completed": False,
-        "deadline": date(2025,3,30),
+        "deadline": date(2025,4,30),
+    },
+    {
+        "id": "t4",
+        "title": "efefefepts",
+        "description": "Develop initial sketches for digital pieces",
+        "completed": False,
+        "deadline": date(2025,4,30),
+    },
+    {
+        "id": "t5",
+        "title": "pts",
+        "description": "Develop initial sketches for digital pieces",
+        "completed": False,
+        "deadline": date(2025,4,30),
     },
 ]
 
@@ -264,7 +188,7 @@ def get_actions():
 
 
 @app.get("/todos") # tile if week or day view
-def get_todos(day: str):    
+def get_todos(day: str):
     if day == "" or day == "today":
         day = date.today().__str__()
 
@@ -281,16 +205,15 @@ def get_weekday(day:str):
     weekday = date.fromisoformat(day).strftime("%a")
     return weekday
 
-@app.get("/weekdays") # for week
-def get_weekdays():   
+@app.get("/week") # for week
+def get_week():   
     today = date.today()
     monday = today.__sub__(timedelta(days = today.weekday()))  
     week = [monday.__add__(timedelta(days=i)) for i in range(7)]
-    print("week: ", week)
     return week
 
-@app.get("/monthdays") # for month comp
-def get_monthdays():  
+@app.get("/month") # for month comp
+def get_month():  
     today = date.today()
     month_calendar = calendar.monthcalendar(today.year, today.month)
     month = []
