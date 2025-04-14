@@ -217,12 +217,15 @@ def get_month():
     today = date.today()
     month_calendar = calendar.monthcalendar(today.year, today.month)
     month = []
+
     for week in month_calendar:
         for day in week:
             if day == 0:
-                month.append(None)
+                month.append([None, []])
             else:
-                month.append(date(today.year, today.month, day))
+                todos = get_todos(date(today.year, today.month, day).isoformat())
+                month.append([date(today.year, today.month, day), todos])
+
     return month
 
 @app.get("/quarter") # for quarter

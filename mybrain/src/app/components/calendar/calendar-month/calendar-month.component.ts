@@ -15,27 +15,37 @@ import { Goal } from '../../../models/interfaces/goal.interface';
 export class CalendarMonthComponent implements OnInit{
   VIEW = "month"
   calendarService = inject(CalendarService)
-  goals = input.required<Goal[]>()
+  monthGoals = input.required<Goal[]>()
+  weekGoals = input.required<Goal[]>()
   actions = input.required<Action[]>()
-  todos = input.required<ToDo[]>()
-  month:[string, Goal[]][] = [];
+  month:[[string, ToDo[]][], Goal[]][] = [];
 
   ngOnInit(): void {
-    this.calendarService.getMonthDays().subscribe(data => {
-      
-      data.forEach(date => {
-        let day:[string, Goal[]] = ["",[]]
-        day[0] = date
-        
-        this.goals().forEach(goal => {
-          if (date === goal.deadline) {
-            day[1].push(goal)
+    this.calendarService.getMonth().subscribe(data => {
+      let week:[[string, ToDo[]][], Goal[]] = [[],[]] // [ [Date, ToDos][], weekGoals[] ]
+      for (let i = 0; i < data.length; i++) {
+
+        // add day to week
+        if (data[i][0] === null) {
+          week[0].push(["-", data[i][1]]) // add day outside month
+        }
+        else {
+          week[0].push([data[i][0].slice(8,10), data[i][1]]) // add day inside month
+        }
+
+        // add to week goals
+        this.weekGoals().forEach(goal => {
+          if (data[i][0] === goal.deadline) {
+            week[1].push(goal)
           }
         })
 
-        this.month.push(day)
-      })
-      
+        // add and reset week
+        if (i % 7 === 6) {
+          this.month.push(week)
+          week = [[],[]]
+        }
+      }
     })
   }
 }
