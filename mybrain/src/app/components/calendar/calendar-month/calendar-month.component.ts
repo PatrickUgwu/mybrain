@@ -4,11 +4,13 @@ import { ToDo } from '../../../models/interfaces/todo.interface';
 import { CalendarTileComponent } from '../calendar-tile/calendar-tile.component';
 import { CalendarService } from '../../../services/calendar.service';
 import { Goal } from '../../../models/interfaces/goal.interface';
+import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
+import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
 
 @Component({
   selector: 'app-calendar-month',
   standalone: true,
-  imports: [CalendarTileComponent],
+  imports: [CalendarTodoComponent, CalendarGoalComponent],
   templateUrl: './calendar-month.component.html',
   styleUrl: './calendar-month.component.css'
 })

@@ -1,11 +1,122 @@
 .month-view {
     display: flex;
-    gap: 1rem;
     flex-wrap: wrap;
     height: 80vh;
+    background-color: #2b4174b7;
+}
+/* TOPBAR */
+.top-bar {
+    height: 8%;
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.month-goal {
+    width: 10%;
+    height: 60%;
+}
+
+/* MONTH */
+.month {   
+    width: 100%;
+    height: 92%; /* 100% - 8% topbar */
+    display: flex;
+    flex-direction: column;
+}
+
+/* WEEKDAY-BAR */
+.weekdays {
+    height: 5%;
+    width: 100%;
+    border-bottom: 0.3rem solid aliceblue;
+}
+
+.weekday-container {
+    width: 90%;
+    height: 100%;
+    display: flex;
+}
+
+.weekday {
+    width: calc((100%) / 7);;
+    height: 100%;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.3rem solid aliceblue;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+/* WEEKS */
+.week {
+    width: 100%;
+    height: calc(95% / 5 );
+    display: flex;
+    border-bottom: 0.3rem solid aliceblue;
+    border-left: 0.3rem solid aliceblue;
+    border-right: 0.3rem solid aliceblue;
+}
+
+.days {
+    width: 90%;
+    height: 100%;
+    display: flex;
 }
 
 .small-tile {
-    width: calc((100% - (6 * 1rem)) / 7);
-    height: calc((100% - (4 * 1rem)) / 5);
+    width: calc(100% / 7);
+    height: 100%;
+    border-right: 0.3rem solid aliceblue;
+}
+
+.small-tile:hover {
+    background-color: aqua;
+}
+
+.header {
+    height:20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header p{
+    height: 80%;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    background-color: aliceblue;
+    border-radius: 1rem;
+    margin: auto;
+}
+
+.todo-container {
+    padding: 0.5rem;
+    height: 80%;
+    overflow-y: auto;
+}
+
+.todo-container .todo {
+    width: 100%;
+    height: 45%;
+    margin-bottom: 0.5rem;
+}
+/* SIDEBAR */
+.side-bar {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.week-goal {
+    width: 80%;
+    height: 45%;
 }
