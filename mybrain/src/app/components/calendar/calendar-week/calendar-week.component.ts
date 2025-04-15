@@ -4,12 +4,15 @@ import { ToDo } from '../../../models/interfaces/todo.interface';
 import { CalendarTileComponent } from '../calendar-tile/calendar-tile.component';
 import { CalendarService } from '../../../services/calendar.service';
 import { Goal } from '../../../models/interfaces/goal.interface';
+import { CalendarActionComponent } from "../calendar-action/calendar-action.component";
+import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
+import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
 
 
 @Component({
   selector: 'app-calendar-week',
   standalone: true,
-  imports: [CalendarTileComponent],
+  imports: [CalendarActionComponent, CalendarTodoComponent, CalendarGoalComponent],
   templateUrl: './calendar-week.component.html',
   styleUrl: './calendar-week.component.css'
 })
@@ -21,24 +24,21 @@ export class CalendarWeekComponent implements OnInit {
   goals = input<Goal[]>([])
   actions = input.required<Action[]>()
   todos = input.required<ToDo[]>()
-  week:[string, Goal[]][] = []
+  week:string[] = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
   
   
   ngOnInit(): void {
-    this.calendarService.getWeekDays().subscribe(data => {
+    this.calendarService.getWeek().subscribe(data => {
       
       for (let index = 0; index < data.length; index++) {
-        let day:[string, Goal[]] = ["",[]];
-        day[0] = data[index]
-        
-        this.goals().forEach(goal => {
-          if (data[index] === goal.deadline) {
-            day[1].push(goal)
-          }
-        })
-
-        this.week.push(day)
+        if (this.today() === data[index]) {
+          this.todayIndex = index
+       }
       }
+       
+
+        //this.week.push(day)
+      
 
     })
     

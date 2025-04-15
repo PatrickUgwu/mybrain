@@ -1,13 +1,83 @@
 .week-view {
-    display: flex;
-    height: 100%;
+    height: 80vh;
     padding: 0.5rem;
-    gap: 1rem;
 }
 
-.medium-tile {
-    width: calc(100%/7);
+.topbar {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.goal {
+    width: 5%;
+    height: 60%;
+}
+
+.tile-container {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    gap: 0.8rem;
+}
+
+.tile {
+    width: calc((100% - (6 * 1rem))/ 7);
     height: 100%;
+    border-radius: 1rem;
+    padding: 0.3rem;
+}
+
+.tile.active {
+    background-color: orangered;
+}
+
+.tile:hover {
+    background-color: aqua
+}
+
+.header {
+    height:10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(190, 190, 190);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.header p{
+    height: 80%;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    background-color: aliceblue;
+    border-radius: 1rem;
+}
+
+.content {
+    height: 90%;
+    border: 0.5rem solid aliceblue;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.action-container, .todo-container {
+    padding: 0.5rem;
+    height: 50%;
+    margin-bottom: 0.5rem;
+    overflow-y: auto;
+}
+
+.action-container {
+    border-bottom: 0.5rem solid aliceblue;
+}
+
+.action, .todo {
+    height: 30%;
 }
 
 @media (width < 1300px) {

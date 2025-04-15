@@ -49,10 +49,12 @@ export class CalendarTileComponent implements OnInit {
         this.name = data
       })
     }
-
-    this.calendarService.getToDos(this.day()).subscribe(data => {
-      this.todos = data
-    })
+    if (this.view() !== "month") {
+      this.calendarService.getToDos(this.day()).subscribe(data => {
+        this.todos = data
+      })
+    }
+    
 
   }
 }
