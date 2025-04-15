@@ -1,11 +1,11 @@
 <div class="calendar-container">
     <nav class="navbar-container">
         <ul class="navbar">
-            <li class="day" (click)="setView('day')">D</li>
-            <li class="week" (click)="setView('week')">W</li>
-            <li class="month" (click)="setView('month')">M</li>
-            <li class="quarter" (click)="setView('quarter')">Q</li>
-            <li class="year" (click)="setView('year')">Y</li>
+            <li class="day" [class.active]="view() === 'day'" (click)="setView('day')">D</li>
+            <li class="week" [class.active]="view() === 'week'" (click)="setView('week')">W</li>
+            <li class="month" [class.active]="view() === 'month'" (click)="setView('month')">M</li>
+            <li class="quarter" [class.active]="view() === 'quarter'" (click)="setView('quarter')">Q</li>
+            <li class="year" [class.active]="view() === 'year'" (click)="setView('year')">Y</li>
         </ul>
     </nav>
 

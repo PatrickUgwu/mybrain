@@ -18,8 +18,7 @@
     justify-content:space-evenly;
     gap: 1rem;
     list-style-type: none;
-    border-radius: 20px;
-    
+    border-radius: 2rem;
 }
 
 .navbar li {
@@ -31,10 +30,19 @@
     font-family:"Lucida Console", monospace;
     font-size:xx-large;
     font-weight: bold;
-    border: 3px solid aliceblue;
+    border: 0.3rem solid aliceblue;
     background-color: aqua;
     box-shadow: 2px 2px 3px 0 #123;
-    border-radius: 20px;
+    border-radius: 2rem;
+}
+
+.navbar li:hover {
+    background-color: #355;
+    color: aliceblue;
+}
+
+.navbar li.active {
+    border: 0.3rem solid orangered;
 }
 
 .calendar {
