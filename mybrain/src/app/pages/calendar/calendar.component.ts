@@ -28,17 +28,16 @@ export class CalendarComponent implements OnInit {
   actions = signal<Action[]>([])
   todos = signal<ToDo[]>([])
   view = signal("day")
-  day = signal("")
+  today = signal("")
   
   ngOnInit(): void {
     this.calendarService.getMilestones().subscribe(data => {
       this.milestones.set(data)
     })
     
-    this.calendarService.getGoals().subscribe(data => {
-      this.allGoals = data
+    this.calendarService.getGoals().subscribe(allGoals => {
 
-      this.allGoals.forEach( goal => {
+      allGoals.forEach( goal => {
         switch (goal.type) {
           case "week": {
             this.weekGoals().push(goal)
@@ -65,8 +64,12 @@ export class CalendarComponent implements OnInit {
       this.actions.set(data)
     })
 
-    this.calendarService.getToDos(this.day()).subscribe(data => {
+    this.calendarService.getToDos(this.today()).subscribe(data => {
       this.todos.set(data)
+    })
+
+    this.calendarService.getToday().subscribe(data => {
+      this.today.set(data)
     })
     
     

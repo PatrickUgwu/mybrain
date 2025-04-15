@@ -15,7 +15,8 @@ import { Goal } from '../../../models/interfaces/goal.interface';
 })
 export class CalendarWeekComponent implements OnInit { 
   VIEW = "week"
-  day = input("")
+  today = input<string>("")
+  todayIndex?:number;
   calendarService = inject(CalendarService)
   goals = input<Goal[]>([])
   actions = input.required<Action[]>()

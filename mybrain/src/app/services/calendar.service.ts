@@ -22,6 +22,10 @@ export class CalendarService {
     return this.httpClient.get<Goal[]>(this.url + "/goals")
   }
   
+  getToday(): Observable<string> {
+    return this.httpClient.get<string>(this.url + "/today")
+  }
+  
   getActions(): Observable<Action[]> {
     return this.httpClient.get<Action[]>(this.url + "/actions")
   }

@@ -176,6 +176,10 @@ def get_goals():
                 goals.append(goal)
     return goals
 
+@app.get("/today")
+def get_today():
+    return date.today().__str__()
+
 @app.get("/actions")
 def get_actions():
     actions = []
