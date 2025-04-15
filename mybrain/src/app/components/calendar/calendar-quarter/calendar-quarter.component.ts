@@ -8,7 +8,7 @@ import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component"
 @Component({
   selector: 'app-calendar-quarter',
   standalone: true,
-  imports: [CalendarTileComponent, CalendarGoalComponent],
+  imports: [CalendarGoalComponent],
   templateUrl: './calendar-quarter.component.html',
   styleUrl: './calendar-quarter.component.css'
 })
@@ -37,8 +37,6 @@ export class CalendarQuarterComponent implements OnInit {
         this.weekGoals().forEach( goal => {
           if (month[1] === goal.deadline.slice(5,7)) {
             let index = Math.floor(Number(goal.deadline.slice(8)) / 7)
-            console.log(Number(goal.deadline.slice(8)))
-            console.log(index)
             quarterMonth[2][index].push(goal)
           }
         })
