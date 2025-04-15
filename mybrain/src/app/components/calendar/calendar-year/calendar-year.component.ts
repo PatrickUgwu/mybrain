@@ -23,6 +23,7 @@ export class CalendarYearComponent {
   ngOnInit(): void {
     this.calendarService.getYear().subscribe(data => {
       let yearQuarter: [string[], Goal[], Goal[][]] = [[], [], [[],[],[]]]
+      let monthGoalIndex:number = 0
       for (let i = 0; i < data.length; i++) {
         yearQuarter[0].push(data[i][0])
 
@@ -34,13 +35,16 @@ export class CalendarYearComponent {
 
         this.monthGoals().forEach( goal => {
           if (data[i][1] === goal.deadline.slice(5,7)) {
-            yearQuarter[2][i].push(goal)
+            yearQuarter[2][monthGoalIndex].push(goal)
           }
         })
+
+        monthGoalIndex++
 
         if (Number(data[i][1]) % 3 === 0) {
           this.year.push(yearQuarter)
           yearQuarter = [[], [], [[],[],[]]]
+          monthGoalIndex = 0
         }
       }
       
