@@ -1,3 +1,7 @@
+@if (add === true) {
+            <app-add-window></app-add-window>
+        }
+        @else {
 <div class="week-view">
     <div class="topbar">
         @for (goal of goals(); track $index) {
@@ -5,15 +9,20 @@
                 <app-calendar-goal [title]="goal.title" [type]="goal.type"></app-calendar-goal>
             </div>
         }
+        <p class="add-button">+</p>
         
     </div>
 
     <div class="tile-container">
+        
         @for (day of week; track $index) {
             <div class="tile" [class.active]="todayIndex === $index">
             
                 <div class="header">
-                    <p>{{day}}</p>
+                    <p class="title">{{day}}</p>
+                    <p class="add-button" (click)="setAdd()">+</p>
+                    
+                    
                 </div>
             
                 <div class="content">
@@ -39,4 +48,4 @@
     </div>
     
     
-</div>
+</div>}

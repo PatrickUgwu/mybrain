@@ -13,6 +13,18 @@
 .goal {
     width: 5%;
     height: 60%;
+    margin: 0 auto;
+}
+
+.topbar .add-button {
+    height: 50%;
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: aliceblue;
+    border-radius: 1rem;
 }
 
 .tile-container {
@@ -47,13 +59,24 @@
     border-top-right-radius: 1rem;
 }
 
-.header p{
+.header .title {
     height: 80%;
     width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: large;
+    background-color: aliceblue;
+    border-radius: 1rem;
+}
+
+.header .add-button {
+    height: 50%;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
     background-color: aliceblue;
     border-radius: 1rem;
 }

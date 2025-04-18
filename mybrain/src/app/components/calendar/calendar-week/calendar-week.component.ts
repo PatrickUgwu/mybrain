@@ -7,12 +7,13 @@ import { Goal } from '../../../models/interfaces/goal.interface';
 import { CalendarActionComponent } from "../calendar-action/calendar-action.component";
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
+import { AddWindowComponent } from "../../roadmap/add-window/add-window.component";
 
 
 @Component({
   selector: 'app-calendar-week',
   standalone: true,
-  imports: [CalendarActionComponent, CalendarTodoComponent, CalendarGoalComponent],
+  imports: [CalendarActionComponent, CalendarTodoComponent, CalendarGoalComponent, AddWindowComponent],
   templateUrl: './calendar-week.component.html',
   styleUrl: './calendar-week.component.css'
 })
@@ -25,8 +26,13 @@ export class CalendarWeekComponent implements OnInit {
   actions = input.required<Action[]>()
   todos = input.required<ToDo[]>()
   week:string[] = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
+  add = false
   
-  
+  setAdd() {
+    this.add = true
+  }
+
+
   ngOnInit(): void {
     this.calendarService.getWeek().subscribe(data => {
       
