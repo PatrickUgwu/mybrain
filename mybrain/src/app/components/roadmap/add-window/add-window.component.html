@@ -1,0 +1,76 @@
+<div class="add-window">
+    <div class="header-container">
+        <div class="header">
+            <div class="header-title">
+                Add - {{item}}
+                @if (item === "") {
+                    <div>
+                        <select class="item" placeholder="Choose Item..." [(ngModel)]="item">
+                            <option value="Action">Action</option>
+                            <option value="WG" selected>WG</option>
+                            <option value="MG">MG</option>
+                        </select>
+                    </div>
+                }
+            </div>
+            
+        </div>
+        <p class="close">x</p>
+    </div>
+    <section class="add-form">
+        <div class="form-item">
+            <label class="title-label">Title</label>
+            <input class="title" placeholder="Enter Title...">
+        </div>
+        <div class="form-item">
+            <label class="description-label">Description</label>
+            <input class="description" placeholder="Enter Title...">
+        </div>
+
+        <div class="form-item">
+            <label class="parent-label">Parent
+                
+            </label>
+            <select class="parent" placeholder="Enter Title...">
+                <option value="p1" selected>par1</option>
+                <option value="p2">par2</option>
+                <option value="p3">par3</option>
+            </select>
+        </div>
+            
+        @if (item === "Action") {
+            <div class="form-item">
+                <label class="pattern-label">Pattern</label>
+                <select class="pattern" placeholder="Enter Title...">
+                    <option value="pa1" selected>Daily</option>
+                    <option value="pp2">pp2</option>
+                    <option value="pp3">pp3</option>
+                </select>
+            </div>
+        }
+        
+        @else if (item.charAt(1) === "G") {
+            <div class="form-item">
+                <label class="deadline-label">Description
+                    
+                </label>
+                <input class="deadline" placeholder="Enter Title...">
+            </div>
+
+            <div class="form-item">
+                <label class="type-label">Type
+                    
+                </label>
+                <select class="type" placeholder="Enter Title...">
+                    <option value="t1">Week</option>
+                    <option value="t2" selected>Month</option>
+                    <option value="t3">Quarter</option>
+                </select>
+            </div>
+        }
+
+        <button (click)="closeAdd()">Add</button>
+        
+        
+    </section>
+</div>
