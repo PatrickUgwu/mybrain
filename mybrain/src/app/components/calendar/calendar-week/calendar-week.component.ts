@@ -28,8 +28,12 @@ export class CalendarWeekComponent implements OnInit {
   week:string[] = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
   add = false
   
-  setAdd() {
+  openAddWindow() {
     this.add = true
+  }
+  
+  closeAddWindow() {
+    this.add = false
   }
 
 

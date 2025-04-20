@@ -12,10 +12,6 @@ export class AddWindowComponent {
   item: string = ""
   @Output() close = new EventEmitter<void>()
 
-  setItem(item: string) {
-    this.item = item
-  }
-
   closeAdd(){
     this.close.emit()
   }

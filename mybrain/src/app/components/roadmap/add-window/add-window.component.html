@@ -6,16 +6,16 @@
                 @if (item === "") {
                     <div>
                         <select class="item" placeholder="Choose Item..." [(ngModel)]="item">
-                            <option value="Action">Action</option>
-                            <option value="WG" selected>WG</option>
-                            <option value="MG">MG</option>
+                            <option value="Action" selected>Action</option>
+                            <option value="ToDo">ToDo</option>
+                            <option value="Goal">Goal</option>
                         </select>
                     </div>
                 }
             </div>
             
         </div>
-        <p class="close">x</p>
+        <p (click)="closeAdd()" class="close">x</p>
     </div>
     <section class="add-form">
         <div class="form-item">

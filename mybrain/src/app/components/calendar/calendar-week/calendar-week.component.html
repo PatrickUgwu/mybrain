@@ -1,5 +1,5 @@
 @if (add === true) {
-            <app-add-window></app-add-window>
+            <app-add-window (close)="closeAddWindow()"></app-add-window>
         }
         @else {
 <div class="week-view">
@@ -9,7 +9,7 @@
                 <app-calendar-goal [title]="goal.title" [type]="goal.type"></app-calendar-goal>
             </div>
         }
-        <p class="add-button">+</p>
+        <p class="add-button"  (click)="openAddWindow()">+</p>
         
     </div>
 
@@ -20,7 +20,7 @@
             
                 <div class="header">
                     <p class="title">{{day}}</p>
-                    <p class="add-button" (click)="setAdd()">+</p>
+                    <p class="add-button" (click)="openAddWindow()">+</p>
                     
                     
                 </div>
