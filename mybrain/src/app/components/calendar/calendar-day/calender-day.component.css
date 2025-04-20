@@ -3,3 +3,71 @@
     height: 100%;
     margin: auto;
 }
+
+.tile-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 0.8rem;
+}
+
+.tile {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    padding: 0.3rem;
+}
+
+.header {
+    height:10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(190, 190, 190);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.header .title {
+    height: 80%;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    background-color: aliceblue;
+    border-radius: 1rem;
+}
+
+.header .add-button {
+    height: 50%;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: aliceblue;
+    border-radius: 1rem;
+}
+
+.content {
+    height: 90%;
+    border: 0.5rem solid aliceblue;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.action-container, .todo-container {
+    padding: 0.5rem;
+    height: 50%;
+    overflow-y: auto;
+}
+
+.action-container {
+    border-bottom: 0.5rem solid aliceblue;
+}
+
+.action, .todo {
+    height: 30%;
+    margin-bottom: 0.5rem;
+}
