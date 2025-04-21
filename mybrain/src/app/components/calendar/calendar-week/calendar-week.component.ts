@@ -24,7 +24,7 @@ export class CalendarWeekComponent implements OnInit {
   calendarService = inject(CalendarService)
   goals = input<Goal[]>([])
   actions = input.required<Action[]>()
-  todos = input.required<ToDo[]>()
+  todos: ToDo[][] = []
   week:string[] = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
   add = false
   
@@ -36,20 +36,17 @@ export class CalendarWeekComponent implements OnInit {
     this.add = false
   }
 
-
   ngOnInit(): void {
     this.calendarService.getWeek().subscribe(data => {
-      
       for (let index = 0; index < data.length; index++) {
-        if (this.today() === data[index]) {
+        // add todos
+        this.todos[index] = data[index][1]
+
+        //chaeck if day is today
+        if (this.today() === data[index][0]) {
           this.todayIndex = index
-       }
+        }
       }
-       
-
-        //this.week.push(day)
-      
-
     })
     
   }

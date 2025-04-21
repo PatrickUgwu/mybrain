@@ -213,7 +213,7 @@ def get_weekday(day:str):
 def get_week():   
     today = date.today()
     monday = today.__sub__(timedelta(days = today.weekday()))  
-    week = [monday.__add__(timedelta(days=i)) for i in range(7)]
+    week = [[monday.__add__(timedelta(days=i)), get_todos(monday.__add__(timedelta(days=i)).__str__())] for i in range(7)]
     return week
 
 @app.get("/month") # for month comp

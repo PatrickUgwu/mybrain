@@ -34,8 +34,8 @@ export class CalendarService {
     return this.httpClient.get<ToDo[]>(this.url + "/todos?day=" + day)
   }
 
-  getWeek():Observable<string[]> {
-    return this.httpClient.get<string[]>(this.url + "/week")
+  getWeek():Observable<[string,ToDo[]][]> {
+    return this.httpClient.get<[string,ToDo[]][]>(this.url + "/week")
   }
 
   getWeekDay(day: string):Observable<string> {
