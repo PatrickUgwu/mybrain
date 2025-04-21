@@ -18,7 +18,6 @@ export class CalendarQuarterComponent implements OnInit {
   quarterGoals = input.required<Goal[]>()
   monthGoals = input.required<Goal[]>()
   weekGoals = input.required<Goal[]>()
-  todos = input.required<ToDo[]>()
   quarter:[string, Goal[], Goal[][]][] = []
 
 

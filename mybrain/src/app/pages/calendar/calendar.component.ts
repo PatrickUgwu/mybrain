@@ -26,7 +26,6 @@ export class CalendarComponent implements OnInit {
   monthGoals = signal<Goal[]>([])
   quarterGoals = signal<Goal[]>([])
   actions = signal<Action[]>([])
-  todos = signal<ToDo[]>([])
   view = signal("day")
   today = signal("")
   
@@ -62,10 +61,6 @@ export class CalendarComponent implements OnInit {
 
     this.calendarService.getActions().subscribe(data => {
       this.actions.set(data)
-    })
-
-    this.calendarService.getToDos(this.today()).subscribe(data => {
-      this.todos.set(data)
     })
 
     this.calendarService.getToday().subscribe(data => {
