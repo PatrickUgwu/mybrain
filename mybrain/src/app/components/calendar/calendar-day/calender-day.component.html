@@ -1,38 +1,35 @@
-<div class="day-view">
-
-    <div class="tile-container">
-
-
-        <div class="tile">
-            
-            <div class="header">
-                <p class="title">{{weekday}}</p>
-                <p class="add-button" (click)="openAddWindow()">+</p>
+@if (add === true) {
+    <app-add-window (close)="closeAddWindow()"></app-add-window>
+}
+@else {
+    <div class="day-view">
+        <div class="tile-container">
+            <div class="tile">
                 
-                
-            </div>
-        
-            <div class="content">
-                
-                <div class="action-container">
-                    @for (action of actions(); track $index) {
-                        <div class="action">
-                            <app-calendar-action [title]="action.title"></app-calendar-action>     
-                        </div>
-                    }    
-                </div>        
-
-                <div class="todo-container">
-                    @for (todo of todos(); track $index) {
-                        <div class="todo">
-                            <app-calendar-todo [title]="todo.title"></app-calendar-todo>
-                        </div>
-                    }
+                <div class="header">
+                    <p class="title">{{weekday}}</p>
+                    <p class="add-button" (click)="openAddWindow()">+</p>
                 </div>
-            </div>
-        </div>
             
-        
-    </div>
+                <div class="content">
+                    
+                    <div class="action-container">
+                        @for (action of actions(); track $index) {
+                            <div class="action">
+                                <app-calendar-action [title]="action.title"></app-calendar-action>     
+                            </div>
+                        }    
+                    </div>        
 
-</div>
+                    <div class="todo-container">
+                        @for (todo of todos(); track $index) {
+                            <div class="todo">
+                                <app-calendar-todo [title]="todo.title"></app-calendar-todo>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div>
+}
