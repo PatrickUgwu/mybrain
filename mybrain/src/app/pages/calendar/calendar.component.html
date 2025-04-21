@@ -10,7 +10,7 @@
     </nav>
 
     <div class="calendar">    
-        @if (view() == "day") {<app-calender-day [day]="today()" [actions]="actions()" [todos]="todos()"></app-calender-day>}
+        @if (view() == "day") {<app-calender-day [day]="today()" [actions]="actions()"></app-calender-day>}
         @else if (view() == "week") {<app-calendar-week [today]="today()" [goals]="weekGoals()" [actions]="actions()" [todos]="todos()"></app-calendar-week>}
         @else if (view() == "month") {<app-calendar-month [monthGoals]="monthGoals()" [weekGoals]="weekGoals()" [actions]="actions()"></app-calendar-month>}
         @else if (view() == "quarter") {<app-calendar-quarter [quarterGoals]="quarterGoals()" [monthGoals]="monthGoals()" [weekGoals]="weekGoals()" [todos]="todos()"></app-calendar-quarter>}

@@ -22,7 +22,7 @@
                     </div>        
 
                     <div class="todo-container">
-                        @for (todo of todos(); track $index) {
+                        @for (todo of todos; track $index) {
                             <div class="todo">
                                 <app-calendar-todo [title]="todo.title"></app-calendar-todo>
                             </div>

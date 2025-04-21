@@ -18,7 +18,7 @@ export class CalenderDayComponent implements OnInit{
   weekday = ""
   day = input.required<string>()
   actions = input.required<Action[]>()
-  todos = input.required<ToDo[]>()
+  todos: ToDo[] = []
   add = false
 
   openAddWindow() {
@@ -32,6 +32,9 @@ export class CalenderDayComponent implements OnInit{
   ngOnInit(): void {
     this.calendarService.getWeekDay(this.day()).subscribe(day => {
       this.weekday = day
+    })
+    this.calendarService.getToDos(this.day()).subscribe(todos => {
+      this.todos = todos
     })
   }
 
