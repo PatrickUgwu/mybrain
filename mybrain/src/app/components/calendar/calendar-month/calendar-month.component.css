@@ -2,19 +2,30 @@
     display: flex;
     flex-wrap: wrap;
     height: 80vh;
-    background-color: #2b4174b7;
 }
 /* TOPBAR */
 .top-bar {
     height: 8%;
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-evenly;
 }
 
 .month-goal {
-    width: 10%;
+    width: 5%;
     height: 60%;
+    margin: 0 auto;
+}
+
+.top-bar .add-button {
+    height: 50%;
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: aliceblue;
+    border-radius: 1rem;
 }
 
 /* MONTH */
