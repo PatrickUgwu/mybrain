@@ -2,6 +2,8 @@
     width: 60%;
     height: 75vh;
     margin: auto;
+    background-color: #123;
+    border-radius: 0.5rem;
 }
 
 .header-container {

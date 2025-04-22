@@ -14,7 +14,6 @@ import { AddWindowComponent } from "../../roadmap/add-window/add-window.componen
   styleUrl: './calendar-year.component.css'
 })
 export class CalendarYearComponent {
-  VIEW = "year"
   calendarService = inject(CalendarService)
   milestones = input.required<Milestone[]>()
   quarterGoals = input.required<Goal[]>()

@@ -42,7 +42,7 @@
 }
 
 .navbar li.active {
-    border: 0.3rem solid orangered;
+    background-color: orangered;
 }
 
 .calendar {
