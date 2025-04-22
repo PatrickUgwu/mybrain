@@ -1,7 +1,6 @@
 .quarter-view {
     width: 100%;
     height: 80vh;
-    border: 0.2rem solid aliceblue;
     border-radius: 1rem;
 }
 
@@ -13,7 +12,7 @@
 }
 
 .quarter-goal {
-    width: 5%;
+    width: 10%;
     height: 60%;
     margin: 0 auto;
 }
@@ -43,11 +42,8 @@
     height: calc((100% - 2rem) / 3);
     display: flex;
     border-top: 0.2rem solid aliceblue;
-    
-}
-
-.month:not(:last-child) {
     border-bottom: 0.2rem solid aliceblue;
+    
 }
 
 .tile {

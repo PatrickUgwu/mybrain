@@ -4,11 +4,12 @@ import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component"
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { Milestone } from '../../../models/interfaces/milestone.interface';
 import { CalendarMilestoneComponent } from "../calendar-milestone/calendar-milestone.component";
+import { AddWindowComponent } from "../../roadmap/add-window/add-window.component";
 
 @Component({
   selector: 'app-calendar-year',
   standalone: true,
-  imports: [CalendarGoalComponent, CalendarMilestoneComponent],
+  imports: [CalendarGoalComponent, CalendarMilestoneComponent, AddWindowComponent],
   templateUrl: './calendar-year.component.html',
   styleUrl: './calendar-year.component.css'
 })
@@ -19,6 +20,15 @@ export class CalendarYearComponent {
   quarterGoals = input.required<Goal[]>()
   monthGoals = input.required<Goal[]>()
   year:[string[], Goal[], Goal[][]][] = []
+  add = false
+
+  openAddWindow() {
+    this.add = true
+  }
+  
+  closeAddWindow() {
+    this.add = false
+  }
 
   ngOnInit(): void {
     this.calendarService.getYear().subscribe(data => {
