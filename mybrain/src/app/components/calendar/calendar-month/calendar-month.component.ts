@@ -16,6 +16,8 @@ import { AddWindowComponent } from "../../roadmap/add-window/add-window.componen
 })
 export class CalendarMonthComponent implements OnInit{
   calendarService = inject(CalendarService)
+  today = input<string>("")
+  todayIndex = [0, 0] // [week, day]
   monthGoals = input.required<Goal[]>()
   weekGoals = input.required<Goal[]>()
   actions = input.required<Action[]>()
@@ -54,6 +56,11 @@ export class CalendarMonthComponent implements OnInit{
         if (i % 7 === 6) {
           this.month.push(week)
           week = [[],[]]
+        }
+
+        //check if day is today
+        if (this.today() === data[i][0]) {
+          this.todayIndex = [this.month.length, i % 7]
         }
       }
     })

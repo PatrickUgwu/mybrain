@@ -42,7 +42,7 @@ export class CalendarWeekComponent implements OnInit {
         // add todos
         this.todos[index] = data[index][1]
 
-        //chaeck if day is today
+        //check if day is today
         if (this.today() === data[index][0]) {
           this.todayIndex = index
         }

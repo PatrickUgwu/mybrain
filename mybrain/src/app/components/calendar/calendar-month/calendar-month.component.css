@@ -77,14 +77,18 @@
     display: flex;
 }
 
-.small-tile {
+.tile {
     width: calc(100% / 7);
     height: 100%;
     border-right: 0.3rem solid aliceblue;
 }
 
-.small-tile:hover {
+.tile:hover {
     background-color: aqua;
+}
+
+.tile.active {
+    background-color: orangered;
 }
 
 .header {
