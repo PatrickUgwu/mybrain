@@ -1,76 +1,75 @@
 <div class="add-window">
-    <div class="header-container">
-        <div class="header">
-            <div class="header-title">
-                Add - {{item}}
-                @if (item === "") {
-                    <div>
-                        <select class="item" placeholder="Choose Item..." [(ngModel)]="item">
-                            <option value="Action" selected>Action</option>
-                            <option value="ToDo">ToDo</option>
-                            <option value="Goal">Goal</option>
+    
+    <form class="add-form" [formGroup]="itemForm" (submit)="addItem()">
+        <div class="header-container">
+            <div class="header">
+                <div class="header-title">
+                    Add - {{itemForm.get("type")?.value}}
+                    @if (itemForm.get("type")?.value === "") {
+                        <div>
+                            <select class="type" formControlName="type" placeholder="Choose Item..." style="background-color: red;">
+                                <option value="Action">Action</option>
+                                <option value="ToDo">ToDo</option>
+                                <option value="Goal">Goal</option>
+                            </select>
+                        </div>
+                    }
+                </div>
+                
+            </div>
+            <p (click)="closeAdd()" class="close">x</p>
+        </div>
+
+        <div class="main-form">
+            @if (itemForm.get("type")?.value !== "") {
+                <div class="form-item">
+                    <label class="title-label">Title</label>
+                    <input class="title" formControlName="title" placeholder="Enter Title..." required="">
+                </div>
+                <div class="form-item">
+                    <label class="description-label">Description</label>
+                    <input class="description" formControlName="description" placeholder="Enter Title..." required="">
+                </div>
+
+                <div class="form-item">
+                    <label class="parent-label">Parent</label>
+                    <select class="parent" formControlName="parent" placeholder="Enter Title..." required="">
+                        @for (goal of goals; track $index) {}
+                        <option value="p1" selected>par1</option>
+                        <option value="p2">par2</option>
+                        <option value="p3">par3</option>
+                    </select>
+                </div>
+            
+                
+                @if (itemForm.get("type")?.value === "Action") {
+                    <div class="form-item">
+                        <label class="pattern-label">Pattern</label>
+                        <select class="pattern" formControlName="pattern" placeholder="Enter Title..."required="">
+                            <option value="daily" selected>Daily</option>
                         </select>
                     </div>
                 }
-            </div>
-            
-        </div>
-        <p (click)="closeAdd()" class="close">x</p>
-    </div>
-    <section class="add-form">
-        <div class="form-item">
-            <label class="title-label">Title</label>
-            <input class="title" placeholder="Enter Title...">
-        </div>
-        <div class="form-item">
-            <label class="description-label">Description</label>
-            <input class="description" placeholder="Enter Title...">
-        </div>
-
-        <div class="form-item">
-            <label class="parent-label">Parent
                 
-            </label>
-            <select class="parent" placeholder="Enter Title...">
-                <option value="p1" selected>par1</option>
-                <option value="p2">par2</option>
-                <option value="p3">par3</option>
-            </select>
+                @else if (itemForm.get("type")?.value === "Goal") {
+                    <div class="form-item">
+                        <label class="deadline-label">Deadline</label>
+                        <input class="deadline" formControlName="deadline" placeholder="Enter Title..." required="">
+                    </div>
+
+                    <div class="form-item">
+                        <label class="type-label">Goal Type</label>
+                        <select class="goal-type" formControlName="goalType" placeholder="Enter Title..." required="">
+                            <option value="t1">Week</option>
+                            <option value="t2" selected>Month</option>
+                            <option value="t3">Quarter</option>
+                        </select>
+                    </div>
+                }
+
+                <button [disabled]="!itemForm.valid" type="submit">Add</button>
+            }
         </div>
-            
-        @if (item === "Action") {
-            <div class="form-item">
-                <label class="pattern-label">Pattern</label>
-                <select class="pattern" placeholder="Enter Title...">
-                    <option value="pa1" selected>Daily</option>
-                    <option value="pp2">pp2</option>
-                    <option value="pp3">pp3</option>
-                </select>
-            </div>
-        }
         
-        @else if (item === "Goal") {
-            <div class="form-item">
-                <label class="deadline-label">Description
-                    
-                </label>
-                <input class="deadline" placeholder="Enter Title...">
-            </div>
-
-            <div class="form-item">
-                <label class="type-label">Type
-                    
-                </label>
-                <select class="type" placeholder="Enter Title...">
-                    <option value="t1">Week</option>
-                    <option value="t2" selected>Month</option>
-                    <option value="t3">Quarter</option>
-                </select>
-            </div>
-        }
-
-        <button (click)="closeAdd()">Add</button>
-        
-        
-    </section>
+    </form>
 </div>
