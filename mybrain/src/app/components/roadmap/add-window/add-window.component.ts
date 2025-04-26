@@ -28,11 +28,11 @@ export class AddWindowComponent {
       Validators.required
     ]),
     // Actions
-    pattern: new FormControl(""),
+    pattern: new FormControl("daily"),
 
     // Goals
     deadline: new FormControl(""),
-    goalType: new FormControl(""),
+    goalType: new FormControl("week"),
   })
   
   closeAdd(){

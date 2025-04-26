@@ -35,7 +35,7 @@
                     <label class="parent-label">Parent</label>
                     <select class="parent" formControlName="parent" placeholder="Enter Title..." required="">
                         @for (goal of goals; track $index) {}
-                        <option value="p1" selected>par1</option>
+                        <option value="p1">par1</option>
                         <option value="p2">par2</option>
                         <option value="p3">par3</option>
                     </select>
@@ -46,7 +46,7 @@
                     <div class="form-item">
                         <label class="pattern-label">Pattern</label>
                         <select class="pattern" formControlName="pattern" placeholder="Enter Title..."required="">
-                            <option value="daily" selected>Daily</option>
+                            <option value="daily">Daily</option>
                         </select>
                     </div>
                 }
@@ -61,7 +61,7 @@
                         <label class="type-label">Goal Type</label>
                         <select class="goal-type" formControlName="goalType" placeholder="Enter Title..." required="">
                             <option value="t1">Week</option>
-                            <option value="t2" selected>Month</option>
+                            <option value="t2">Month</option>
                             <option value="t3">Quarter</option>
                         </select>
                     </div>
