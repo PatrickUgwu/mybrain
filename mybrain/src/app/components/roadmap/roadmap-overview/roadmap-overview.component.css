@@ -1,0 +1,61 @@
+.roadmap-overview {
+    width: 90vw;
+    height: auto;
+    background-color: #234;
+    text-align: center;
+    margin: auto;
+    color: #ccc;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.roadmap-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: aliceblue;
+}
+
+.milestones {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.milestone {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #345;
+    padding: 1rem;
+}
+
+.goals {
+    height: auto;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.goal {
+    background-color: #456;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.actions {
+    height: auto;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.action{
+    width: 50%;
+    background-color: #567;
+}

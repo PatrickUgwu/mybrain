@@ -1,0 +1,34 @@
+<div class="roadmap-overview">
+    <p class="roadmap-title">RM: {{roadmap["title"]}}</p>
+
+    <div class="milestones">
+    @for (milestone of roadmap["milestones"]; track $index) {
+        <div class="milestone">
+            <p>MS: {{milestone["title"]}}</p>
+
+            <div class="goals">
+                @for (goal of milestone["goals"]; track $index) {
+                    <div class="goal">
+                        <p>{{goal["type"][0]}}G: {{goal["title"]}}</p>
+
+                        <div class="actions">
+                            @for (action of goal["actions"]; track $index) {
+                                <div class="action">
+                                    <p>A: {{action["title"]}}</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                
+            </div>
+        </div>
+    }
+    </div>
+
+    @for (todo of roadmap["todos"]; track $index) {
+        <div class="todo">
+            <p>{{todo["title"]}}</p>
+        </div>
+    }
+</div>
