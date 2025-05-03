@@ -155,6 +155,10 @@ SAMPLE_WORKSPACES = [{
     }]
 }]
 
+@app.get("/roadmaps")
+def get_roadmaps():
+    return SAMPLE_ROADMAPS
+
 @app.get("/knowledge")
 def get_knowledge():
     return SAMPLE_WORKSPACES
