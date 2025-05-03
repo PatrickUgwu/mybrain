@@ -155,6 +155,22 @@ SAMPLE_WORKSPACES = [{
     }]
 }]
 
+@app.get("/possible_parents")
+def get_parents(type:str):
+    parents: list[str] = []
+    for roadmap in SAMPLE_ROADMAPS:
+        if type == "todo":
+            parents.append(roadmap["id"])
+        
+        for milestone in roadmap["milestones"]:
+            if type == "goal":
+                parents.append(milestone["id"])
+            
+            for goal in milestone["goals"]:
+                if type == "action":
+                    parents.append(goal["id"])
+    return parents
+
 @app.get("/roadmaps")
 def get_roadmaps():
     return SAMPLE_ROADMAPS

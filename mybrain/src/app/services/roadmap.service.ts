@@ -13,5 +13,9 @@ export class RoadmapService {
     return this.httpClient.get<any>(this.url + "/roadmaps")
   }
 
+  getPossibleParents(type: string): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.url + "/possible_parents?type=" + type)
+  }
+
   constructor() { }
 }
