@@ -52,15 +52,18 @@ export class CalendarMonthComponent implements OnInit{
           }
         })
 
+        //check if day is today
+        if (this.today() === data[i][0]) {
+          console.log("day "+this.today)
+          console.log("data "+data[i][0])
+          this.todayIndex = [this.month.length, i % 7]
+          console.log("index"+this.todayIndex)
+        }
+        
         // add and reset week
         if (i % 7 === 6) {
           this.month.push(week)
           week = [[],[]]
-        }
-
-        //check if day is today
-        if (this.today() === data[i][0]) {
-          this.todayIndex = [this.month.length, i % 7]
         }
       }
     })

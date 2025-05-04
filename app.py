@@ -243,8 +243,7 @@ def get_month():
                 month.append([None, []])
             else:
                 todos = get_todos(date(today.year, today.month, day).isoformat())
-                month.append([date(today.year, today.month, day), todos])
-
+                month.append([date(today.year, today.month, day).isoformat(), todos])
     return month
 
 @app.get("/quarter") # for quarter
