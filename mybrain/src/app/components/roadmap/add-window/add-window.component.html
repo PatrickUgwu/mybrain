@@ -7,7 +7,7 @@
                     Add - {{itemForm.get("type")?.value}}
                     @if (itemForm.get("type")?.value === "") {
                         <div>
-                            <select class="type" formControlName="type" placeholder="Choose Item..." style="background-color: red;">
+                            <select #type class="type" formControlName="type" (change)="getPossibleParents(type.value)" placeholder="Choose Item..." style="background-color: red;">
                                 <option value="Action">Action</option>
                                 <option value="ToDo">ToDo</option>
                                 <option value="Goal">Goal</option>
@@ -34,10 +34,11 @@
                 <div class="form-item">
                     <label class="parent-label">Parent</label>
                     <select class="parent" formControlName="parent" placeholder="Enter Title..." required="">
-                        @for (goal of goals; track $index) {}
-                        <option value="p1">par1</option>
-                        <option value="p2">par2</option>
-                        <option value="p3">par3</option>
+                        
+                        @for (parent of parents; track $index) {
+                            <option value="{{parent}}">{{parent}}</option>
+                        }
+                        
                     </select>
                 </div>
             

@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RoadmapService } from '../../../services/roadmap.service';
 
 @Component({
   selector: 'app-add-window',
@@ -9,9 +10,10 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
   styleUrl: './add-window.component.css'
 })
 export class AddWindowComponent {
+  roadmapService = inject(RoadmapService)
   item: string = ""
+  parents: string[] = []
   @Output() close = new EventEmitter<void>()
-  @Input() goals = ""
 
   itemForm:FormGroup = new FormGroup({
     type: new FormControl("", [
@@ -35,12 +37,19 @@ export class AddWindowComponent {
     goalType: new FormControl("week"),
   })
   
+  getPossibleParents(type:string){
+    this.roadmapService.getPossibleParents(type.toLowerCase()).subscribe(data => {
+      data.forEach(parent => {
+        this.parents.push(parent)
+      })
+    })
+  }
+
   closeAdd(){
     this.close.emit()
   }
 
   addItem() {
-    console.log(this.itemForm)
     this.closeAdd()
   }
 }
