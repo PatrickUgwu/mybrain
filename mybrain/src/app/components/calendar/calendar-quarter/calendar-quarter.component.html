@@ -8,9 +8,9 @@
             @for (goal of quarterGoals(); track $index) {
                 <div class="quarter-goal">
                     <app-calendar-goal [title]="goal.title" [type]="goal.type"></app-calendar-goal>
-                </div>
-                <p class="add-button"  (click)="openAddWindow()">+</p>
+                </div>    
             }
+            <p class="add-button"  (click)="openAddWindow()">+</p>
         </div>
         <div class="calendar">
             

@@ -8,9 +8,9 @@
             @for (milestone of milestones(); track $index) {
                 <div class="milestone">
                     <app-calendar-milestone [title]="milestone.title"></app-calendar-milestone>
-                </div>
-                <p class="add-button"  (click)="openAddWindow()">+</p>
+                </div>    
             }
+            <p class="add-button"  (click)="openAddWindow()">+</p>
         </div>
         <div class="calendar">
             
