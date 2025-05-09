@@ -21,12 +21,23 @@ def get_session():
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
+class Action(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    title: str
+    description: str
+    completed: bool = Field(index=True)
+    parent: int = Field(index=True)
+    recurringPattern: str | None = None
+
+
+
 # Define the lifespan context manager
 @asynccontextmanager
 async def lifespan():
     # on startup
     create_db_and_tables()   
     yield
+
 app = FastAPI()
 
 app.add_middleware(
@@ -36,6 +47,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],  
 )
+
+@app.post("/action/")
+def create_action(action: Action, session: SessionDep) -> Action:
+    session.add(action)
+    session.commit()
+    session.refresh(action)
+    return action
+    
+@app.get("/action/{action_id}")
+def read_action(action_id: int, session: SessionDep) -> Action:
+    action = session.get(Action, action_id)
+    if not action:
+        raise HTTPException(status_code=404, detail="Hero not found")
+    return action
+
+
+
+
 
 SAMPLE_ROADMAPS = [
     {
