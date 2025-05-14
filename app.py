@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import date, datetime, timedelta
 import calendar
-from sqlmodel import Field, SQLModel, Session, create_engine
+from sqlmodel import Field, Relationship, SQLModel, Session, create_engine, select
 
 
 sqlite_file_name = "database.db"
@@ -26,8 +26,13 @@ def get_session():
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
-class Action(SQLModel, table=True):
-    id: int = Field(primary_key=True)
+class Roadmap(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    title: str = Field(index=True)
+    description: str
+    completed: bool = Field(default=False, index=True)
+    milestones: list["Milestone"] = Relationship(back_populates="parent")
+
     title: str
     description: str
     completed: bool = Field(index=True)
