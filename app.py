@@ -49,9 +49,13 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-@app.post("/action/")
-def create_action(action: Action, session: SessionDep) -> Action:
-    session.add(action)
+@app.post("/roadmap")
+def create_roadmap(roadmap_data: Roadmap, session: SessionDep):
+    roadmap: Roadmap = Roadmap.model_validate(roadmap_data)
+    session.add(roadmap)
+    session.commit()
+    session.refresh(roadmap)
+    return roadmap
     session.commit()
     session.refresh(action)
     return action
