@@ -12,8 +12,13 @@ sqlite_url = f"sqlite:///{sqlite_file_name}"
 connect_args = {"check_same_thread": False}
 engine = create_engine(sqlite_url, connect_args=connect_args)
 
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
+# Define the lifespan context manager
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # on startup
+    SQLModel.metadata.create_all(engine)  
+    yield
+
 
 def get_session():
     with Session(engine) as session:
@@ -29,16 +34,7 @@ class Action(SQLModel, table=True):
     parent: int = Field(index=True)
     recurringPattern: str | None = None
 
-
-
-# Define the lifespan context manager
-@asynccontextmanager
-async def lifespan():
-    # on startup
-    create_db_and_tables()   
-    yield
-
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
