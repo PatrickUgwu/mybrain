@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import date, datetime, timedelta
 import calendar
+from pydantic import field_validator
 from sqlmodel import Field, Relationship, SQLModel, Session, create_engine, select
 
 
@@ -32,6 +33,35 @@ class Roadmap(SQLModel, table=True):
     description: str
     completed: bool = Field(default=False, index=True)
     milestones: list["Milestone"] = Relationship(back_populates="parent")
+
+class MilestoneBase(SQLModel):
+    title: str
+    description: str
+    parent_id: str
+    deadline: str
+    
+class Milestone(MilestoneBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    completed: bool = Field(default=False, index=True)
+    deadline: date
+    parent_id: int = Field(foreign_key="roadmap.id")
+    parent: Roadmap = Relationship(back_populates="milestones")
+    goals: list["Goal"] = Relationship(back_populates="parent") 
+
+class MilestoneCreate(MilestoneBase):
+    deadline: date
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return datetime.strptime(v, "%d-%m-%Y").date()
+    
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Roadmap).where(Roadmap.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+
 
     title: str
     description: str
