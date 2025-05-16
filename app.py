@@ -86,6 +86,14 @@ def create_roadmap(roadmap_data: Roadmap, session: SessionDep):
     session.commit()
     session.refresh(roadmap)
     return roadmap
+
+@app.post("/milestone")
+def create_milestone(milestone_data: MilestoneCreate, session: SessionDep) -> Milestone:
+    milestone: Milestone = Milestone.model_validate(milestone_data)
+    session.add(milestone)
+    session.commit()
+    session.refresh(milestone)
+    return milestone
     session.commit()
     session.refresh(action)
     return action
