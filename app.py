@@ -138,6 +138,15 @@ def create_milestone(milestone_data: MilestoneCreate, session: SessionDep) -> Mi
     session.commit()
     session.refresh(milestone)
     return milestone
+
+@app.post("/goal")
+def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
+    goal: Goal = Goal.model_validate(goal_data)
+    session.add(goal)
+    session.commit()
+    session.refresh(goal)
+    return goal
+
     session.commit()
     session.refresh(action)
     return action
