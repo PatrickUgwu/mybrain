@@ -63,11 +63,35 @@ class MilestoneCreate(MilestoneBase):
             return parent.id
 
 
+class GoalBase(SQLModel):
     title: str
     description: str
-    completed: bool = Field(index=True)
-    parent: int = Field(index=True)
-    recurringPattern: str | None = None
+    type: str
+    deadline: str
+    parent_id: str
+
+class Goal(GoalBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    completed: bool = Field(default=False, index=True)
+    deadline: date
+    parent_id: int = Field(foreign_key="milestone.id")
+    parent: Milestone = Relationship(back_populates="goals")
+    actions: list["Action"]= Relationship(back_populates="parent") 
+
+class GoalCreate(GoalBase):
+    deadline: date
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v: str):
+        return datetime.strptime(v, "%d-%m-%Y").date()
+    
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Milestone).where(Milestone.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+
 
 app = FastAPI(lifespan=lifespan)
 
