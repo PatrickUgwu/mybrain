@@ -92,6 +92,26 @@ class GoalCreate(GoalBase):
             parent = session.exec(par).first()
             return parent.id
 
+class ActionBase(SQLModel):
+    title: str
+    description: str
+    pattern: str | None
+    parent_id: str
+
+class Action(ActionBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    completed: bool = Field(default=False, index=True)
+    parent_id: int = Field(foreign_key="goal.id")
+    parent: Goal = Relationship(back_populates="actions")
+
+class ActionCreate(ActionBase):
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Goal).where(Goal.title == v)
+            parent = session.exec(par).first()
+            return parent.id
 
 app = FastAPI(lifespan=lifespan)
 
