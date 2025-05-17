@@ -147,6 +147,10 @@ def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
     session.refresh(goal)
     return goal
 
+@app.post("/action")
+def create_action(action_data: ActionCreate, session: SessionDep) -> Action:
+    action: Action = Action.model_validate(action_data)
+    session.add(action)
     session.commit()
     session.refresh(action)
     return action
