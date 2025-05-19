@@ -33,6 +33,7 @@ class Roadmap(SQLModel, table=True):
     description: str
     completed: bool = Field(default=False, index=True)
     milestones: list["Milestone"] = Relationship(back_populates="parent")
+    todos: list["Todo"] = Relationship(back_populates="parent")
 
 class MilestoneBase(SQLModel):
     title: str
@@ -110,6 +111,37 @@ class ActionCreate(ActionBase):
     def validate_parent(cls, v):
         with Session(engine) as session:
             par = select(Goal).where(Goal.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+        
+class TodoBase(SQLModel):
+    title: str
+    description: str
+    parent_id: str | None
+    deadline: str | None
+
+class Todo(TodoBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    deadline: date | None
+    completed: bool = Field(default=False, index=True)
+    parent_id: int | None = Field(default=None, foreign_key="roadmap.id")
+    parent: Roadmap | None = Relationship(back_populates="todos")
+
+class TodoCreate(TodoBase):
+    deadline: date | None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        if not v:
+            return None
+        return date.fromisoformat(v)
+    
+    parent_id: int | None
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            if not v: 
+                return None
+            par = select(Roadmap).where(Roadmap.title == v)
             parent = session.exec(par).first()
             return parent.id
 
