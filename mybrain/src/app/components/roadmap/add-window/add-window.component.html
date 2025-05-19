@@ -4,13 +4,15 @@
         <div class="header-container">
             <div class="header">
                 <div class="header-title">
-                    Add - {{itemForm.get("type")?.value}}
-                    @if (itemForm.get("type")?.value === "") {
+                    Add - {{item}}
+                    @if (item === "") {
                         <div>
-                            <select #type class="type" formControlName="type" (change)="getPossibleParents(type.value)" placeholder="Choose Item..." style="background-color: red;">
+                            <select [(ngModel)]="item" class="type" [ngModelOptions]="{ standalone: true }" (ngModelChange)="buildForm(item)" placeholder="Choose Item..." style="background-color: red;">
                                 <option value="Action">Action</option>
                                 <option value="ToDo">ToDo</option>
                                 <option value="Goal">Goal</option>
+                                <option value="Milestone">Milestone</option>
+                                <option value="Roadmap">Roadmap</option>
                             </select>
                         </div>
                     }
@@ -21,50 +23,60 @@
         </div>
 
         <div class="main-form">
-            @if (itemForm.get("type")?.value !== "") {
+            @if (item !== "") {
                 <div class="form-item">
                     <label class="title-label">Title</label>
-                    <input class="title" formControlName="title" placeholder="Enter Title..." required="">
+                    <input class="title" formControlName="title" placeholder="Enter Title...">
                 </div>
                 <div class="form-item">
                     <label class="description-label">Description</label>
-                    <input class="description" formControlName="description" placeholder="Enter Title..." required="">
+                    <input class="description" formControlName="description" placeholder="Enter Title...">
                 </div>
 
-                <div class="form-item">
-                    <label class="parent-label">Parent</label>
-                    <select class="parent" formControlName="parent" placeholder="Enter Title..." required="">
-                        
-                        @for (parent of parents; track $index) {
-                            <option value="{{parent}}">{{parent}}</option>
-                        }
-                        
-                    </select>
-                </div>
+                @if (item !== "Roadmap") {
+                    <div class="form-item">
+                        <label class="parent-label">Parent</label>
+                        <select class="parent" formControlName="parent_id" placeholder="Enter Title...">
+                            
+                            @for (parent of parents; track $index) {
+                                <option value="{{parent}}">{{parent}}</option>
+                            }
+                            
+                        </select>
+                    </div>
+                }
+                
             
                 
-                @if (itemForm.get("type")?.value === "Action") {
+                @if (item === "Action") {
                     <div class="form-item">
                         <label class="pattern-label">Pattern</label>
-                        <select class="pattern" formControlName="pattern" placeholder="Enter Title..."required="">
+                        <select class="pattern" formControlName="pattern" placeholder="Enter Title...">
                             <option value="daily">Daily</option>
                         </select>
                     </div>
                 }
                 
-                @else if (itemForm.get("type")?.value === "Goal") {
+                @else if (item === "Goal") {
                     <div class="form-item">
                         <label class="deadline-label">Deadline</label>
-                        <input class="deadline" formControlName="deadline" placeholder="Enter Title..." required="">
+                        <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
                     </div>
 
                     <div class="form-item">
                         <label class="type-label">Goal Type</label>
-                        <select class="goal-type" formControlName="goalType" placeholder="Enter Title..." required="">
+                        <select class="goal-type" formControlName="type" placeholder="Enter Title...">
                             <option value="week">Week</option>
                             <option value="month">Month</option>
                             <option value="quarter">Quarter</option>
                         </select>
+                    </div>
+                }
+
+                @else if (item === "Milestone" || item === "ToDo") {
+                    <div class="form-item">
+                        <label class="deadline-label">Deadline</label>
+                        <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
                     </div>
                 }
 

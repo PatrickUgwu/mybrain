@@ -16,26 +16,16 @@ export class AddWindowComponent {
   @Output() close = new EventEmitter<void>()
 
   itemForm:FormGroup = new FormGroup({
-    type: new FormControl("", [
-      Validators.required
-    ]),
+    
     title: new FormControl("", [
       Validators.required
     ]),
     description: new FormControl("", [
       Validators.required, 
-      Validators.minLength(3)
-    ]),
-    parent: new FormControl("", [
-      Validators.required
-    ]),
-    // Actions
-    pattern: new FormControl("daily"),
-
-    // Goals
-    deadline: new FormControl(""),
-    goalType: new FormControl("week"),
+      Validators.minLength(3),
+    ])
   })
+
   
   getPossibleParents(type:string){
     this.roadmapService.getPossibleParents(type.toLowerCase()).subscribe(data => {
@@ -44,6 +34,28 @@ export class AddWindowComponent {
       })
     })
   }
+
+  buildForm(type: string){
+      if (type !== "Roadmap" && type !== "ToDo") {
+        this.itemForm.addControl("parent_id", new FormControl("", Validators.required))
+      }
+    
+      if (type === "Action") {
+        this.itemForm.addControl("pattern", new FormControl("daily", Validators.required))
+      }
+      else if (type === "Goal") {
+        this.itemForm.addControl("deadline", new FormControl("", Validators.required))
+        this.itemForm.addControl("type", new FormControl("week", Validators.required))
+      }
+      else if (type === "Milestone") {
+        this.itemForm.addControl("deadline", new FormControl("", Validators.required))
+      }
+      else if (type === "ToDo") {
+        this.itemForm.addControl("parent_id", new FormControl())
+        this.itemForm.addControl("deadline", new FormControl())
+      }
+      this.getPossibleParents(type)
+    }
 
   closeAdd(){
     this.close.emit()
