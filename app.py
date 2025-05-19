@@ -186,6 +186,14 @@ def create_action(action_data: ActionCreate, session: SessionDep) -> Action:
     session.commit()
     session.refresh(action)
     return action
+
+@app.post("/todo")
+def create_action(todo_data: TodoCreate, session: SessionDep):
+    todo: Todo = Todo.model_validate(todo_data)
+    session.add(todo)
+    session.commit()
+    session.refresh(todo)
+    return todo
     
 @app.get("/action/{action_id}")
 def read_action(action_id: int, session: SessionDep) -> Action:
