@@ -53,7 +53,7 @@ class MilestoneCreate(MilestoneBase):
     deadline: date
     @field_validator("deadline", mode="before")
     def validate_deadline(cls, v):
-        return datetime.strptime(v, "%d-%m-%Y").date()
+        return date.fromisoformat(v)
     
     parent_id: int
     @field_validator("parent_id", mode="before")
@@ -62,7 +62,6 @@ class MilestoneCreate(MilestoneBase):
             par = select(Roadmap).where(Roadmap.title == v)
             parent = session.exec(par).first()
             return parent.id
-
 
 class GoalBase(SQLModel):
     title: str
@@ -83,7 +82,7 @@ class GoalCreate(GoalBase):
     deadline: date
     @field_validator("deadline", mode="before")
     def validate_deadline(cls, v: str):
-        return datetime.strptime(v, "%d-%m-%Y").date()
+        return date.fromisoformat(v)
     
     parent_id: int
     @field_validator("parent_id", mode="before")
@@ -132,7 +131,7 @@ class TodoCreate(TodoBase):
     @field_validator("deadline", mode="before")
     def validate_deadline(cls, v):
         if not v:
-            return None
+            return date.today()
         return date.fromisoformat(v)
     
     parent_id: int | None
