@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Action } from '../models/interfaces/action.interface';
 import { Goal } from '../models/interfaces/goal.interface';
@@ -12,6 +12,7 @@ import { ToDo } from '../models/interfaces/todo.interface';
 export class RoadmapService {
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
+  todos = signal<ToDo[]>([])
 
   getRoadmaps(): Observable<any> {
     return this.httpClient.get<any>(this.url + "/roadmaps")
@@ -21,17 +22,25 @@ export class RoadmapService {
     return this.httpClient.get<string[]>(this.url + "/possible_parents?type=" + type)
   }
 
-  addItem(item: any, type: string): Observable<any> {
-    if (type === "action") { return this.addAction(item) }
-    else if (type === "roadmap") { return this.addRoadmap(item) }
-    else if (type === "milestone") { return this.addMilestone(item) }
-    else if (type === "goal") { return this.addGoal(item) }
-    else if (type === "todo") { return this.addTodo(item) }
-    throw new Error(`Unknown type ${type}`);
+  addItem(item: any, type: string): void {
+    if (type === "action") { this.addAction(item) }
+    else if (type === "roadmap") { this.addRoadmap(item) }
+    else if (type === "milestone") { this.addMilestone(item) }
+    else if (type === "goal") { this.addGoal(item) }
+    else if (type === "todo") { this.addTodo(item) }
+    else {throw new Error(`Unknown type ${type}`);}
   }
 
-  addTodo(todo: ToDo): Observable<ToDo> {
-    return this.httpClient.post<ToDo>(this.url + "/todo", todo)
+  getToDos(day: string): Observable<ToDo[]> {
+    return this.httpClient.get<ToDo[]>(this.url + "/todos?day=" + day)
+  }
+
+  addTodo(todo: ToDo): void {
+    this.httpClient.post<ToDo>(this.url + "/todo", todo).subscribe({
+      next: (newItem) => {
+        this.todos.update(current => [...current, newItem])
+      },
+    })
   }
 
   addAction(action: Action): Observable<Action> {
@@ -50,5 +59,7 @@ export class RoadmapService {
     return this.httpClient.post<any>(this.url + "/roadmap", roadmap)
   }
 
-  constructor() { }
+  constructor() {
+    this.getToDos("").subscribe(data => this.todos.set(data))
+  }
 }
