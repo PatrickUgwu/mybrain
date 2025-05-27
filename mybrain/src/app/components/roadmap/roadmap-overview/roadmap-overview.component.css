@@ -1,12 +1,18 @@
-.roadmap-overview {
+.roadmaps-overview {
     width: 90vw;
     height: auto;
-    background-color: #234;
     text-align: center;
     margin: auto;
     color: #ccc;
     font-weight: bold;
     font-size: 1.3rem;
+}
+
+.roadmap {
+    margin-bottom: 2rem;
+    background-color: #234;
+    border: 0.2rem solid #ccc;
+    border-radius: 0.5rem;
 }
 
 .roadmap-title {

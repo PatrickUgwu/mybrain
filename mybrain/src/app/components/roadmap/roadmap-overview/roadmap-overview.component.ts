@@ -10,11 +10,11 @@ import { RoadmapService } from '../../../services/roadmap.service';
 })
 export class RoadmapOverviewComponent implements OnInit {
   roadmapService = inject(RoadmapService)
-  roadmap:any = ""
+  roadmaps:any = []
 
   ngOnInit(): void {
     this.roadmapService.getRoadmaps().subscribe(roadmaps => {
-      this.roadmap = roadmaps[0]
+      this.roadmaps = roadmaps
     })
   }
 }
