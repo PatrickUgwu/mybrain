@@ -203,121 +203,6 @@ def read_action(action_id: int, session: SessionDep) -> Action:
 
 
 
-
-
-SAMPLE_ROADMAPS = [
-    {
-        "id": "1",
-        "title": "Art Portfolio Development",
-        "description": "Create a professional art portfolio with diverse pieces",
-        "color": "#4285F4",
-        "startDate": datetime(2025, 1, 1),  # Jan 1, 2025
-        "endDate": datetime(2025, 12, 31),  # Dec 31, 2025
-        "milestones": [
-            {
-                "id": "m1",
-                "title": "Build professional portfolio of 15 artworks",
-                "description": "Develop a cohesive collection of high-quality artworks",
-                "color": "#5C6BC0",
-                "roadmapId": "1",
-                "startDate": datetime(2025, 1, 1),
-                "endDate": datetime(2025, 3, 31),
-                "goals": [
-                    {
-                        "id": "g1",
-                        "title": "Create works",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 4, 26).__str__(),
-                        "actions": [
-                            {
-                                "id": "a1",
-                                "title": "Take course 2h/day",
-                                "description": "Dedicate 2 hours daily to portfolio building course",
-                                "parent": "g1",
-
-                                "recurringPattern": "DAILY",
-                                "completed": False,
-                            },
-                            {
-                                "id": "a2",
-                                "title": "Submit course projects",
-                                "description": "Complete and submit all course project assignments",
-                                "parent": "g1",
-                                "completed": False,
-                            },
-                        ],
-                    },
-                    {
-                        "id": "g2",
-                        "title": "month gaul",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "month",
-                        "deadline": date(2025, 4, 23).__str__(),
-                        "actions": [
-                            
-                        ],
-                    },
-                    {
-                        "id": "g3",
-                        "title": "week gaul",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "week",
-                        "deadline": date(2025, 4, 28).__str__(),
-                        "actions": [
-                            
-                        ],
-                    },
-                ],
-            }
-        ],
-    }
-]
-
-SAMPLE_TODOS = [
-    {
-        "id": "t1",
-        "title": "Sketch",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,4,27),
-    },
-    {
-        "id": "t2",
-        "title": "concepts",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,4,28),
-    },
-    {
-        "id": "t3",
-        "title": "Sketch concepts",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,4,30),
-    },
-    {
-        "id": "t4",
-        "title": "efefefepts",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,4,30),
-    },
-    {
-        "id": "t5",
-        "title": "pts",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,4,30),
-    },
-]
-
 SAMPLE_WORKSPACES = [{
     "title" : "sample workspace",
     "collections" : [{
@@ -347,39 +232,69 @@ SAMPLE_WORKSPACES = [{
     }]
 }]
 
+
+
 @app.get("/possible_parents")
-def get_possible_parents(type:str):
+def get_possible_parents(type:str, session: SessionDep):
     parents: list[str] = []
-    if type == "todo":
-        parents = [roadmap["id"] for roadmap in get_roadmaps()]
+    if type == "todo" or type == "milestone":
+        roadmaps = session.exec(select(Roadmap)).all()
+        parents = [roadmap.title for roadmap in roadmaps]
     elif type == "goal":
-        parents = [milestone["id"] for milestone in get_milestones()]
+        milestones = session.exec(select(Milestone)).all()
+        parents = [milestone.title for milestone in milestones]
     elif type == "action":
-        parents = [goal["id"] for goal in get_goals()]
+        goals = session.exec(select(Goal)).all()
+        parents = [goal.title for goal in goals]
     return parents
 
 @app.get("/roadmaps")
-def get_roadmaps():
-    return SAMPLE_ROADMAPS
+def get_roadmaps(session: SessionDep):
+    roadmaps = session.exec(select(Roadmap)).all()
+    all_roadmaps =[]
+    for roadmap in roadmaps:
+        deep_roadmap = roadmap.model_dump()
+        deep_roadmap["milestones"] = []
+        milestones = roadmap.milestones
+        
+        for milestone in milestones:
+            deep_milestone = milestone.model_dump()
+            deep_milestone["goals"] = []
+            goals = milestone.goals
+            
+            for goal in goals:
+                deep_goal = goal.model_dump()
+                deep_goal["actions"] = []
+                actions = goal.actions
+
+                for action in actions:
+                    deep_goal["actions"].append(action.model_dump())
+                deep_milestone["goals"].append(deep_goal)
+            deep_roadmap["milestones"].append(deep_milestone)
+        all_roadmaps.append(deep_roadmap)
+
+    return all_roadmaps
 
 @app.get("/knowledge")
 def get_knowledge():
     return SAMPLE_WORKSPACES
 
 @app.get("/milestones")
-def get_milestones():
+def get_milestones(session: SessionDep):
     milestones = []
-    for roadmap in SAMPLE_ROADMAPS:
-        for milestone in roadmap["milestones"]:
+    roadmaps = session.exec(select(Roadmap)).all()
+    for roadmap in roadmaps:
+        for milestone in roadmap.milestones:
             milestones.append(milestone)
     return milestones
 
 @app.get("/goals")
-def get_goals():
+def get_goals(session: SessionDep):
     goals = []
-    for roadmap in SAMPLE_ROADMAPS:
-        for milestone in roadmap["milestones"]:
-            for goal in milestone["goals"]:
+    roadmaps = session.exec(select(Roadmap)).all()
+    for roadmap in roadmaps:
+        for milestone in roadmap.milestones:
+            for goal in milestone.goals:
                 goals.append(goal)
     return goals
 
@@ -388,26 +303,28 @@ def get_today():
     return date.today().__str__()
 
 @app.get("/actions")
-def get_actions():
+def get_actions(session: SessionDep):
     actions = []
-    for roadmap in SAMPLE_ROADMAPS:
-        for milestone in roadmap["milestones"]:
-            for goal in milestone["goals"]:
-                for action in goal["actions"]:
+    roadmaps = session.exec(select(Roadmap)).all()
+    for roadmap in roadmaps:
+        for milestone in roadmap.milestones:
+            for goal in milestone.goals:
+                for action in goal.actions:
                     actions.append(action)
     return actions
 
 
 @app.get("/todos") # tile if week or day view
-def get_todos(day: str):
+def get_todos(day: str, session: SessionDep):
     if day == "" or day == "today":
         day = date.today().__str__()
 
-    todos = []
-    for todo in SAMPLE_TODOS:
-        if todo["deadline"].__str__() == day:
-            todos.append(todo) 
-    return todos
+    todos = session.exec(select(Todo)).all()
+    day_todos = []
+    for todo in todos:
+        if todo.deadline.__str__() == day:
+            day_todos.append(todo) 
+    return day_todos
 
 @app.get("/weekday") # for tile
 def get_weekday(day:str):
@@ -417,14 +334,14 @@ def get_weekday(day:str):
     return weekday
 
 @app.get("/week") # for week
-def get_week():   
+def get_week(session: SessionDep):   
     today = date.today()
     monday = today.__sub__(timedelta(days = today.weekday()))  
-    week = [[monday.__add__(timedelta(days=i)), get_todos(monday.__add__(timedelta(days=i)).__str__())] for i in range(7)]
+    week = [[monday.__add__(timedelta(days=i)), get_todos(monday.__add__(timedelta(days=i)).__str__(), session=session)] for i in range(7)]
     return week
 
 @app.get("/month") # for month comp
-def get_month():  
+def get_month(session: SessionDep):  
     today = date.today()
     month_calendar = calendar.monthcalendar(today.year, today.month)
     month = []
@@ -434,7 +351,7 @@ def get_month():
             if day == 0:
                 month.append([None, []])
             else:
-                todos = get_todos(date(today.year, today.month, day).isoformat())
+                todos = get_todos(date(today.year, today.month, day).isoformat(), session=session)
                 month.append([date(today.year, today.month, day).isoformat(), todos])
     return month
 
