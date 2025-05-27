@@ -62,9 +62,7 @@ export class AddWindowComponent {
   }
 
   addItem() {
-    this.roadmapService.addItem(this.itemForm.value, this.item.toLowerCase()).subscribe(newItem => {
-      this.closeAdd()
-    })
-    
+    this.roadmapService.addItem(this.itemForm.value, this.item.toLowerCase())
+    this.closeAdd()  
   }
 }
