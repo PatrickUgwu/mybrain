@@ -4,6 +4,14 @@
     background-color: #123;
     border: 0.5rem solid aliceblue;
     border-radius: 1rem;
+    color: white;
+}
+
+.goal:hover {
+    background-color: #ccc;
+    border: 0.2rem solid orangered;
+    border-radius: 1rem;
+    color: black;
 }
 
 .goal-body {
@@ -37,7 +45,6 @@
 p{
     width: 80%;
     max-height: 100%;
-    color: white;
     overflow: hidden;
 }
 
