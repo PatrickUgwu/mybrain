@@ -1,64 +1,64 @@
 @if (add === true) {
     <app-add-window (close)="closeAddWindow()"></app-add-window>
 }
-@else {
-    <div class="month-view">
 
-        <div class="top-bar">
-            @for (monthGoal of monthGoals(); track $index) {
-                <div class="month-goal">
-                    <app-calendar-goal [title]="monthGoal.title" [type]="monthGoal.type"></app-calendar-goal>
-                </div>
-            }
-            <p class="add-button"  (click)="openAddWindow()">+</p>
+<div class="month-view">
+
+    <div class="top-bar">
+        @for (monthGoal of monthGoals(); track $index) {
+            <div class="month-goal">
+                <app-calendar-goal [title]="monthGoal.title" [type]="monthGoal.type"></app-calendar-goal>
+            </div>
+        }
+        <p class="add-button"  (click)="openAddWindow()">+</p>
+    </div>
+
+
+    <div class="month">
+        <div class="weekdays">
+            <div class="weekday-container">
+                @for (day of ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]; track $index) {
+                    <p class="weekday">{{day}}</p>
+                }
+            </div>
         </div>
-
-
-        <div class="month">
-            <div class="weekdays">
-                <div class="weekday-container">
-                    @for (day of ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]; track $index) {
-                        <p class="weekday">{{day}}</p>
+        @for (week of month; track weekIndex; let weekIndex = $index) {
+            <div class="week">
+                <div class="days">
+                    @for (day of week[0]; track dayIndex; let dayIndex = $index  ) {
+                        <div class="tile" [class.active]="todayIndex[0] === weekIndex && todayIndex[1] === dayIndex">       
+                            <div class="header">
+                                <p>{{day[0]}}</p>
+                            </div>
+                            
+                            <div class="todo-container">
+                                @for (todo of day[1]; track $index) {
+                                    <div class="todo">
+                                        <app-calendar-todo [title]="todo.title"></app-calendar-todo>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="side-bar">
+                    @for (weekGoal of week[1]; track $index) {
+                        <div class="week-goal">
+                            <app-calendar-goal [title]="weekGoal.title" [type]="weekGoal.type"></app-calendar-goal>
+                        </div>
                     }
                 </div>
             </div>
-            @for (week of month; track weekIndex; let weekIndex = $index) {
-                <div class="week">
-                    <div class="days">
-                        @for (day of week[0]; track dayIndex; let dayIndex = $index  ) {
-                            <div class="tile" [class.active]="todayIndex[0] === weekIndex && todayIndex[1] === dayIndex">       
-                                <div class="header">
-                                    <p>{{day[0]}}</p>
-                                </div>
-                                
-                                <div class="todo-container">
-                                    @for (todo of day[1]; track $index) {
-                                        <div class="todo">
-                                            <app-calendar-todo [title]="todo.title"></app-calendar-todo>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <div class="side-bar">
-                        @for (weekGoal of week[1]; track $index) {
-                            <div class="week-goal">
-                                <app-calendar-goal [title]="weekGoal.title" [type]="weekGoal.type"></app-calendar-goal>
-                            </div>
-                        }
-                    </div>
-                </div>
-                
-                
-            }
             
-        </div>
-
-        
+            
+        }
         
     </div>
 
-}
+    
+    
+</div>
+
+
 
 
