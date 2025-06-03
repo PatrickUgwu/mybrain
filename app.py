@@ -248,6 +248,14 @@ def get_possible_parents(type:str, session: SessionDep):
         parents = [goal.title for goal in goals]
     return parents
 
+@app.get("/parent")
+def get_parent(item_type: str, item_id: int, session: SessionDep):
+    if item_type == "todo": return session.get(Todo, item_id).parent
+    elif item_type == "action": return session.get(Action, item_id).parent
+    elif item_type == "goal": return session.get(Goal, item_id).parent
+    elif item_type == "milestone": return session.get(Milestone, item_id).parent
+
+
 @app.get("/roadmaps")
 def get_roadmaps(session: SessionDep):
     roadmaps = session.exec(select(Roadmap)).all()

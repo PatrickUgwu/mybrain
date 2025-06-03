@@ -22,6 +22,11 @@ export class RoadmapService {
     return this.httpClient.get<string[]>(this.url + "/possible_parents?type=" + type)
   }
 
+  getParent(itemType: string, itemID: any) : Observable<Milestone|Goal|Action|ToDo> {
+    return this.httpClient.get<Milestone|Goal|Action|ToDo>(this.url + "/parent?item_type=" + itemType + "&item_id=" + itemID)
+
+  }
+
   addItem(item: any, type: string): void {
     if (type === "action") { this.addAction(item) }
     else if (type === "roadmap") { this.addRoadmap(item) }
