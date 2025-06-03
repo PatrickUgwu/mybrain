@@ -1,0 +1,60 @@
+<div class="item-info">
+   
+    
+    
+    <div class="header-container">
+        <div class="header">
+            <div class="header-title">
+                <p>{{itemType().toUpperCase()}}: {{item().title}}</p>
+            </div>
+            
+        </div>
+        <p (click)="closeAdd()" class="close">x</p>
+    </div>
+
+        <section class="main-info">
+
+            <div class="item-detail">
+                <p>Description:</p>
+                <p>{{item().description}}</p>
+            </div>
+
+            <div class="item-detail">
+                <p>Parent:</p>
+                <p>{{parent?.title}}</p>
+            </div>
+
+            <div class="item-detail">
+                <p>Completed:</p>
+                <p>{{item().completed}}</p>
+            </div>
+        
+            
+            @if (itemType() === "action") {
+                <div class="item-detail">
+                    <p>Pattern:</p>
+                    <p>{{item().recurringPattern}}</p>
+                </div>
+            }
+            
+            @else if (itemType() === "goal") {
+                <div class="form-item">
+                    <p>Deadline:</p>
+                    <p>{{item().deadline}}</p>
+                </div>
+
+                <div class="form-item">
+                    <p>Goal Type:</p>
+                    <p>{{item().type}}</p>
+                </div>
+            }
+
+            @else if (itemType() !== "action") {
+                <div class="item-detail">
+                    <p>Deadline:</p>
+                    <p>{{item().deadline}}</p>
+                </div>
+            }
+        </section>
+</div>          
+    
