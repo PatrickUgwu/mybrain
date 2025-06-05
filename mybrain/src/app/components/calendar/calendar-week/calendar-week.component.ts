@@ -8,32 +8,35 @@ import { CalendarActionComponent } from "../calendar-action/calendar-action.comp
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
 import { AddWindowComponent } from "../../roadmap/add-window/add-window.component";
+import { ItemOverviewComponent } from "../../roadmap/item-overview/item-overview.component";
 
 
 @Component({
   selector: 'app-calendar-week',
   standalone: true,
-  imports: [CalendarActionComponent, CalendarTodoComponent, CalendarGoalComponent, AddWindowComponent],
+  imports: [CalendarActionComponent, CalendarTodoComponent, CalendarGoalComponent, AddWindowComponent, ItemOverviewComponent],
   templateUrl: './calendar-week.component.html',
   styleUrl: './calendar-week.component.css'
 })
 export class CalendarWeekComponent implements OnInit { 
-  VIEW = "week"
-  today = input<string>("")
+  today = input<string>("") // to mark the current day
   todayIndex?:number;
   calendarService = inject(CalendarService)
   goals = input<Goal[]>([])
   actions = input.required<Action[]>()
   todos: ToDo[][] = []
   week:string[] = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
-  add = false
-  
-  openAddWindow() {
-    this.add = true
+  popup: [string, any] = ["", null]
+
+  openPopup(popupType: string, item?: unknown) {
+    this.popup[0] = popupType
+    if (this.popup[0] !== "add") {
+      this.popup[1] = item
+    }
   }
   
-  closeAddWindow() {
-    this.add = false
+  closePopup() {
+    this.popup = ["", null]
   }
 
   ngOnInit(): void {
