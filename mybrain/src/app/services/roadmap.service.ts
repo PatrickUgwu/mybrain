@@ -13,6 +13,7 @@ export class RoadmapService {
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
   todos = signal<ToDo[]>([])
+  actions = signal<ToDo[]>([])
 
   getRoadmaps(): Observable<any> {
     return this.httpClient.get<any>(this.url + "/roadmaps")
@@ -48,6 +49,10 @@ export class RoadmapService {
     })
   }
 
+  getActions(): Observable<Action[]> {
+    return this.httpClient.get<Action[]>(this.url + "/actions")
+  }
+
   addAction(action: Action): Observable<Action> {
     return this.httpClient.post<Action>(this.url + "/action", action)
   }
@@ -66,5 +71,6 @@ export class RoadmapService {
 
   constructor() {
     this.getToDos("").subscribe(data => this.todos.set(data))
+    this.getActions().subscribe(data => this.actions.set(data))
   }
 }

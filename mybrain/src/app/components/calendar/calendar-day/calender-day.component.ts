@@ -19,7 +19,8 @@ export class CalenderDayComponent implements OnInit{
   roadmapService = inject(RoadmapService)
   weekday = ""
   day = input.required<string>()
-  actions = input.required<Action[]>()
+  todos = this.roadmapService.todos()
+  actions = this.roadmapService.actions()
   popup: [string, any] = ["", null]
 
   openPopup(popupType: string, item?: unknown) {
