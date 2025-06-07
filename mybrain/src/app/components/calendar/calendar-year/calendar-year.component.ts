@@ -4,12 +4,12 @@ import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component"
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { Milestone } from '../../../models/interfaces/milestone.interface';
 import { CalendarMilestoneComponent } from "../calendar-milestone/calendar-milestone.component";
-import { AddWindowComponent } from "../../roadmap/add-window/add-window.component";
+import { AddButtonComponent } from "../add-button/add-button.component";
 
 @Component({
   selector: 'app-calendar-year',
   standalone: true,
-  imports: [CalendarGoalComponent, CalendarMilestoneComponent, AddWindowComponent],
+  imports: [CalendarGoalComponent, CalendarMilestoneComponent, AddButtonComponent],
   templateUrl: './calendar-year.component.html',
   styleUrl: './calendar-year.component.css'
 })

@@ -1,10 +1,3 @@
-@if (popup[0] === "add") {
-    <app-add-window (close)="closePopup()"></app-add-window>
-}
-@else if (popup[0] !== "") {
-    <app-item-overview [itemType]="popup[0]" [item]="popup[1]" (close)="closePopup()"></app-item-overview>
-}
-
 <div class="week-view">
     <div class="topbar">
         @for (goal of goals(); track $index) {

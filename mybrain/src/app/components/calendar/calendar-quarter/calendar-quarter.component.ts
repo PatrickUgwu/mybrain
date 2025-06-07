@@ -2,12 +2,12 @@ import { Component, inject, input, OnInit } from '@angular/core';
 import { CalendarService } from '../../../services/calendar.service';
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
-import { AddWindowComponent } from "../../roadmap/add-window/add-window.component";
+import { AddButtonComponent } from "../add-button/add-button.component";
 
 @Component({
   selector: 'app-calendar-quarter',
   standalone: true,
-  imports: [CalendarGoalComponent, AddWindowComponent],
+  imports: [CalendarGoalComponent, AddButtonComponent],
   templateUrl: './calendar-quarter.component.html',
   styleUrl: './calendar-quarter.component.css'
 })

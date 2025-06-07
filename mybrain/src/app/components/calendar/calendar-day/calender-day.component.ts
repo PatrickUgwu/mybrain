@@ -1,16 +1,14 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { Action } from '../../../models/interfaces/action.interface';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { CalendarService } from '../../../services/calendar.service';
 import { CalendarActionComponent } from "../calendar-action/calendar-action.component";
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
-import { AddWindowComponent } from "../../roadmap/add-window/add-window.component";
 import { RoadmapService } from '../../../services/roadmap.service';
-import { ItemOverviewComponent } from "../../roadmap/item-overview/item-overview.component";
+import { AddButtonComponent } from "../add-button/add-button.component";
 
 @Component({
   selector: 'app-calender-day',
   standalone: true,
-  imports: [CalendarActionComponent, CalendarTodoComponent, AddWindowComponent, ItemOverviewComponent],
+  imports: [CalendarActionComponent, CalendarTodoComponent, AddButtonComponent],
   templateUrl: './calender-day.component.html',
   styleUrl: './calender-day.component.css'
 })
@@ -19,8 +17,6 @@ export class CalenderDayComponent implements OnInit{
   roadmapService = inject(RoadmapService)
   weekday = ""
   day = input.required<string>()
-  todos = this.roadmapService.todos()
-  actions = this.roadmapService.actions()
   popup: [string, any] = ["", null]
 
   openPopup(popupType: string, item?: unknown) {

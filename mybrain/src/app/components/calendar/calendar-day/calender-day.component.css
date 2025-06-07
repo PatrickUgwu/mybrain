@@ -20,9 +20,11 @@
 
 .header {
     height:10%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
     background-color: rgb(190, 190, 190);
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
@@ -40,14 +42,7 @@
 }
 
 .header .add-button {
-    height: 50%;
-    width: 15%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    background-color: aliceblue;
-    border-radius: 1rem;
+    width: 10%;
 }
 
 .content {
