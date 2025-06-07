@@ -1,4 +1,8 @@
-<div class="action">
+@if (popup === "detail") {
+    <app-item-overview [itemType]="'action'" [item]="self()" (close)="closePopup()"></app-item-overview>
+}
+
+<div class="action" (click)="openPopup('detail')">
     <div class="action-body">
         <div class="circle"></div>
         <p>{{self().title}}</p>

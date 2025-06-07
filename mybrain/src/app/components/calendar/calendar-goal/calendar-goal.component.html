@@ -1,4 +1,8 @@
-<div class="goal">
+@if (popup === "detail") {
+    <app-item-overview [itemType]="'goal'" [item]="self()" (close)="closePopup()"></app-item-overview>
+}
+
+<div class="goal" (click)="openPopup('detail')">
     <div class="goal-body">
         <div class="rect {{self().type}}"></div>
         <p>{{self().title}}</p>
