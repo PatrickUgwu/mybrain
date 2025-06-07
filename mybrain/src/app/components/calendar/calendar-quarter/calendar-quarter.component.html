@@ -7,7 +7,7 @@
     <div class="top-bar">
         @for (goal of quarterGoals(); track $index) {
             <div class="quarter-goal">
-                <app-calendar-goal [title]="goal.title" [type]="goal.type"></app-calendar-goal>
+                <app-calendar-goal [self]="goal"></app-calendar-goal>
             </div>    
         }
         <p class="add-button"  (click)="openAddWindow()">+</p>
@@ -29,7 +29,7 @@
                                 </div>
                                 @for (goal of week; track $index) {
                                     <div class="week-goal">
-                                        <app-calendar-goal [title]="goal.title" [type]="goal.type"></app-calendar-goal>
+                                        <app-calendar-goal [self]="goal"></app-calendar-goal>
                                     </div>
                                 }
                             </div>
@@ -39,7 +39,7 @@
 
                 <div class="side-bar">
                     @for (goal of month[1]; track $index) {
-                        <app-calendar-goal class="month-goal" [title]="goal.title" [type]="goal.type"></app-calendar-goal>
+                        <app-calendar-goal class="month-goal" [self]="goal"></app-calendar-goal>
                     }
                 </div>
             </div>

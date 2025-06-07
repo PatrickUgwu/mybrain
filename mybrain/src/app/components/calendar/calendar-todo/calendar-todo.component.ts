@@ -8,5 +8,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './calendar-todo.component.css'
 })
 export class CalendarTodoComponent {
-  title = input.required<string>()
+  self = input.required<ToDo>()
 }

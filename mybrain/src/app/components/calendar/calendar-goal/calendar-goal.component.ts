@@ -8,6 +8,5 @@ import { Component, input, signal } from '@angular/core';
   styleUrl: './calendar-goal.component.css'
 })
 export class CalendarGoalComponent {
-  title = input.required<string>()
-  type = input.required<string>()
+  self = input.required<Goal>()
 }

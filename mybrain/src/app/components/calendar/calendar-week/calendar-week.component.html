@@ -9,7 +9,7 @@
     <div class="topbar">
         @for (goal of goals(); track $index) {
             <div class="goal">
-                <app-calendar-goal [title]="goal.title" [type]="goal.type"  (click)="openPopup('goal', goal)"></app-calendar-goal>
+                <app-calendar-goal [self]="goal"></app-calendar-goal>
             </div>
         }
         <p class="add-button"  (click)="openPopup('add')">+</p>
@@ -33,7 +33,7 @@
                     <div class="action-container">
                         @for (action of actions(); track $index) {
                             <div class="action">
-                                <app-calendar-action [title]="action.title" (click)="openPopup('action', action)"></app-calendar-action>     
+                                <app-calendar-action [self]="action"></app-calendar-action>     
                             </div>
                         }    
                     </div>        
@@ -41,7 +41,7 @@
                     <div class="todo-container">
                         @for (todo of todos[weekDayIndex]; track $index) {
                             <div class="todo">
-                                <app-calendar-todo [title]="todo.title" (click)="openPopup('todo', todo)"></app-calendar-todo>
+                                <app-calendar-todo [self]="todo"></app-calendar-todo>
                             </div>
                         }
                     </div>

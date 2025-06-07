@@ -8,5 +8,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './calendar-milestone.component.css'
 })
 export class CalendarMilestoneComponent {
-  title = input.required<string>()
+  self = input.required<Milestone>()
 }
