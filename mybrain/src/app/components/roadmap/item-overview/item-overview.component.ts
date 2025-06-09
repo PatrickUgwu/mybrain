@@ -23,6 +23,10 @@ export class ItemOverviewComponent implements OnInit {
     this.close.emit()
   }
 
+  deleteItem() {
+    this.roadmapService.deleteItem(this.item().id, this.itemType())
+  }
+
   ngOnInit(): void {
     this.roadmapService.getParent(this.itemType(), this.item().id).subscribe(parent => {
       this.parent = parent

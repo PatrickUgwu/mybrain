@@ -83,7 +83,19 @@
     border-radius: 0.5rem;
 }
 
-p {
+.item-detail p {
     height: 100%;
     font-size: 2rem;
+}
+
+.delete-button {
+    padding: 1rem;
+    align-self: self-end;
+    background-color: red;
+    border-radius: 0.5rem;
+    color: black;
+}
+
+.delete-button:hover {
+    background-color: #ccc;
 }
