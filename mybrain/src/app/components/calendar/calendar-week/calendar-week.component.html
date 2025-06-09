@@ -24,7 +24,7 @@
                 <div class="content">
                     
                     <div class="action-container">
-                        @for (action of actions(); track $index) {
+                        @for (action of roadmapService.actions(); track $index) {
                             <div class="action">
                                 <app-calendar-action [self]="action"></app-calendar-action>     
                             </div>

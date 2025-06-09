@@ -7,6 +7,7 @@ import { CalendarActionComponent } from "../calendar-action/calendar-action.comp
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
 import { AddButtonComponent } from "../add-button/add-button.component";
+import { RoadmapService } from '../../../services/roadmap.service';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { AddButtonComponent } from "../add-button/add-button.component";
   styleUrl: './calendar-week.component.css'
 })
 export class CalendarWeekComponent implements OnInit { 
+  roadmapService = inject(RoadmapService)
   today = input<string>("") // to mark the current day
   todayIndex?:number;
   calendarService = inject(CalendarService)
