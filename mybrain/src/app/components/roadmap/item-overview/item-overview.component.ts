@@ -19,12 +19,13 @@ export class ItemOverviewComponent implements OnInit {
   parent: Milestone | Goal | Action | ToDo | undefined
   close = output()
 
-  closeAdd(){
+  closePopup(){
     this.close.emit()
   }
 
   deleteItem() {
     this.roadmapService.deleteItem(this.item().id, this.itemType())
+    this.closePopup()
   }
 
   ngOnInit(): void {
