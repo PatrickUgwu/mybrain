@@ -32,7 +32,7 @@ class Roadmap(SQLModel, table=True):
     title: str = Field(index=True)
     description: str
     completed: bool = Field(default=False, index=True)
-    milestones: list["Milestone"] = Relationship(back_populates="parent")
+    milestones: list["Milestone"] = Relationship(back_populates="parent", cascade_delete=True)
     todos: list["Todo"] = Relationship(back_populates="parent")
 
 class MilestoneBase(SQLModel):
@@ -45,9 +45,9 @@ class Milestone(MilestoneBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     completed: bool = Field(default=False, index=True)
     deadline: date
-    parent_id: int = Field(foreign_key="roadmap.id")
+    parent_id: int = Field(foreign_key="roadmap.id", ondelete="CASCADE")
     parent: Roadmap = Relationship(back_populates="milestones")
-    goals: list["Goal"] = Relationship(back_populates="parent") 
+    goals: list["Goal"] = Relationship(back_populates="parent", cascade_delete=True) 
 
 class MilestoneCreate(MilestoneBase):
     deadline: date
@@ -74,9 +74,9 @@ class Goal(GoalBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     completed: bool = Field(default=False, index=True)
     deadline: date
-    parent_id: int = Field(foreign_key="milestone.id")
+    parent_id: int = Field(foreign_key="milestone.id", ondelete="CASCADE")
     parent: Milestone = Relationship(back_populates="goals")
-    actions: list["Action"]= Relationship(back_populates="parent") 
+    actions: list["Action"]= Relationship(back_populates="parent", cascade_delete=True) 
 
 class GoalCreate(GoalBase):
     deadline: date
@@ -101,7 +101,7 @@ class ActionBase(SQLModel):
 class Action(ActionBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     completed: bool = Field(default=False, index=True)
-    parent_id: int = Field(foreign_key="goal.id")
+    parent_id: int = Field(foreign_key="goal.id", ondelete="CASCADE")
     parent: Goal = Relationship(back_populates="actions")
 
 class ActionCreate(ActionBase):
@@ -177,14 +177,6 @@ def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
     session.commit()
     session.refresh(goal)
     return goal
-
-@app.post("/action")
-def create_action(action_data: ActionCreate, session: SessionDep) -> Action:
-    action: Action = Action.model_validate(action_data)
-    session.add(action)
-    session.commit()
-    session.refresh(action)
-    return action
 
 @app.post("/todo")
 def create_action(todo_data: TodoCreate, session: SessionDep):
