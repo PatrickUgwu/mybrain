@@ -193,6 +193,14 @@ def create_action(todo_data: TodoCreate, session: SessionDep):
     session.commit()
     session.refresh(todo)
     return todo
+
+@app.delete("/todo/{todo_id}")
+def delete_action(todo_id: int, session: SessionDep):
+    todo = session.get(Todo, todo_id)
+    if not todo:
+            raise HTTPException(status_code=404, detail="Todo not found")
+    session.delete(todo)
+    session.commit()
     
 @app.get("/action/{action_id}")
 def read_action(action_id: int, session: SessionDep) -> Action:

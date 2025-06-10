@@ -39,6 +39,7 @@ export class RoadmapService {
 
   deleteItem(itemID: number, type: string): void {
     if (type === "action") { this.deleteAction(itemID) }
+    else if (type === "todo") { this.deleteTodo(itemID) }
     else {throw new Error(`Unknown type ${type}`);}
   }
 
@@ -47,10 +48,14 @@ export class RoadmapService {
   }
 
   addTodo(todo: ToDo): void {
-    this.httpClient.post<ToDo>(this.url + "/todo", todo).subscribe({
-      next: (newItem) => {
-        this.todos.update(current => [...current, newItem])
-      },
+    this.httpClient.post<ToDo>(this.url + "/todo", todo).subscribe(newTodo => {
+        this.todos.update(current => [...current, newTodo])
+    })
+  }
+
+  deleteTodo(todoID: number) {
+    this.httpClient.delete(this.url + "/todo/" + todoID).subscribe(() => {
+      this.todos.update(current => current.filter(todo => todo.id !== todoID))
     })
   }
 
