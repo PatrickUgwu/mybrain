@@ -201,6 +201,21 @@ def read_action(action_id: int, session: SessionDep) -> Action:
         raise HTTPException(status_code=404, detail="Hero not found")
     return action
 
+@app.post("/action")
+def create_action(action_data: ActionCreate, session: SessionDep) -> Action:
+    action: Action = Action.model_validate(action_data)
+    session.add(action)
+    session.commit()
+    session.refresh(action)
+    return action
+
+@app.delete("/action/{action_id}")
+def delete_action(action_id: int, session: SessionDep):
+    action = session.get(Action, action_id)
+    if not action:
+            raise HTTPException(status_code=404, detail="Action not found")
+    session.delete(action)
+    session.commit()
 
 
 SAMPLE_WORKSPACES = [{

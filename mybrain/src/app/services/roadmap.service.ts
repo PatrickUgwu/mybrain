@@ -37,6 +37,11 @@ export class RoadmapService {
     else {throw new Error(`Unknown type ${type}`);}
   }
 
+  deleteItem(itemID: number, type: string): void {
+    if (type === "action") { this.deleteAction(itemID) }
+    else {throw new Error(`Unknown type ${type}`);}
+  }
+
   getToDos(day: string): Observable<ToDo[]> {
     return this.httpClient.get<ToDo[]>(this.url + "/todos?day=" + day)
   }
@@ -53,8 +58,16 @@ export class RoadmapService {
     return this.httpClient.get<Action[]>(this.url + "/actions")
   }
 
-  addAction(action: Action): Observable<Action> {
-    return this.httpClient.post<Action>(this.url + "/action", action)
+  addAction(action: Action): void {
+    this.httpClient.post<Action>(this.url + "/action", action).subscribe(newAction => {
+        this.actions.update(current => [...current, newAction])
+    })
+  }
+
+  deleteAction(actionID: number) {
+    this.httpClient.delete(this.url + "/action/" + actionID).subscribe(() => {
+      this.actions.update(current => current.filter(action => action.id !== actionID))
+    })
   }
 
   addGoal(goal: Goal): Observable<Goal> {
