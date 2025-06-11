@@ -1,6 +1,6 @@
 <div class="week-view">
     <div class="topbar">
-        @for (goal of goals(); track $index) {
+        @for (goal of weekGoals(); track $index) {
             <div class="goal">
                 <app-calendar-goal [self]="goal"></app-calendar-goal>
             </div>
@@ -12,11 +12,11 @@
     <div class="tile-container">
         
         @for (day of week; track day; let weekDayIndex = $index) {
-            <div class="tile" [class.active]="todayIndex === weekDayIndex">
+            <div class="tile" [class.active]="todayIndex() === weekDayIndex">
             
                 <div class="header">
                     <p class="title">{{day}}</p>
-                    <p class="add-button" (click)="openPopup('add')">+</p>
+                    <app-add-button class="add-button"></app-add-button>
                     
                     
                 </div>
@@ -24,7 +24,7 @@
                 <div class="content">
                     
                     <div class="action-container">
-                        @for (action of roadmapService.actions(); track $index) {
+                        @for (action of actions(); track $index) {
                             <div class="action">
                                 <app-calendar-action [self]="action"></app-calendar-action>     
                             </div>
@@ -32,7 +32,7 @@
                     </div>        
 
                     <div class="todo-container">
-                        @for (todo of todos[weekDayIndex]; track $index) {
+                        @for (todo of todos()[weekDayIndex]; track $index) {
                             <div class="todo">
                                 <app-calendar-todo [self]="todo"></app-calendar-todo>
                             </div>

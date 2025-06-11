@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { Action } from '../../../models/interfaces/action.interface';
 import { ToDo } from '../../../models/interfaces/todo.interface';
 import { CalendarService } from '../../../services/calendar.service';
@@ -19,39 +19,34 @@ import { RoadmapService } from '../../../services/roadmap.service';
 })
 export class CalendarWeekComponent implements OnInit { 
   roadmapService = inject(RoadmapService)
-  today = input<string>("") // to mark the current day
-  todayIndex?:number;
   calendarService = inject(CalendarService)
-  goals = input<Goal[]>([])
-  actions = input.required<Action[]>()
-  todos: ToDo[][] = []
+  today = input<string>("") // to mark the current day
   week:string[] = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
-  popup: [string, any] = ["", null]
-
-  openPopup(popupType: string, item?: unknown) {
-    this.popup[0] = popupType
-    if (this.popup[0] !== "add") {
-      this.popup[1] = item
-    }
-  }
   
-  closePopup() {
-    this.popup = ["", null]
-  }
+  weekData = signal<[string,ToDo[]][]>([])
+  todos = computed<ToDo[][]>( () => {
+    let allTodos = this.roadmapService.todos()
+    let weekTodos: ToDo[][] = []
+    for (let index = 0; index < this.weekData().length; index++) {
+      let matches = allTodos.filter(todo => todo.deadline === this.weekData()[index][0])
+      weekTodos.push(matches)
+    }
+    return weekTodos
+  })
+  actions = computed<Action[]>( () => {return this.roadmapService.actions()})
+  weekGoals = computed<Goal[]>( () => { return this.roadmapService.goals().filter(goal => goal.type === "week")})
+  todayIndex = computed<number>( () => {
+    for (let index = 0; index < this.weekData().length; index++) {
+      if (this.today() === this.weekData()[index][0]) {
+        return index
+      }
+    }
+    return -1
+  })
 
   ngOnInit(): void {
     this.calendarService.getWeek().subscribe(data => {
-      for (let index = 0; index < data.length; index++) {
-        // add todos
-        this.todos[index] = data[index][1]
-
-        //check if day is today
-        if (this.today() === data[index][0]) {
-          this.todayIndex = index
-        }
-      }
+      this.weekData.set(data)
     })
-    
   }
-
 }
