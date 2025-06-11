@@ -17,7 +17,7 @@
                 </div>        
 
                 <div class="todo-container">
-                    @for (todo of roadmapService.todos(); track $index) {
+                    @for (todo of todos(); track $index) {
                         <div class="todo">
                             <app-calendar-todo [title]="todo.title" [self]="todo"></app-calendar-todo>
                         </div>
