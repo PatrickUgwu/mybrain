@@ -304,21 +304,12 @@ def get_knowledge():
 
 @app.get("/milestones")
 def get_milestones(session: SessionDep):
-    milestones = []
-    roadmaps = session.exec(select(Roadmap)).all()
-    for roadmap in roadmaps:
-        for milestone in roadmap.milestones:
-            milestones.append(milestone)
+    milestones = session.exec(select(Milestone)).all()
     return milestones
 
 @app.get("/goals")
 def get_goals(session: SessionDep):
-    goals = []
-    roadmaps = session.exec(select(Roadmap)).all()
-    for roadmap in roadmaps:
-        for milestone in roadmap.milestones:
-            for goal in milestone.goals:
-                goals.append(goal)
+    goals = session.exec(select(Goal)).all()
     return goals
 
 @app.get("/today")
@@ -327,15 +318,8 @@ def get_today():
 
 @app.get("/actions")
 def get_actions(session: SessionDep):
-    actions = []
-    roadmaps = session.exec(select(Roadmap)).all()
-    for roadmap in roadmaps:
-        for milestone in roadmap.milestones:
-            for goal in milestone.goals:
-                for action in goal.actions:
-                    actions.append(action)
+    actions = session.exec(select(Action)).all()
     return actions
-
 
 @app.get("/todos") # tile if week or day view
 def get_todos(day: str, session: SessionDep):
