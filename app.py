@@ -325,6 +325,7 @@ def get_actions(session: SessionDep):
 def get_todos(day: str, session: SessionDep):
     if day == "" or day == "today":
         day = date.today().__str__()
+    elif day == "all": return session.exec(select(Todo)).all()
 
     todos = session.exec(select(Todo)).all()
     day_todos = []

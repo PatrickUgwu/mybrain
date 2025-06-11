@@ -13,7 +13,10 @@ export class RoadmapService {
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
   todos = signal<ToDo[]>([])
-  actions = signal<ToDo[]>([])
+  actions = signal<Action[]>([])
+  goals = signal<Goal[]>([])
+  milestones = signal<Milestone[]>([])
+  roadmaps = signal<any[]>([])
 
   getRoadmaps(): Observable<any> {
     return this.httpClient.get<any>(this.url + "/roadmaps")
@@ -75,12 +78,12 @@ export class RoadmapService {
     })
   }
 
-  addGoal(goal: Goal): Observable<Goal> {
-    return this.httpClient.post<Goal>(this.url + "/goal", goal)
+  getGoals(): Observable<Goal[]> {
+    return this.httpClient.get<Goal[]>(this.url + "/goals")
   }
 
-  addMilestone(milestone: Milestone): Observable<Milestone> {
-    return this.httpClient.post<Milestone>(this.url + "/milestone", milestone)
+  getMilestones(): Observable<Milestone[]> {
+    return this.httpClient.get<Milestone[]>(this.url + "/milestones")
   }
 
   addRoadmap(roadmap: any): Observable<any> {
@@ -88,7 +91,9 @@ export class RoadmapService {
   }
 
   constructor() {
-    this.getToDos("").subscribe(data => this.todos.set(data))
+    this.getToDos("all").subscribe(data => this.todos.set(data))
     this.getActions().subscribe(data => this.actions.set(data))
+    this.getGoals().subscribe(data => this.goals.set(data))
+    this.getMilestones().subscribe(data => this.milestones.set(data))
   }
 }
