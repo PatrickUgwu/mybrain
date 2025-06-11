@@ -3,5 +3,5 @@ export interface RoadmapItem {
     title: string,
     description: string,
     completed?: boolean,
-    parent: string,
+    parent_id: string,
 }

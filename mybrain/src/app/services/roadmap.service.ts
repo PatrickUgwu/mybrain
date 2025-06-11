@@ -28,7 +28,6 @@ export class RoadmapService {
 
   getParent(itemType: string, itemID: any) : Observable<Milestone|Goal|Action|ToDo> {
     return this.httpClient.get<Milestone|Goal|Action|ToDo>(this.url + "/parent?item_type=" + itemType + "&item_id=" + itemID)
-
   }
 
   addItem(item: any, type: string): void {
@@ -43,6 +42,7 @@ export class RoadmapService {
   deleteItem(itemID: number, type: string): void {
     if (type === "action") { this.deleteAction(itemID) }
     else if (type === "todo") { this.deleteTodo(itemID) }
+    else if (type === "goal") { this.deleteGoal(itemID) }
     else {throw new Error(`Unknown type ${type}`);}
   }
 
@@ -80,6 +80,19 @@ export class RoadmapService {
 
   getGoals(): Observable<Goal[]> {
     return this.httpClient.get<Goal[]>(this.url + "/goals")
+  }
+
+  addGoal(goal: Goal): void {
+    this.httpClient.post<Goal>(this.url + "/goal", goal).subscribe(newGoal => {
+      this.goals.update(current => [...current, newGoal])
+    })
+  }
+
+  deleteGoal(goalID: number) {
+    this.httpClient.delete(this.url + "/goal/" + goalID).subscribe(() => {
+      this.goals.update(current => current.filter(goal => goal.id !== goalID))
+      this.actions.update(current => current.filter(action => action.parent_id != goalID.toString()));
+    })
   }
 
   getMilestones(): Observable<Milestone[]> {

@@ -178,6 +178,14 @@ def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
     session.refresh(goal)
     return goal
 
+@app.delete("/goal/{goal_id}")
+def delete_goal(goal_id: int, session: SessionDep):
+    goal = session.get(Goal, goal_id)
+    if not goal:
+            raise HTTPException(status_code=404, detail="Goal not found")
+    session.delete(goal)
+    session.commit()
+
 @app.post("/todo")
 def create_action(todo_data: TodoCreate, session: SessionDep):
     todo: Todo = Todo.model_validate(todo_data)
