@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { Action } from '../../../models/interfaces/action.interface';
 import { ToDo } from '../../../models/interfaces/todo.interface';
 import { CalendarService } from '../../../services/calendar.service';
@@ -6,6 +6,7 @@ import { Goal } from '../../../models/interfaces/goal.interface';
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
 import { AddButtonComponent } from "../add-button/add-button.component";
+import { RoadmapService } from '../../../services/roadmap.service';
 
 @Component({
   selector: 'app-calendar-month',
@@ -15,54 +16,58 @@ import { AddButtonComponent } from "../add-button/add-button.component";
   styleUrl: './calendar-month.component.css'
 })
 export class CalendarMonthComponent implements OnInit{
+  roadmapService = inject(RoadmapService)
   calendarService = inject(CalendarService)
   today = input<string>("")
-  todayIndex = [0, 0] // [week, day]
-  monthGoals = input.required<Goal[]>()
-  weekGoals = input.required<Goal[]>()
-  actions = input.required<Action[]>()
-  month:[[string, ToDo[]][], Goal[]][] = [];
-  add =  false
+  monthData = signal<[string, ToDo[]][]>([])
 
-  openAddWindow() {
-    this.add = true
-  }
-  
-  closeAddWindow() {
-    this.add = false
-  }
+  monthGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "month"))
+  weekGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "week"))
+  actions = computed<Action[]>( () => this.roadmapService.actions())
+
+  month = computed<[[string, ToDo[]][], Goal[]][]>( () => {
+    let week:[[string, ToDo[]][], Goal[]] = [[],[]] // [ [Date, ToDos[]][], weekGoals[] ]
+    let month: [[string, ToDo[]][], Goal[]][] = []
+    for (let i = 0; i < this.monthData().length; i++) {
+      let dayTodos = this.roadmapService.todos().filter(todo => todo.deadline === this.monthData()[i][0])
+      // add day to week
+      if (this.monthData()[i][0] === null) {
+        week[0].push(["-", dayTodos]) // add day outside month
+      }
+      else {
+        week[0].push([this.monthData()[i][0].slice(8,10), dayTodos]) // add day inside month
+      }
+
+      // add to week goals
+      this.weekGoals().forEach(goal => {
+        if (this.monthData()[i][0] === goal.deadline) {
+          week[1].push(goal)
+        }
+      })
+      
+      // add and reset week
+      if (i % 7 === 6) {
+        month.push(week)
+        week = [[],[]]
+      }
+    }
+    return month
+  })
+
+  todayIndex = computed<number[]>( () => { // [week, day]
+    for (let i = 0; i < this.monthData().length; i++) {
+      //check if day is today
+      
+      if (this.today() === this.monthData()[i][0]) {
+        return [Math.floor(i / 7), i % 7]
+      }
+    }
+    return [0,0]
+  }) 
 
   ngOnInit(): void {
     this.calendarService.getMonth().subscribe(data => {
-      let week:[[string, ToDo[]][], Goal[]] = [[],[]] // [ [Date, ToDos[]][], weekGoals[] ]
-      for (let i = 0; i < data.length; i++) {
-
-        // add day to week
-        if (data[i][0] === null) {
-          week[0].push(["-", data[i][1]]) // add day outside month
-        }
-        else {
-          week[0].push([data[i][0].slice(8,10), data[i][1]]) // add day inside month
-        }
-
-        // add to week goals
-        this.weekGoals().forEach(goal => {
-          if (data[i][0] === goal.deadline) {
-            week[1].push(goal)
-          }
-        })
-
-        //check if day is today
-        if (this.today() === data[i][0]) {
-          this.todayIndex = [this.month.length, i % 7]
-        }
-        
-        // add and reset week
-        if (i % 7 === 6) {
-          this.month.push(week)
-          week = [[],[]]
-        }
-      }
+      this.monthData.set(data)
     })
   }
 }

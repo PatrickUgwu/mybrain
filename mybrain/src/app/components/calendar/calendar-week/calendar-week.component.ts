@@ -33,8 +33,8 @@ export class CalendarWeekComponent implements OnInit {
     }
     return weekTodos
   })
-  actions = computed<Action[]>( () => {return this.roadmapService.actions()})
-  weekGoals = computed<Goal[]>( () => { return this.roadmapService.goals().filter(goal => goal.type === "week")})
+  actions = computed<Action[]>( () => this.roadmapService.actions() )
+  weekGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "week") )
   todayIndex = computed<number>( () => {
     for (let index = 0; index < this.weekData().length; index++) {
       if (this.today() === this.weekData()[index][0]) {
