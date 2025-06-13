@@ -10,7 +10,7 @@
     </div>
     <div class="calendar">
         
-        @for (quarter of year; track $index) {
+        @for (quarter of year(); track $index) {
             <div class="quarter">
                 <div class="months">
                     @for (month of quarter[0]; track $index) {
