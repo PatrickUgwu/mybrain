@@ -43,6 +43,7 @@ export class RoadmapService {
     if (type === "action") { this.deleteAction(itemID) }
     else if (type === "todo") { this.deleteTodo(itemID) }
     else if (type === "goal") { this.deleteGoal(itemID) }
+    else if (type === "milestone") { this.deleteMilestone(itemID) }
     else {throw new Error(`Unknown type ${type}`);}
   }
 
@@ -88,7 +89,7 @@ export class RoadmapService {
     })
   }
 
-  deleteGoal(goalID: number) {
+  deleteGoal(goalID: number): void {
     this.httpClient.delete(this.url + "/goal/" + goalID).subscribe(() => {
       this.goals.update(current => current.filter(goal => goal.id !== goalID))
       this.actions.update(current => current.filter(action => action.parent_id != goalID.toString()));
@@ -99,8 +100,23 @@ export class RoadmapService {
     return this.httpClient.get<Milestone[]>(this.url + "/milestones")
   }
 
-  addRoadmap(roadmap: any): Observable<any> {
-    return this.httpClient.post<any>(this.url + "/roadmap", roadmap)
+  addMilestone(milestone: Milestone): void {
+    this.httpClient.post<Milestone>(this.url + "/milestone", milestone).subscribe(newMilestone => {
+      this.milestones.update(current => [...current, newMilestone])
+    })
+  }
+
+  deleteMilestone(milestoneID: number): void {
+    this.httpClient.delete(this.url + "/goal/" + milestoneID).subscribe(() => {
+      this.milestones.update(current => current.filter(milestone => milestone.id !== milestoneID))
+      this.goals.update(current => current.filter(goal => goal.parent_id != milestoneID.toString()))
+    })
+  }
+
+  addRoadmap(roadmap: any): void {
+    this.httpClient.post<any>(this.url + "/roadmap", roadmap).subscribe(() => {
+      
+    })
   }
 
   constructor() {
