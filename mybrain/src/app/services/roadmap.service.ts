@@ -107,7 +107,7 @@ export class RoadmapService {
   }
 
   deleteMilestone(milestoneID: number): void {
-    this.httpClient.delete(this.url + "/goal/" + milestoneID).subscribe(() => {
+    this.httpClient.delete(this.url + "/milestone/" + milestoneID).subscribe(() => {
       this.milestones.update(current => current.filter(milestone => milestone.id !== milestoneID))
       this.goals.update(current => current.filter(goal => goal.parent_id != milestoneID.toString()))
     })
