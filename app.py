@@ -170,6 +170,14 @@ def create_milestone(milestone_data: MilestoneCreate, session: SessionDep) -> Mi
     session.refresh(milestone)
     return milestone
 
+@app.delete("/milestone/{milestone_id}")
+def delete_goal(milestone_id: int, session: SessionDep):
+    milestone = session.get(Milestone, milestone_id)
+    if not milestone:
+            raise HTTPException(status_code=404, detail="Milestone not found")
+    session.delete(milestone)
+    session.commit()
+
 @app.post("/goal")
 def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
     goal: Goal = Goal.model_validate(goal_data)
