@@ -162,6 +162,14 @@ def create_roadmap(roadmap_data: Roadmap, session: SessionDep):
     session.refresh(roadmap)
     return roadmap
 
+@app.delete("/roadmap/{roadmap_id}")
+def delete_roadmap(roadmap_id: int, session: SessionDep):
+    roadmap = session.get(Roadmap, roadmap_id)
+    if not roadmap:
+            raise HTTPException(status_code=404, detail="Roadmap not found")
+    session.delete(roadmap)
+    session.commit()
+
 @app.post("/milestone")
 def create_milestone(milestone_data: MilestoneCreate, session: SessionDep) -> Milestone:
     milestone: Milestone = Milestone.model_validate(milestone_data)
@@ -171,7 +179,7 @@ def create_milestone(milestone_data: MilestoneCreate, session: SessionDep) -> Mi
     return milestone
 
 @app.delete("/milestone/{milestone_id}")
-def delete_goal(milestone_id: int, session: SessionDep):
+def delete_milestone(milestone_id: int, session: SessionDep):
     milestone = session.get(Milestone, milestone_id)
     if not milestone:
             raise HTTPException(status_code=404, detail="Milestone not found")
@@ -195,7 +203,7 @@ def delete_goal(goal_id: int, session: SessionDep):
     session.commit()
 
 @app.post("/todo")
-def create_action(todo_data: TodoCreate, session: SessionDep):
+def create_todo(todo_data: TodoCreate, session: SessionDep):
     todo: Todo = Todo.model_validate(todo_data)
     session.add(todo)
     session.commit()
@@ -203,7 +211,7 @@ def create_action(todo_data: TodoCreate, session: SessionDep):
     return todo
 
 @app.delete("/todo/{todo_id}")
-def delete_action(todo_id: int, session: SessionDep):
+def delete_todo(todo_id: int, session: SessionDep):
     todo = session.get(Todo, todo_id)
     if not todo:
             raise HTTPException(status_code=404, detail="Todo not found")
