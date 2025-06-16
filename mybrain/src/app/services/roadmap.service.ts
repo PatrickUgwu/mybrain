@@ -5,6 +5,7 @@ import { Action } from '../models/interfaces/action.interface';
 import { Goal } from '../models/interfaces/goal.interface';
 import { Milestone } from '../models/interfaces/milestone.interface';
 import { ToDo } from '../models/interfaces/todo.interface';
+import { Roadmap } from '../models/interfaces/roadmap.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +17,8 @@ export class RoadmapService {
   actions = signal<Action[]>([])
   goals = signal<Goal[]>([])
   milestones = signal<Milestone[]>([])
-  roadmaps = signal<any[]>([])
+  roadmaps = signal<Roadmap[]>([])
 
-  getRoadmaps(): Observable<any> {
-    return this.httpClient.get<any>(this.url + "/roadmaps")
-  }
 
   getPossibleParents(type: string): Observable<string[]> {
     return this.httpClient.get<string[]>(this.url + "/possible_parents?type=" + type)
@@ -44,6 +42,7 @@ export class RoadmapService {
     else if (type === "todo") { this.deleteTodo(itemID) }
     else if (type === "goal") { this.deleteGoal(itemID) }
     else if (type === "milestone") { this.deleteMilestone(itemID) }
+    else if (type === "roadmap") { this.deleteRoadmap(itemID) }
     else {throw new Error(`Unknown type ${type}`);}
   }
 
@@ -113,9 +112,20 @@ export class RoadmapService {
     })
   }
 
+  getRoadmaps(): Observable<Roadmap[]> {
+    return this.httpClient.get<Roadmap[]>(this.url + "/roadmaps")
+  }
+
   addRoadmap(roadmap: any): void {
     this.httpClient.post<any>(this.url + "/roadmap", roadmap).subscribe(() => {
       
+    })
+  }
+
+  deleteRoadmap(roadmapID: number): void {
+    this.httpClient.delete(this.url + "/roadmap/" + roadmapID).subscribe(() => {
+      this.roadmaps.update(current => current.filter(roadmap => roadmap.id !== roadmapID))
+      this.milestones.update(current => current.filter(milestone => milestone.parent_id != roadmapID.toString()))
     })
   }
 
@@ -124,5 +134,6 @@ export class RoadmapService {
     this.getActions().subscribe(data => this.actions.set(data))
     this.getGoals().subscribe(data => this.goals.set(data))
     this.getMilestones().subscribe(data => this.milestones.set(data))
+    this.getRoadmaps().subscribe(data => this.roadmaps.set(data))
   }
 }
