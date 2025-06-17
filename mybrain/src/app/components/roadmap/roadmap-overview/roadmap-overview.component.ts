@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { RoadmapService } from '../../../services/roadmap.service';
 import { Roadmap } from '../../../models/interfaces/roadmap.interface';
+import { AddButtonComponent } from "../../calendar/add-button/add-button.component";
 import { Milestone } from '../../../models/interfaces/milestone.interface';
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { Action } from '../../../models/interfaces/action.interface';
@@ -21,5 +22,7 @@ export class RoadmapOverviewComponent {
   goals = computed<Goal[]>( () => this.roadmapService.goals() )
   actions = computed<Action[]>( () => this.roadmapService.actions())
   todos = computed<ToDo[]>( () => this.roadmapService.todos() )
+  deleteItem(item: any, itemType: string) {
+    this.roadmapService.deleteItem(item.id, itemType)
   }
 }

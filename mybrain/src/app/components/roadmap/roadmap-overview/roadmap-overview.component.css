@@ -15,10 +15,35 @@
     border-radius: 0.5rem;
 }
 
+.roadmap-header {
+    display: flex;
+    align-items: center;
+}
 .roadmap-title {
     font-size: 1.5rem;
     margin-bottom: 1rem;
+    margin: auto;
     color: aliceblue;
+}
+
+.add-button {
+    width: 5%;
+    margin-right: 2rem;
+    text-align: initial;
+    font-size: initial;
+    font-weight: initial;
+    color: initial;
+}
+
+.delete-button {
+    padding: 0.2rem;
+    background-color: red;
+    border-radius: 0.5rem;
+    color: black;
+}
+
+.delete-button:hover {
+    background-color: #ccc;
 }
 
 .milestones {
