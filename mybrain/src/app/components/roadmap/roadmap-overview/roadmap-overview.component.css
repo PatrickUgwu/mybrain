@@ -8,6 +8,14 @@
     font-size: 1.3rem;
 }
 
+.roadmap-title:hover,
+.milestone:hover,
+.goal:hover,
+.action:hover,
+.todo:hover {
+    box-shadow: 0 0 0 0.1rem orangered;
+}
+
 .roadmap {
     margin-bottom: 2rem;
     background-color: #234;
