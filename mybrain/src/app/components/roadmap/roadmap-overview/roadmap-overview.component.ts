@@ -1,5 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RoadmapService } from '../../../services/roadmap.service';
+import { Roadmap } from '../../../models/interfaces/roadmap.interface';
+import { Milestone } from '../../../models/interfaces/milestone.interface';
+import { Goal } from '../../../models/interfaces/goal.interface';
+import { Action } from '../../../models/interfaces/action.interface';
+import { ToDo } from '../../../models/interfaces/todo.interface';
 
 @Component({
   selector: 'app-roadmap-overview',
@@ -8,13 +13,13 @@ import { RoadmapService } from '../../../services/roadmap.service';
   templateUrl: './roadmap-overview.component.html',
   styleUrl: './roadmap-overview.component.css'
 })
-export class RoadmapOverviewComponent implements OnInit {
+export class RoadmapOverviewComponent {
   roadmapService = inject(RoadmapService)
-  roadmaps:any = []
 
-  ngOnInit(): void {
-    this.roadmapService.getRoadmaps().subscribe(roadmaps => {
-      this.roadmaps = roadmaps
-    })
+  roadmaps = computed<Roadmap[]>( () => this.roadmapService.roadmaps() )
+  milestones = computed<Milestone[]>( () => this.roadmapService.milestones() )
+  goals = computed<Goal[]>( () => this.roadmapService.goals() )
+  actions = computed<Action[]>( () => this.roadmapService.actions())
+  todos = computed<ToDo[]>( () => this.roadmapService.todos() )
   }
 }
