@@ -1,5 +1,7 @@
 .roadmaps-overview {
     width: 90vw;
+    display: flex;
+    flex-direction: column;
     height: auto;
     text-align: center;
     margin: auto;
@@ -8,22 +10,28 @@
     font-size: 1.3rem;
 }
 
-.roadmap-title:hover,
 .milestone:hover,
 .goal:hover,
 .action:hover,
 .todo:hover {
-    box-shadow: 0 0 0 0.1rem orangered;
+    box-shadow: 0 0 0 0.1rem aqua;
 }
 
 .roadmap {
     margin-bottom: 2rem;
     background-color: #234;
-    border: 0.2rem solid #ccc;
+    border: 0.3rem solid #ccc;
     border-radius: 0.5rem;
 }
 
+.roadmap:hover {
+    border: 0.3rem solid orangered;
+
+}
+
 .roadmap-header {
+    height: 3rem;
+    flex-grow: 0.5;
     display: flex;
     align-items: center;
 }
@@ -32,22 +40,6 @@
     margin-bottom: 1rem;
     margin: auto;
     color: aliceblue;
-}
-
-.add-button {
-    width: 5%;
-    margin-right: 2rem;
-    text-align: initial;
-    font-size: initial;
-    font-weight: initial;
-    color: initial;
-}
-
-.delete-button {
-    padding: 0.2rem;
-    background-color: red;
-    border-radius: 0.5rem;
-    color: black;
 }
 
 .delete-button:hover {

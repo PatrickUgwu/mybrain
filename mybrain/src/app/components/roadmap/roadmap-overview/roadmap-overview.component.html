@@ -5,11 +5,9 @@
 <div class="roadmaps-overview">
     
     @for (roadmap of roadmaps(); track $index) {
-        <div class="roadmap">
+        <div class="roadmap" (click)="openPopup('roadmap', roadmap, $event)">
             <div class="roadmap-header">
-                <p class="roadmap-title" (click)="openPopup('roadmap', roadmap, $event)">RM: {{roadmap["title"]}}</p>
-                <app-add-button  class="add-button"></app-add-button>
-                <p class="delete-button" (click)="deleteItem(roadmap, 'roadmap')">DELETE</p>
+                <p class="roadmap-title">RM: {{roadmap["title"]}}</p>
             </div>
             
             <div class="milestones">
