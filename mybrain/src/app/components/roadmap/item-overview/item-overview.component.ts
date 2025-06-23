@@ -4,11 +4,12 @@ import { Goal } from '../../../models/interfaces/goal.interface';
 import { Milestone } from '../../../models/interfaces/milestone.interface';
 import { Action } from '../../../models/interfaces/action.interface';
 import { RoadmapService } from '../../../services/roadmap.service';
+import { AddButtonComponent } from "../../calendar/add-button/add-button.component";
 
 @Component({
   selector: 'app-item-overview',
   standalone: true,
-  imports: [],
+  imports: [AddButtonComponent],
   templateUrl: './item-overview.component.html',
   styleUrl: './item-overview.component.css'
 })
@@ -21,6 +22,10 @@ export class ItemOverviewComponent implements OnInit {
 
   closePopup(){
     this.close.emit()
+  }
+
+  editItem() {
+
   }
 
   deleteItem() {

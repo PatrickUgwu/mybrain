@@ -88,6 +88,25 @@
     font-size: 2rem;
 }
 
+.activity-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-button {
+    width: 5%;
+    color: black;
+}
+
+.edit-button {
+    padding: 1rem;
+    background-color: aliceblue;
+    border-radius: 1rem;
+    color: black;
+}
+
 .delete-button {
     padding: 1rem;
     align-self: self-end;

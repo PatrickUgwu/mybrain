@@ -55,8 +55,12 @@
                     <p>{{item().deadline}}</p>
                 </div>
             }
+            <div class="activity-bar">
+                <app-add-button class="add-button" [parent]="[this.itemType(), this.item()]"></app-add-button>
+                <p class="edit-button" (click)="editItem()">EDIT</p>
+                <p class="delete-button" (click)="deleteItem()">DELETE</p>
+            </div>
             
-            <p class="delete-button" (click)="deleteItem()">DELETE</p>
         </section>
         
 </div>          
