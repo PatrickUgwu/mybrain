@@ -8,11 +8,11 @@
                     @if (item === "") {
                         <div>
                             <select [(ngModel)]="item" class="type" [ngModelOptions]="{ standalone: true }" (ngModelChange)="buildForm(item)" placeholder="Choose Item..." style="background-color: red;">
-                                <option value="Action">Action</option>
-                                <option value="ToDo">ToDo</option>
-                                <option value="Goal">Goal</option>
-                                <option value="Milestone">Milestone</option>
-                                <option value="Roadmap">Roadmap</option>
+                                <option value="action">Action</option>
+                                <option value="todo">ToDo</option>
+                                <option value="goal">Goal</option>
+                                <option value="milestone">Milestone</option>
+                                <option value="roadmap">Roadmap</option>
                             </select>
                         </div>
                     }
@@ -33,7 +33,7 @@
                     <input class="description" formControlName="description" placeholder="Enter Title...">
                 </div>
 
-                @if (item !== "Roadmap") {
+                @if (item !== "roadmap") {
                     <div class="form-item">
                         <label class="parent-label">Parent</label>
                         <select class="parent" formControlName="parent_id" placeholder="Enter Title...">
@@ -48,7 +48,7 @@
                 
             
                 
-                @if (item === "Action") {
+                @if (item === "action") {
                     <div class="form-item">
                         <label class="pattern-label">Pattern</label>
                         <select class="pattern" formControlName="pattern" placeholder="Enter Title...">
@@ -57,7 +57,7 @@
                     </div>
                 }
                 
-                @else if (item === "Goal") {
+                @else if (item === "goal") {
                     <div class="form-item">
                         <label class="deadline-label">Deadline</label>
                         <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
@@ -73,7 +73,7 @@
                     </div>
                 }
 
-                @else if (item === "Milestone" || item === "ToDo") {
+                @else if (item === "milestone" || item === "todo") {
                     <div class="form-item">
                         <label class="deadline-label">Deadline</label>
                         <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">

@@ -40,33 +40,32 @@ export class AddWindowComponent implements OnInit{
   }
 
   buildForm(type: string){
-      if (type !== "Roadmap" && type !== "ToDo") {
-        this.itemForm.addControl("parent_id", new FormControl("", Validators.required))
-      }
-    
-      if (type === "Action") {
-        this.itemForm.addControl("pattern", new FormControl("daily", Validators.required))
-      }
-      else if (type === "Goal") {
-        this.itemForm.addControl("deadline", new FormControl("", Validators.required))
-        this.itemForm.addControl("type", new FormControl("week", Validators.required))
-      }
-      else if (type === "Milestone") {
-        this.itemForm.addControl("deadline", new FormControl("", Validators.required))
-      }
-      else if (type === "ToDo") {
-        this.itemForm.addControl("parent_id", new FormControl())
-        this.itemForm.addControl("deadline", new FormControl())
-      }
-      this.getPossibleParents(type)
+    if (type !== "roadmap" && type !== "todo") {
+      this.itemForm.addControl("parent_id", new FormControl(this.parents[0]?.title, Validators.required))
     }
+    if (type === "action") {
+      this.itemForm.addControl("pattern", new FormControl("daily", Validators.required))
+    }
+    else if (type === "goal") {
+      this.itemForm.addControl("deadline", new FormControl("", Validators.required))
+      this.itemForm.addControl("type", new FormControl("week", Validators.required))
+    }
+    else if (type === "milestone") {
+      this.itemForm.addControl("deadline", new FormControl("", Validators.required))
+    }
+    else if (type === "todo") {
+      this.itemForm.addControl("parent_id", new FormControl())
+      this.itemForm.addControl("deadline", new FormControl())
+    }
+    this.getPossibleParents(type)
+  }
 
   closeAdd(){
     this.close.emit()
   }
 
   addItem() {
-    this.roadmapService.addItem(this.itemForm.value, this.item.toLowerCase())
+    this.roadmapService.addItem(this.itemForm.value, this.item)
     this.closeAdd()  
   }
 
