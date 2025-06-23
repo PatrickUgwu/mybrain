@@ -20,8 +20,8 @@ export class RoadmapService {
   roadmaps = signal<Roadmap[]>([])
 
 
-  getPossibleParents(type: string): Observable<string[]> {
-    return this.httpClient.get<string[]>(this.url + "/possible_parents?type=" + type)
+  getPossibleParents(type: string): Observable<Roadmap[] | Milestone[] | Goal[]> {
+    return this.httpClient.get<Roadmap[] | Milestone[] | Goal[]>(this.url + "/possible_parents?type=" + type)
   }
 
   getParent(itemType: string, itemID: any) : Observable<Milestone|Goal|Action|ToDo> {

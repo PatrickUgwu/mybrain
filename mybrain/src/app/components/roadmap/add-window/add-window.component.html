@@ -39,7 +39,7 @@
                         <select class="parent" formControlName="parent_id" placeholder="Enter Title...">
                             
                             @for (parent of parents; track $index) {
-                                <option value="{{parent}}">{{parent}}</option>
+                                <option value="{{parent.title}}">{{parent.title}}</option>
                             }
                             
                         </select>

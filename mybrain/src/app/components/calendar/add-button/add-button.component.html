@@ -1,4 +1,4 @@
 @if (popup === "add") {
-    <app-add-window (close)="closePopup()"></app-add-window>
+    <app-add-window [parent]="parent()" (close)="closePopup()"></app-add-window>
 }
 <p class="add-button" (click)="openPopup('add')">+</p>

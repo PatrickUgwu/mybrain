@@ -1,6 +1,9 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RoadmapService } from '../../../services/roadmap.service';
+import { Goal } from '../../../models/interfaces/goal.interface';
+import { Milestone } from '../../../models/interfaces/milestone.interface';
+import { Roadmap } from '../../../models/interfaces/roadmap.interface';
 
 @Component({
   selector: 'app-add-window',
@@ -9,10 +12,11 @@ import { RoadmapService } from '../../../services/roadmap.service';
   templateUrl: './add-window.component.html',
   styleUrl: './add-window.component.css'
 })
-export class AddWindowComponent {
+export class AddWindowComponent implements OnInit{
   roadmapService = inject(RoadmapService)
+  parent = input<[string, Roadmap|Milestone|Goal|any]>(["", null])
   item: string = ""
-  parents: string[] = []
+  parents: Roadmap[] | Milestone[] | Goal[] = []
   @Output() close = new EventEmitter<void>()
 
   itemForm:FormGroup = new FormGroup({
@@ -28,11 +32,11 @@ export class AddWindowComponent {
 
   
   getPossibleParents(type:string){
-    this.roadmapService.getPossibleParents(type.toLowerCase()).subscribe(data => {
-      data.forEach(parent => {
-        this.parents.push(parent)
+    if (this.parent()[1] === null || this.parent()[0] === "action" || this.parent()[0] === "todo") {
+      this.roadmapService.getPossibleParents(type).subscribe(data => {
+        this.parents = data
       })
-    })
+    }
   }
 
   buildForm(type: string){
@@ -64,5 +68,16 @@ export class AddWindowComponent {
   addItem() {
     this.roadmapService.addItem(this.itemForm.value, this.item.toLowerCase())
     this.closeAdd()  
+  }
+
+  ngOnInit(): void {
+    if (this.parent()[0] !== "" && this.parent()[0] !== "action" && this.parent()[0] !== "todo") {
+      if (this.parent()[0] === "roadmap") {this.item = "milestone"}
+      else if (this.parent()[0] === "milestone") {this.item = "goal"}
+      else if (this.parent()[0] === "goal") {this.item = "action"}
+      this.parents = [this.parent()[1]]
+      this.buildForm(this.item)
+    }
+
   }
 }

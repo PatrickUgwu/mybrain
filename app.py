@@ -277,14 +277,11 @@ SAMPLE_WORKSPACES = [{
 def get_possible_parents(type:str, session: SessionDep):
     parents: list[str] = []
     if type == "todo" or type == "milestone":
-        roadmaps = session.exec(select(Roadmap)).all()
-        parents = [roadmap.title for roadmap in roadmaps]
+        parents = session.exec(select(Roadmap)).all()
     elif type == "goal":
-        milestones = session.exec(select(Milestone)).all()
-        parents = [milestone.title for milestone in milestones]
+        parents = session.exec(select(Milestone)).all()
     elif type == "action":
-        goals = session.exec(select(Goal)).all()
-        parents = [goal.title for goal in goals]
+        parents = session.exec(select(Goal)).all()
     return parents
 
 @app.get("/parent")
