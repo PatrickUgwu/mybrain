@@ -28,6 +28,15 @@ export class RoadmapService {
     return this.httpClient.get<Milestone|Goal|Action|ToDo>(this.url + "/parent?item_type=" + itemType + "&item_id=" + itemID)
   }
 
+  updateItem(item: any, itemID: number, type: string): Observable<any> {
+     if (type === "action") { return this.updateAction(itemID, item) }
+    else if (type === "roadmap") { return this.updateRoadmap(itemID, item) }
+    else if (type === "milestone") { return this.updateMilestone(itemID, item) }
+    else if (type === "goal") { return this.updateGoal(itemID, item) }
+    else if (type === "todo") { return this.updateTodo(itemID, item) }
+    else {throw new Error(`Unknown type ${type}`);}
+  }
+
   addItem(item: any, type: string): void {
     if (type === "action") { this.addAction(item) }
     else if (type === "roadmap") { this.addRoadmap(item) }
@@ -56,6 +65,10 @@ export class RoadmapService {
     })
   }
 
+  updateTodo(todoID: number, todo: any): Observable<ToDo> {
+    return this.httpClient.patch<ToDo>(this.url + "/todo/" + todoID, todo)
+  }
+
   deleteTodo(todoID: number) {
     this.httpClient.delete(this.url + "/todo/" + todoID).subscribe(() => {
       this.todos.update(current => current.filter(todo => todo.id !== todoID))
@@ -72,6 +85,10 @@ export class RoadmapService {
     })
   }
 
+  updateAction(actionID: number, action: any): Observable<Action> {
+    return this.httpClient.patch<Action>(this.url + "/action/" + actionID, action)
+  }
+
   deleteAction(actionID: number) {
     this.httpClient.delete(this.url + "/action/" + actionID).subscribe(() => {
       this.actions.update(current => current.filter(action => action.id !== actionID))
@@ -86,6 +103,10 @@ export class RoadmapService {
     this.httpClient.post<Goal>(this.url + "/goal", goal).subscribe(newGoal => {
       this.goals.update(current => [...current, newGoal])
     })
+  }
+
+  updateGoal(goalID: number, goal: any): Observable<Goal> {
+    return this.httpClient.patch<Goal>(this.url + "/goal/" + goalID, goal)
   }
 
   deleteGoal(goalID: number): void {
@@ -105,6 +126,10 @@ export class RoadmapService {
     })
   }
 
+  updateMilestone(milestoneID: number, milestone: any): Observable<Milestone> {
+    return this.httpClient.patch<Milestone>(this.url + "/milestone/" + milestoneID, milestone)
+  }
+
   deleteMilestone(milestoneID: number): void {
     this.httpClient.delete(this.url + "/milestone/" + milestoneID).subscribe(() => {
       this.milestones.update(current => current.filter(milestone => milestone.id !== milestoneID))
@@ -120,6 +145,10 @@ export class RoadmapService {
     this.httpClient.post<any>(this.url + "/roadmap", roadmap).subscribe(() => {
       
     })
+  }
+
+  updateRoadmap(roadmapID: number, roadmap: any): Observable<Roadmap> {
+    return this.httpClient.patch<Roadmap>(this.url + "/roadmap/" + roadmapID, roadmap)
   }
 
   deleteRoadmap(roadmapID: number): void {
