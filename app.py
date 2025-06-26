@@ -35,6 +35,11 @@ class Roadmap(SQLModel, table=True):
     milestones: list["Milestone"] = Relationship(back_populates="parent", cascade_delete=True)
     todos: list["Todo"] = Relationship(back_populates="parent")
 
+class RoadmapUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+
 class MilestoneBase(SQLModel):
     title: str
     description: str
@@ -161,6 +166,18 @@ def create_roadmap(roadmap_data: Roadmap, session: SessionDep):
     session.commit()
     session.refresh(roadmap)
     return roadmap
+
+@app.patch("/roadmap/{roadmap_id}")
+def update_roadmap(roadmap_id: int, roadmap: RoadmapUpdate, session: SessionDep):
+    db_roadmap = session.get(Roadmap, roadmap_id)
+    if not db_roadmap:
+            raise HTTPException(status_code=404, detail="Hero not found")
+    roadmap_data = roadmap.model_dump(exclude_unset=True)
+    db_roadmap.sqlmodel_update(roadmap_data)
+    session.add(db_roadmap)
+    session.commit()
+    session.refresh(db_roadmap)
+    return db_roadmap
 
 @app.delete("/roadmap/{roadmap_id}")
 def delete_roadmap(roadmap_id: int, session: SessionDep):
