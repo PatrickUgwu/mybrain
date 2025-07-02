@@ -67,6 +67,15 @@ class MilestoneCreate(MilestoneBase):
             par = select(Roadmap).where(Roadmap.title == v)
             parent = session.exec(par).first()
             return parent.id
+        
+class MilestoneUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    deadline: date | None = None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return date.fromisoformat(v)
 
 class GoalBase(SQLModel):
     title: str
@@ -96,6 +105,16 @@ class GoalCreate(GoalBase):
             par = select(Milestone).where(Milestone.title == v)
             parent = session.exec(par).first()
             return parent.id
+        
+class GoalUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    type: str | None = None
+    deadline: date | None = None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return date.fromisoformat(v)
 
 class ActionBase(SQLModel):
     title: str
@@ -118,6 +137,12 @@ class ActionCreate(ActionBase):
             parent = session.exec(par).first()
             return parent.id
         
+class ActionUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    pattern: str | None = None
+
 class TodoBase(SQLModel):
     title: str
     description: str
@@ -148,6 +173,15 @@ class TodoCreate(TodoBase):
             par = select(Roadmap).where(Roadmap.title == v)
             parent = session.exec(par).first()
             return parent.id
+
+class TodoUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    deadline: date | None = None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return date.fromisoformat(v)
 
 app = FastAPI(lifespan=lifespan)
 
