@@ -229,6 +229,18 @@ def create_milestone(milestone_data: MilestoneCreate, session: SessionDep) -> Mi
     session.refresh(milestone)
     return milestone
 
+@app.patch("/milestone/{milestone_id}")
+def update_milestone(milestone_id: int, milestone: MilestoneUpdate, session: SessionDep):
+    db_milestone = session.get(Milestone, milestone_id)
+    if not db_milestone:
+            raise HTTPException(status_code=404, detail="Milestone not found")
+    milestone_data = milestone.model_dump(exclude_unset=True)
+    db_milestone.sqlmodel_update(milestone_data)
+    session.add(db_milestone)
+    session.commit()
+    session.refresh(db_milestone)
+    return db_milestone
+
 @app.delete("/milestone/{milestone_id}")
 def delete_milestone(milestone_id: int, session: SessionDep):
     milestone = session.get(Milestone, milestone_id)
@@ -245,6 +257,18 @@ def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
     session.refresh(goal)
     return goal
 
+@app.patch("/goal/{goal_id}")
+def update_goal(goal_id: int, goal: GoalUpdate, session: SessionDep):
+    db_goal = session.get(Goal, goal_id)
+    if not db_goal:
+            raise HTTPException(status_code=404, detail="Goal not found")
+    goal_data = goal.model_dump(exclude_unset=True)
+    db_goal.sqlmodel_update(goal_data)
+    session.add(db_goal)
+    session.commit()
+    session.refresh(db_goal)
+    return db_goal
+
 @app.delete("/goal/{goal_id}")
 def delete_goal(goal_id: int, session: SessionDep):
     goal = session.get(Goal, goal_id)
@@ -260,6 +284,18 @@ def create_todo(todo_data: TodoCreate, session: SessionDep):
     session.commit()
     session.refresh(todo)
     return todo
+
+@app.patch("/todo/{todo_id}")
+def update_todo(todo_id: int, todo: TodoUpdate, session: SessionDep):
+    db_todo = session.get(Todo, todo_id)
+    if not db_todo:
+            raise HTTPException(status_code=404, detail="Todo not found")
+    todo_data = todo.model_dump(exclude_unset=True)
+    db_todo.sqlmodel_update(todo_data)
+    session.add(db_todo)
+    session.commit()
+    session.refresh(db_todo)
+    return db_todo
 
 @app.delete("/todo/{todo_id}")
 def delete_todo(todo_id: int, session: SessionDep):
@@ -283,6 +319,18 @@ def create_action(action_data: ActionCreate, session: SessionDep) -> Action:
     session.commit()
     session.refresh(action)
     return action
+
+@app.patch("/action/{action_id}")
+def update_action(action_id: int, action: ActionUpdate, session: SessionDep):
+    db_action = session.get(Action, action_id)
+    if not db_action:
+            raise HTTPException(status_code=404, detail="Action not found")
+    action_data = action.model_dump(exclude_unset=True)
+    db_action.sqlmodel_update(action_data)
+    session.add(db_action)
+    session.commit()
+    session.refresh(db_action)
+    return db_action
 
 @app.delete("/action/{action_id}")
 def delete_action(action_id: int, session: SessionDep):
