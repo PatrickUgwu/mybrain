@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Action } from '../models/interfaces/action.interface';
 import { Goal } from '../models/interfaces/goal.interface';
 import { Milestone } from '../models/interfaces/milestone.interface';
@@ -66,7 +66,11 @@ export class RoadmapService {
   }
 
   updateTodo(todoID: number, todo: any): Observable<ToDo> {
-    return this.httpClient.patch<ToDo>(this.url + "/todo/" + todoID, todo)
+    return this.httpClient.patch<ToDo>(this.url + "/todo/" + todoID, todo).pipe(
+      tap(updatedTodo => {
+        this.todos.update(current => current.map(todo => todo.id === todoID ? updatedTodo : todo))
+      })
+    )
   }
 
   deleteTodo(todoID: number) {
@@ -86,7 +90,11 @@ export class RoadmapService {
   }
 
   updateAction(actionID: number, action: any): Observable<Action> {
-    return this.httpClient.patch<Action>(this.url + "/action/" + actionID, action)
+    return this.httpClient.patch<Action>(this.url + "/action/" + actionID, action).pipe(
+      tap(updatedAction => {
+        this.actions.update(current => current.map(action => action.id === actionID ? updatedAction : action))
+      })
+    )
   }
 
   deleteAction(actionID: number) {
@@ -106,7 +114,11 @@ export class RoadmapService {
   }
 
   updateGoal(goalID: number, goal: any): Observable<Goal> {
-    return this.httpClient.patch<Goal>(this.url + "/goal/" + goalID, goal)
+    return this.httpClient.patch<Goal>(this.url + "/goal/" + goalID, goal).pipe(
+      tap(updatedGoal => {
+        this.goals.update(current => current.map(goal => goal.id === goalID ? updatedGoal : goal))
+      })
+    )
   }
 
   deleteGoal(goalID: number): void {
@@ -127,7 +139,11 @@ export class RoadmapService {
   }
 
   updateMilestone(milestoneID: number, milestone: any): Observable<Milestone> {
-    return this.httpClient.patch<Milestone>(this.url + "/milestone/" + milestoneID, milestone)
+    return this.httpClient.patch<Milestone>(this.url + "/milestone/" + milestoneID, milestone).pipe(
+      tap(updatedMilestone => {
+        this.milestones.update(current => current.map(milestone => milestone.id === milestoneID ? updatedMilestone : milestone))
+      })
+    )
   }
 
   deleteMilestone(milestoneID: number): void {
@@ -148,7 +164,11 @@ export class RoadmapService {
   }
 
   updateRoadmap(roadmapID: number, roadmap: any): Observable<Roadmap> {
-    return this.httpClient.patch<Roadmap>(this.url + "/roadmap/" + roadmapID, roadmap)
+    return this.httpClient.patch<Roadmap>(this.url + "/roadmap/" + roadmapID, roadmap).pipe(
+      tap(updatedRoadmap => {
+        this.roadmaps.update(current => current.map(roadmap => roadmap.id === roadmapID ? updatedRoadmap : roadmap))
+      })
+    )
   }
 
   deleteRoadmap(roadmapID: number): void {
