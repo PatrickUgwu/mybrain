@@ -46,6 +46,12 @@
     background-color: #ccc;
 }
 
+.item-type {
+    padding: 0 0.2rem;
+    border-radius: 0.5rem;
+    border: 0.1rem solid aliceblue;
+}
+
 .milestones {
     height: auto;
     width: 100%;

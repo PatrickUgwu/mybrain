@@ -14,19 +14,19 @@
             @for (milestone of milestones(); track $index) {
                 @if (milestone.parent_id == roadmap.id?.toString()) {
                     <div class="milestone" (click)="openPopup('milestone', milestone, $event)">
-                    <p>MS: {{milestone["title"]}}</p>
+                    <p><span class="item-type">MS</span> : {{milestone["title"]}}</p>
 
                     <div class="goals">
                         @for (goal of goals(); track $index) {
                             @if (goal.parent_id == milestone.id?.toString()) {
                                 <div class="goal"  (click)="openPopup('goal', goal, $event)">
-                                    <p>{{goal["type"][0]}}G: {{goal["title"]}}</p>
+                                    <p><span class="item-type">{{goal["type"][0]}}G</span> : {{goal["title"]}}</p>
 
                                     <div class="actions">
                                         @for (action of actions(); track $index) {
                                             @if (action.parent_id == goal.id?.toString()) {
                                                 <div class="action" (click)="openPopup('action', action, $event)">
-                                                    <p>A: {{action["title"]}}</p>
+                                                    <p><span class="item-type">A</span> : {{action["title"]}}</p>
                                                 </div>
                                             }
                                             
