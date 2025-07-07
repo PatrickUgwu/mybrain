@@ -29,7 +29,7 @@ export class AddWindowComponent implements OnInit{
       Validators.minLength(3),
     ])
   })
-
+  //itemForm2: FormGroup = this.roadmapService.buildForm(this.item)
   
   getPossibleParents(type:string){
     if (this.parent()[1] === null || this.parent()[0] === "action" || this.parent()[0] === "todo") {

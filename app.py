@@ -205,7 +205,7 @@ def create_roadmap(roadmap_data: Roadmap, session: SessionDep):
 def update_roadmap(roadmap_id: int, roadmap: RoadmapUpdate, session: SessionDep):
     db_roadmap = session.get(Roadmap, roadmap_id)
     if not db_roadmap:
-            raise HTTPException(status_code=404, detail="Hero not found")
+            raise HTTPException(status_code=404, detail="Roadmap not found")
     roadmap_data = roadmap.model_dump(exclude_unset=True)
     db_roadmap.sqlmodel_update(roadmap_data)
     session.add(db_roadmap)

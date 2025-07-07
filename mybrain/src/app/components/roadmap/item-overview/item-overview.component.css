@@ -26,7 +26,6 @@
 .header {
     width: 90%;
     height: 100%;
-    font-size: 3rem;
     display: flex;
 }
 
@@ -38,25 +37,26 @@
     margin: auto;
     display: flex;
     justify-content: center;
-    align-items: center;
+    gap: 1rem;
     padding: 0 1rem;
 }
 
-.header-title p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.item-type {
+    width: auto;
     height: 80%;
-    
+}
+
+.header-title .item-title {
+    width: auto;
+    height: 80%;
+    overflow: hidden;
 }
 
 .close {
+    font-size: 3rem;
     width: 10%;
     height: 100%;
     background-color: red;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .main-info {
@@ -88,6 +88,25 @@
     font-size: 2rem;
 }
 
+input {
+    width: 50%;
+    height: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.checkbox {
+    width: 20%;
+    height: 100%;
+}
+
+.date, .dropbox {
+    width: 20%;
+    height: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
 .activity-bar {
     width: 100%;
     display: flex;
@@ -100,9 +119,8 @@
     color: black;
 }
 
-.edit-button {
+.edit-button, .save-button, .cancel-button {
     padding: 1rem;
-    background-color: aliceblue;
     border-radius: 1rem;
     color: black;
 }
@@ -117,4 +135,10 @@
 
 .delete-button:hover {
     background-color: #ccc;
+}
+
+@media screen and (max-width: 1500px) {
+    .date, .dropbox {
+        width: 60%;
+    }
 }
