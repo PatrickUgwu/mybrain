@@ -6,8 +6,14 @@
     text-align: center;
     margin: auto;
     color: #ccc;
-    font-weight: bold;
     font-size: 1.3rem;
+}
+
+.header-add-button {
+    width: 5%;
+    padding: 1rem;
+    color: black;
+    align-self: self-end;
 }
 
 .milestone:hover,

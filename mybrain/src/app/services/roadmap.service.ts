@@ -158,8 +158,8 @@ export class RoadmapService {
   }
 
   addRoadmap(roadmap: any): void {
-    this.httpClient.post<any>(this.url + "/roadmap", roadmap).subscribe(() => {
-      
+    this.httpClient.post<any>(this.url + "/roadmap", roadmap).subscribe(newRoadmap => {
+      this.roadmaps.update(current => [...current, newRoadmap])
     })
   }
 

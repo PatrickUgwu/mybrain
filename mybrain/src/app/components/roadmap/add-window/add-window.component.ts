@@ -74,6 +74,7 @@ export class AddWindowComponent implements OnInit{
       if (this.parent()[0] === "roadmap") {this.item = "milestone"}
       else if (this.parent()[0] === "milestone") {this.item = "goal"}
       else if (this.parent()[0] === "goal") {this.item = "action"}
+      else if (this.parent()[0] === "none") {this.item = "roadmap"}
       this.parents = [this.parent()[1]]
       this.buildForm(this.item)
     }

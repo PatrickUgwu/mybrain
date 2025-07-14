@@ -3,7 +3,10 @@
 }
 
 <div class="roadmaps-overview">
-    
+    <div class="header-add-button">
+        <app-add-button  class="add-button" [parent]="['none', null]"></app-add-button>
+    </div>
+   
     @for (roadmap of roadmaps(); track $index) {
         <div class="roadmap" (click)="openPopup('roadmap', roadmap, $event)">
             <div class="roadmap-header">
