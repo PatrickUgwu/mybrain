@@ -1,0 +1,88 @@
+<div class="add-window">
+    
+    <form class="add-form" [formGroup]="itemForm" (submit)="addItem()">
+        <div class="header-container">
+            <div class="header">
+                <div class="header-title">
+                    Add - {{item}}
+                    @if (item === "") {
+                        <div>
+                            <select [(ngModel)]="item" class="type" [ngModelOptions]="{ standalone: true }" (ngModelChange)="buildForm(item)" placeholder="Choose Item..." style="background-color: red;">
+                                <option value="action">Action</option>
+                                <option value="todo">ToDo</option>
+                                <option value="goal">Goal</option>
+                                <option value="milestone">Milestone</option>
+                                <option value="roadmap">Roadmap</option>
+                            </select>
+                        </div>
+                    }
+                </div>
+                
+            </div>
+            <p (click)="closeAdd()" class="close">x</p>
+        </div>
+
+        <div class="main-form">
+            @if (item !== "") {
+                <div class="form-item">
+                    <label class="title-label">Title</label>
+                    <input class="title" formControlName="title" placeholder="Enter Title...">
+                </div>
+                <div class="form-item">
+                    <label class="description-label">Description</label>
+                    <input class="description" formControlName="description" placeholder="Enter Title...">
+                </div>
+
+                @if (item !== "roadmap") {
+                    <div class="form-item">
+                        <label class="parent-label">Parent</label>
+                        <select class="parent" formControlName="parent_id" placeholder="Enter Title...">
+                            
+                            @for (parent of parents; track $index) {
+                                <option value="{{parent.title}}">{{parent.title}}</option>
+                            }
+                            
+                        </select>
+                    </div>
+                }
+                
+            
+                
+                @if (item === "action") {
+                    <div class="form-item">
+                        <label class="pattern-label">Pattern</label>
+                        <select class="pattern" formControlName="pattern" placeholder="Enter Title...">
+                            <option value="daily">Daily</option>
+                        </select>
+                    </div>
+                }
+                
+                @else if (item === "goal") {
+                    <div class="form-item">
+                        <label class="deadline-label">Deadline</label>
+                        <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
+                    </div>
+
+                    <div class="form-item">
+                        <label class="type-label">Goal Type</label>
+                        <select class="goal-type" formControlName="type" placeholder="Enter Title...">
+                            <option value="week">Week</option>
+                            <option value="month">Month</option>
+                            <option value="quarter">Quarter</option>
+                        </select>
+                    </div>
+                }
+
+                @else if (item === "milestone" || item === "todo") {
+                    <div class="form-item">
+                        <label class="deadline-label">Deadline</label>
+                        <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
+                    </div>
+                }
+
+                <button [disabled]="!itemForm.valid" type="submit">Add</button>
+            }
+        </div>
+        
+    </form>
+</div>

@@ -1,6 +1,10 @@
-<div class="todo">
+@if (popup === "detail") {
+    <app-item-overview [itemType]="'todo'" [item]="self()" (close)="closePopup()"></app-item-overview>
+}
+
+<div class="todo" (click)="openPopup('detail')">
     <div class="todo-body">
         <div class="triangle"></div>
-        <p>{{title()}}</p>
+        <p>{{self().title}}</p>
     </div>
 </div>

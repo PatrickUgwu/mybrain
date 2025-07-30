@@ -1,9 +1,189 @@
-from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from typing import Annotated
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import date, datetime, timedelta
 import calendar
+from pydantic import field_validator
+from sqlmodel import Field, Relationship, SQLModel, Session, create_engine, select
 
-app = FastAPI()
+
+sqlite_file_name = "database.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+connect_args = {"check_same_thread": False}
+engine = create_engine(sqlite_url, connect_args=connect_args)
+
+# Define the lifespan context manager
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # on startup
+    SQLModel.metadata.create_all(engine)  
+    yield
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]
+
+class Roadmap(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    title: str = Field(index=True)
+    description: str
+    completed: bool = Field(default=False, index=True)
+    milestones: list["Milestone"] = Relationship(back_populates="parent", cascade_delete=True)
+    todos: list["Todo"] = Relationship(back_populates="parent")
+
+class RoadmapUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+
+class MilestoneBase(SQLModel):
+    title: str
+    description: str
+    parent_id: str
+    deadline: str
+    
+class Milestone(MilestoneBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    completed: bool = Field(default=False, index=True)
+    deadline: date
+    parent_id: int = Field(foreign_key="roadmap.id", ondelete="CASCADE")
+    parent: Roadmap = Relationship(back_populates="milestones")
+    goals: list["Goal"] = Relationship(back_populates="parent", cascade_delete=True) 
+
+class MilestoneCreate(MilestoneBase):
+    deadline: date
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return date.fromisoformat(v)
+    
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Roadmap).where(Roadmap.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+        
+class MilestoneUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    deadline: date | None = None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return date.fromisoformat(v)
+
+class GoalBase(SQLModel):
+    title: str
+    description: str
+    type: str
+    deadline: str
+    parent_id: str
+
+class Goal(GoalBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    completed: bool = Field(default=False, index=True)
+    deadline: date
+    parent_id: int = Field(foreign_key="milestone.id", ondelete="CASCADE")
+    parent: Milestone = Relationship(back_populates="goals")
+    actions: list["Action"]= Relationship(back_populates="parent", cascade_delete=True) 
+
+class GoalCreate(GoalBase):
+    deadline: date
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v: str):
+        return date.fromisoformat(v)
+    
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Milestone).where(Milestone.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+        
+class GoalUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    type: str | None = None
+    deadline: date | None = None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return date.fromisoformat(v)
+
+class ActionBase(SQLModel):
+    title: str
+    description: str
+    pattern: str | None
+    parent_id: str
+
+class Action(ActionBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    completed: bool = Field(default=False, index=True)
+    parent_id: int = Field(foreign_key="goal.id", ondelete="CASCADE")
+    parent: Goal = Relationship(back_populates="actions")
+
+class ActionCreate(ActionBase):
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Goal).where(Goal.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+        
+class ActionUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    pattern: str | None = None
+
+class TodoBase(SQLModel):
+    title: str
+    description: str
+    parent_id: str | None
+    deadline: str | None
+
+class Todo(TodoBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    deadline: date | None
+    completed: bool = Field(default=False, index=True)
+    parent_id: int | None = Field(default=None, foreign_key="roadmap.id")
+    parent: Roadmap | None = Relationship(back_populates="todos")
+
+class TodoCreate(TodoBase):
+    deadline: date | None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        if not v:
+            return date.today()
+        return date.fromisoformat(v)
+    
+    parent_id: int | None
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            if not v: 
+                return None
+            par = select(Roadmap).where(Roadmap.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+
+class TodoUpdate(SQLModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+    deadline: date | None = None
+    @field_validator("deadline", mode="before")
+    def validate_deadline(cls, v):
+        return date.fromisoformat(v)
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -13,194 +193,153 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-SAMPLE_ROADMAPS = [
-    {
-        "id": "1",
-        "title": "Art Portfolio Development",
-        "description": "Create a professional art portfolio with diverse pieces",
-        "color": "#4285F4",
-        "startDate": datetime(2025, 1, 1),  # Jan 1, 2025
-        "endDate": datetime(2025, 12, 31),  # Dec 31, 2025
-        "milestones": [
-            {
-                "id": "m1",
-                "title": "Build professional portfolio of 15 artworks",
-                "description": "Develop a cohesive collection of high-quality artworks",
-                "color": "#5C6BC0",
-                "roadmapId": "1",
-                "startDate": datetime(2025, 1, 1),
-                "endDate": datetime(2025, 3, 31),
-                "goals": [
-                    {
-                        "id": "g1",
-                        "title": "Create works",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "month",
-                        "deadline": date(2025, 2, 28).__str__(),
-                        "actions": [
-                            {
-                                "id": "a1",
-                                "title": "Take course 2h/day",
-                                "description": "Dedicate 2 hours daily to portfolio building course",
-                                "parent": "g1",
+@app.post("/roadmap")
+def create_roadmap(roadmap_data: Roadmap, session: SessionDep):
+    roadmap: Roadmap = Roadmap.model_validate(roadmap_data)
+    session.add(roadmap)
+    session.commit()
+    session.refresh(roadmap)
+    return roadmap
 
-                                "recurringPattern": "DAILY",
-                                "completed": False,
-                            },
-                            {
-                                "id": "a2",
-                                "title": "Submit course projects",
-                                "description": "Complete and submit all course project assignments",
-                                "parent": "g1",
-                                "completed": False,
-                            },
-                        ],
-                    },
-                    {
-                        "id": "g2",
-                        "title": "Create 5 digital artworks fefefefe efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "month",
-                        "deadline": date(2025, 3, 29).__str__(),
-                        "actions": [
-                            {
-                                "id": "a3",
-                                "title": "Sketch concepts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g3",
-                        "title": "Create 5 digital artworks fefefefe efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 4, 30).__str__(),
-                        "actions": [
-                            {
-                                "id": "a5",
-                                "title": "Skefefefecepts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g4",
-                        "title": "Create 5 digital artworksfefefefe efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 8, 28).__str__(),
-                        "actions": [
-                            {
-                                "id": "a6",
-                                "title": "effefef cefefefts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g7",
-                        "title": "gggggg efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 1, 30).__str__(),
-                        "actions": [
-                            {
-                                "id": "a5",
-                                "title": "Skefefefecepts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g8",
-                        "title": "Cre efefefef",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "quarter",
-                        "deadline": date(2025, 2, 28).__str__(),
-                        "actions": [
-                            {
-                                "id": "a6",
-                                "title": "effefef cefefefts",
-                                "description": "Develop initial sketches for digital pieces",
-                                "parent": "g2",
-                                "completed": False,
-                            }
-                        ],
-                    },
-                    {
-                        "id": "g17",
-                        "title": "bbbbb",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "week",
-                        "deadline": date(2025, 1, 13).__str__(),
-                        "actions": [
-                            
-                        ],
-                    },
-                    {
-                        "id": "g18",
-                        "title": "aaaaaa",
-                        "description": "Produce 5 high-quality digital pieces for portfolio",
-                        "completed": False,
-                        "parent": "m1",
-                        "type": "week",
-                        "deadline": date(2025, 2, 28).__str__(),
-                        "actions": [
-                            
-                        ],
-                    },
-                ],
-            }
-        ],
-    }
-]
+@app.patch("/roadmap/{roadmap_id}")
+def update_roadmap(roadmap_id: int, roadmap: RoadmapUpdate, session: SessionDep):
+    db_roadmap = session.get(Roadmap, roadmap_id)
+    if not db_roadmap:
+            raise HTTPException(status_code=404, detail="Roadmap not found")
+    roadmap_data = roadmap.model_dump(exclude_unset=True)
+    db_roadmap.sqlmodel_update(roadmap_data)
+    session.add(db_roadmap)
+    session.commit()
+    session.refresh(db_roadmap)
+    return db_roadmap
 
-SAMPLE_TODOS = [
-    {
-        "id": "t1",
-        "title": "Sketch",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,3,27),
-    },
-    {
-        "id": "t2",
-        "title": "concepts",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,3,28),
-    },
-    {
-        "id": "t3",
-        "title": "Sketch concepts",
-        "description": "Develop initial sketches for digital pieces",
-        "completed": False,
-        "deadline": date(2025,3,30),
-    },
-]
+@app.delete("/roadmap/{roadmap_id}")
+def delete_roadmap(roadmap_id: int, session: SessionDep):
+    roadmap = session.get(Roadmap, roadmap_id)
+    if not roadmap:
+            raise HTTPException(status_code=404, detail="Roadmap not found")
+    session.delete(roadmap)
+    session.commit()
+
+@app.post("/milestone")
+def create_milestone(milestone_data: MilestoneCreate, session: SessionDep) -> Milestone:
+    milestone: Milestone = Milestone.model_validate(milestone_data)
+    session.add(milestone)
+    session.commit()
+    session.refresh(milestone)
+    return milestone
+
+@app.patch("/milestone/{milestone_id}")
+def update_milestone(milestone_id: int, milestone: MilestoneUpdate, session: SessionDep):
+    db_milestone = session.get(Milestone, milestone_id)
+    if not db_milestone:
+            raise HTTPException(status_code=404, detail="Milestone not found")
+    milestone_data = milestone.model_dump(exclude_unset=True)
+    db_milestone.sqlmodel_update(milestone_data)
+    session.add(db_milestone)
+    session.commit()
+    session.refresh(db_milestone)
+    return db_milestone
+
+@app.delete("/milestone/{milestone_id}")
+def delete_milestone(milestone_id: int, session: SessionDep):
+    milestone = session.get(Milestone, milestone_id)
+    if not milestone:
+            raise HTTPException(status_code=404, detail="Milestone not found")
+    session.delete(milestone)
+    session.commit()
+
+@app.post("/goal")
+def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
+    goal: Goal = Goal.model_validate(goal_data)
+    session.add(goal)
+    session.commit()
+    session.refresh(goal)
+    return goal
+
+@app.patch("/goal/{goal_id}")
+def update_goal(goal_id: int, goal: GoalUpdate, session: SessionDep):
+    db_goal = session.get(Goal, goal_id)
+    if not db_goal:
+            raise HTTPException(status_code=404, detail="Goal not found")
+    goal_data = goal.model_dump(exclude_unset=True)
+    db_goal.sqlmodel_update(goal_data)
+    session.add(db_goal)
+    session.commit()
+    session.refresh(db_goal)
+    return db_goal
+
+@app.delete("/goal/{goal_id}")
+def delete_goal(goal_id: int, session: SessionDep):
+    goal = session.get(Goal, goal_id)
+    if not goal:
+            raise HTTPException(status_code=404, detail="Goal not found")
+    session.delete(goal)
+    session.commit()
+
+@app.post("/todo")
+def create_todo(todo_data: TodoCreate, session: SessionDep):
+    todo: Todo = Todo.model_validate(todo_data)
+    session.add(todo)
+    session.commit()
+    session.refresh(todo)
+    return todo
+
+@app.patch("/todo/{todo_id}")
+def update_todo(todo_id: int, todo: TodoUpdate, session: SessionDep):
+    db_todo = session.get(Todo, todo_id)
+    if not db_todo:
+            raise HTTPException(status_code=404, detail="Todo not found")
+    todo_data = todo.model_dump(exclude_unset=True)
+    db_todo.sqlmodel_update(todo_data)
+    session.add(db_todo)
+    session.commit()
+    session.refresh(db_todo)
+    return db_todo
+
+@app.delete("/todo/{todo_id}")
+def delete_todo(todo_id: int, session: SessionDep):
+    todo = session.get(Todo, todo_id)
+    if not todo:
+            raise HTTPException(status_code=404, detail="Todo not found")
+    session.delete(todo)
+    session.commit()
+    
+@app.get("/action/{action_id}")
+def read_action(action_id: int, session: SessionDep) -> Action:
+    action = session.get(Action, action_id)
+    if not action:
+        raise HTTPException(status_code=404, detail="Hero not found")
+    return action
+
+@app.post("/action")
+def create_action(action_data: ActionCreate, session: SessionDep) -> Action:
+    action: Action = Action.model_validate(action_data)
+    session.add(action)
+    session.commit()
+    session.refresh(action)
+    return action
+
+@app.patch("/action/{action_id}")
+def update_action(action_id: int, action: ActionUpdate, session: SessionDep):
+    db_action = session.get(Action, action_id)
+    if not db_action:
+            raise HTTPException(status_code=404, detail="Action not found")
+    action_data = action.model_dump(exclude_unset=True)
+    db_action.sqlmodel_update(action_data)
+    session.add(db_action)
+    session.commit()
+    session.refresh(db_action)
+    return db_action
+
+@app.delete("/action/{action_id}")
+def delete_action(action_id: int, session: SessionDep):
+    action = session.get(Action, action_id)
+    if not action:
+            raise HTTPException(status_code=404, detail="Action not found")
+    session.delete(action)
+    session.commit()
+
 
 SAMPLE_WORKSPACES = [{
     "title" : "sample workspace",
@@ -231,48 +370,89 @@ SAMPLE_WORKSPACES = [{
     }]
 }]
 
+
+
+@app.get("/possible_parents")
+def get_possible_parents(type:str, session: SessionDep):
+    parents: list[str] = []
+    if type == "todo" or type == "milestone":
+        parents = session.exec(select(Roadmap)).all()
+    elif type == "goal":
+        parents = session.exec(select(Milestone)).all()
+    elif type == "action":
+        parents = session.exec(select(Goal)).all()
+    return parents
+
+@app.get("/parent")
+def get_parent(item_type: str, item_id: int, session: SessionDep):
+    if item_type == "todo": return session.get(Todo, item_id).parent
+    elif item_type == "action": return session.get(Action, item_id).parent
+    elif item_type == "goal": return session.get(Goal, item_id).parent
+    elif item_type == "milestone": return session.get(Milestone, item_id).parent
+
+
+@app.get("/roadmaps")
+def get_roadmaps(session: SessionDep):
+    roadmaps = session.exec(select(Roadmap)).all()
+    all_roadmaps =[]
+    for roadmap in roadmaps:
+        deep_roadmap = roadmap.model_dump()
+        deep_roadmap["milestones"] = []
+        milestones = roadmap.milestones
+        
+        for milestone in milestones:
+            deep_milestone = milestone.model_dump()
+            deep_milestone["goals"] = []
+            goals = milestone.goals
+            
+            for goal in goals:
+                deep_goal = goal.model_dump()
+                deep_goal["actions"] = []
+                actions = goal.actions
+
+                for action in actions:
+                    deep_goal["actions"].append(action.model_dump())
+                deep_milestone["goals"].append(deep_goal)
+            deep_roadmap["milestones"].append(deep_milestone)
+        all_roadmaps.append(deep_roadmap)
+
+    return all_roadmaps
+
 @app.get("/knowledge")
 def get_knowledge():
     return SAMPLE_WORKSPACES
 
 @app.get("/milestones")
-def get_milestones():
-    milestones = []
-    for roadmap in SAMPLE_ROADMAPS:
-        for milestone in roadmap["milestones"]:
-            milestones.append(milestone)
+def get_milestones(session: SessionDep):
+    milestones = session.exec(select(Milestone)).all()
     return milestones
 
 @app.get("/goals")
-def get_goals():
-    goals = []
-    for roadmap in SAMPLE_ROADMAPS:
-        for milestone in roadmap["milestones"]:
-            for goal in milestone["goals"]:
-                goals.append(goal)
+def get_goals(session: SessionDep):
+    goals = session.exec(select(Goal)).all()
     return goals
 
+@app.get("/today")
+def get_today():
+    return date.today().__str__()
+
 @app.get("/actions")
-def get_actions():
-    actions = []
-    for roadmap in SAMPLE_ROADMAPS:
-        for milestone in roadmap["milestones"]:
-            for goal in milestone["goals"]:
-                for action in goal["actions"]:
-                    actions.append(action)
+def get_actions(session: SessionDep):
+    actions = session.exec(select(Action)).all()
     return actions
 
-
 @app.get("/todos") # tile if week or day view
-def get_todos(day: str):    
+def get_todos(day: str, session: SessionDep):
     if day == "" or day == "today":
         day = date.today().__str__()
+    elif day == "all": return session.exec(select(Todo)).all()
 
-    todos = []
-    for todo in SAMPLE_TODOS:
-        if todo["deadline"].__str__() == day:
-            todos.append(todo) 
-    return todos
+    todos = session.exec(select(Todo)).all()
+    day_todos = []
+    for todo in todos:
+        if todo.deadline.__str__() == day:
+            day_todos.append(todo) 
+    return day_todos
 
 @app.get("/weekday") # for tile
 def get_weekday(day:str):
@@ -281,25 +461,26 @@ def get_weekday(day:str):
     weekday = date.fromisoformat(day).strftime("%a")
     return weekday
 
-@app.get("/weekdays") # for week
-def get_weekdays():   
+@app.get("/week") # for week
+def get_week(session: SessionDep):   
     today = date.today()
     monday = today.__sub__(timedelta(days = today.weekday()))  
-    week = [monday.__add__(timedelta(days=i)) for i in range(7)]
-    print("week: ", week)
+    week = [[monday.__add__(timedelta(days=i)), get_todos(monday.__add__(timedelta(days=i)).__str__(), session=session)] for i in range(7)]
     return week
 
-@app.get("/monthdays") # for month comp
-def get_monthdays():  
+@app.get("/month") # for month comp
+def get_month(session: SessionDep):  
     today = date.today()
     month_calendar = calendar.monthcalendar(today.year, today.month)
     month = []
+
     for week in month_calendar:
         for day in week:
             if day == 0:
-                month.append(None)
+                month.append([None, []])
             else:
-                month.append(date(today.year, today.month, day))
+                todos = get_todos(date(today.year, today.month, day).isoformat(), session=session)
+                month.append([date(today.year, today.month, day).isoformat(), todos])
     return month
 
 @app.get("/quarter") # for quarter

@@ -1,0 +1,91 @@
+<div class="item-info">
+   
+    
+    
+    <div class="header-container">
+        <div class="header">
+            <div class="header-title">
+                <p class="item-type">{{itemType().toUpperCase()}}: </p> @if (editMode){<input [(ngModel)]="editCopy.title">} @else {<p class="item-title">{{editCopy.title}}</p>}
+            </div>
+            
+        </div>
+        <p (click)="closePopup()" class="close">x</p>
+    </div>
+
+        <section class="main-info">
+
+            <div class="item-detail">
+                <p>Description:</p>
+                @if (editMode) {
+                    <input [(ngModel)]="editCopy.description">
+                }
+                @else {<p>{{editCopy.description}}</p>}
+            </div>
+
+            <div class="item-detail">
+                <p>Parent:</p>
+                <p>{{parent?.title}}</p>
+            </div>
+
+            <div class="item-detail">
+                <p>Completed:</p>
+                @if (editMode) {
+                    <input class="checkbox" type="checkbox" (change)="editCopy.completed = !editCopy.completed" [checked]="editCopy.completed">
+                }
+                @else {<input class="checkbox" type="checkbox" [checked]="editCopy.completed" disabled>}
+                
+            </div>
+        
+            @if (itemType() === "goal") {
+                <div class="item-detail">
+                    <p>Goal Type:</p>
+                    @if (editMode) {
+                        <select name="type" class="dropbox" [(ngModel)]="editCopy.type">
+                            <option value="week">Week</option>
+                            <option value="month">Month</option>
+                            <option value="quarter">Quarter</option>
+                        </select>
+                    } 
+                    @else {
+                        <p>{{item().type}}</p>
+                    }
+                    
+                </div>
+            }
+            @if (itemType() === "action") {
+                <div class="item-detail">
+                    <p>Pattern:</p>
+                    <p>{{item().recurringPattern}}</p>
+                </div>
+            }
+            @if (itemType() !== "action" && itemType() !== "roadmap") {
+                <div class="item-detail">
+                    <p>Deadline:</p>
+                    @if (editMode) {
+                        <input #newDate class="date" type="date" (change)="editCopy.deadline = newDate.value" [value]="editCopy.deadline">
+                    }
+                    @else {<input class="date" type="date" [value]="editCopy.deadline" disabled>}
+                    
+                </div>
+            }
+            
+
+            
+            <div class="activity-bar">
+                <app-add-button class="add-button" [parent]="[this.itemType(), this.item()]"></app-add-button>
+                @if (editMode) {
+                    <button class="save-button" (click)="saveEdit()">SAVE</button>
+                    <button class="cancel-button" (click)="cancelEdit()">CANCEL</button>
+                }
+                @else {
+                    <button class="edit-button" (click)="editItem()">EDIT</button>
+                    <p class="delete-button" (click)="deleteItem()">DELETE</p>
+                }
+                
+                
+            </div>
+            
+        </section>
+        
+</div>          
+    

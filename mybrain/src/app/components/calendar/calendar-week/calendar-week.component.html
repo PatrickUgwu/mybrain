@@ -1,6 +1,47 @@
 <div class="week-view">
-    @for (day of week; track $index) {
-        <app-calendar-tile class="medium-tile" [day]="day[0]" [view]="VIEW" [goals]="day[1]" [actions]="actions()"></app-calendar-tile>
-    }
+    <div class="topbar">
+        @for (goal of weekGoals(); track $index) {
+            <div class="goal">
+                <app-calendar-goal [self]="goal"></app-calendar-goal>
+            </div>
+        }
+        <app-add-button class="add-button"></app-add-button>
+        
+    </div>
+
+    <div class="tile-container">
+        
+        @for (day of week; track day; let weekDayIndex = $index) {
+            <div class="tile" [class.active]="todayIndex() === weekDayIndex">
+            
+                <div class="header">
+                    <p class="title">{{day}}</p>
+                    <app-add-button class="add-button"></app-add-button>
+                    
+                    
+                </div>
+            
+                <div class="content">
+                    
+                    <div class="action-container">
+                        @for (action of actions(); track $index) {
+                            <div class="action">
+                                <app-calendar-action [self]="action"></app-calendar-action>     
+                            </div>
+                        }    
+                    </div>        
+
+                    <div class="todo-container">
+                        @for (todo of todos()[weekDayIndex]; track $index) {
+                            <div class="todo">
+                                <app-calendar-todo [self]="todo"></app-calendar-todo>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    
     
 </div>
