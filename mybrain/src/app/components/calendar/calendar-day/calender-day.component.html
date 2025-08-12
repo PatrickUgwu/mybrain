@@ -1,3 +1,31 @@
 <div class="day-view">
-    <app-calendar-tile [view]="VIEW" [day]="day()" [actions]="actions()"></app-calendar-tile>
+    <div class="tile-container">
+        <div class="tile">
+            
+            <div class="header">
+                <p class="title">{{weekday}}</p>
+                <app-add-button class="add-button"></app-add-button>
+            </div>
+        
+            <div class="content">
+                <div class="action-container">
+                    @for (action of roadmapService.actions(); track $index) {
+                        <div class="action">
+                            <app-calendar-action [self]="action"></app-calendar-action>     
+                        </div>
+                    }    
+                </div>        
+
+                <div class="todo-container">
+                    @for (todo of todos(); track $index) {
+                        <div class="todo">
+                            <app-calendar-todo [title]="todo.title" [self]="todo"></app-calendar-todo>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+        </div>   
+    </div>
 </div>
+

@@ -1,6 +1,10 @@
-<div class="milestone">
+@if (popup === "detail") {
+    <app-item-overview [itemType]="'milestone'" [item]="self()" (close)="closePopup()"></app-item-overview>
+}
+
+<div class="milestone" (click)="openPopup('detail')">
     <div class="milestone-body">
         <div class="icon"></div>
-        <p>{{title()}}</p>
+        <p>{{self().title}}</p>
     </div>
 </div>

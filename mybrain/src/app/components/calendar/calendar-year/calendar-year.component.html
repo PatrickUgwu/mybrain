@@ -2,12 +2,15 @@
 
     <div class="top-bar">
         @for (milestone of milestones(); track $index) {
-            <app-calendar-milestone class="milestone" [title]="milestone.title"></app-calendar-milestone>
+            <div class="milestone">
+                <app-calendar-milestone [self]="milestone"></app-calendar-milestone>
+            </div>    
         }
+        <app-add-button class="add-button"></app-add-button>
     </div>
     <div class="calendar">
         
-        @for (quarter of year; track $index) {
+        @for (quarter of year(); track $index) {
             <div class="quarter">
                 <div class="months">
                     @for (month of quarter[0]; track $index) {
@@ -18,7 +21,7 @@
                                 <div class="content">
                                     <div class="month-goal-container">
                                         @for (goal of quarter[2][$index]; track $index) {   
-                                            <app-calendar-goal class="month-goal" [title]="goal.title" [type]="goal.type"></app-calendar-goal>     
+                                            <app-calendar-goal class="month-goal" [self]="goal"></app-calendar-goal>     
                                         }    
                                     </div>        
                                 </div>
@@ -30,7 +33,7 @@
                 <div class="side-bar">
                     @for (goal of quarter[1]; track $index) {
                         <!-- <div class="goal-box"></div> -->
-                        <app-calendar-goal class="quarter-goal" [title]="goal.title" [type]="goal.type"></app-calendar-goal>
+                        <app-calendar-goal class="quarter-goal" [self]="goal"></app-calendar-goal>
                     }
                 </div>
             </div>

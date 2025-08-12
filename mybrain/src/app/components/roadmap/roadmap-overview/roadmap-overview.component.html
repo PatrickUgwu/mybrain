@@ -1,0 +1,60 @@
+@if (popup.display) {
+    <app-item-overview [itemType]="popup.itemType" [item]="popup.item" (close)="closePopup()"></app-item-overview>
+}
+
+<div class="roadmaps-overview">
+    <div class="header-add-button">
+        <app-add-button  class="add-button" [parent]="['none', null]"></app-add-button>
+    </div>
+   
+    @for (roadmap of roadmaps(); track $index) {
+        <div class="roadmap" (click)="openPopup('roadmap', roadmap, $event)">
+            <div class="roadmap-header">
+                <p class="roadmap-title">RM: {{roadmap["title"]}}</p>
+            </div>
+            
+            <div class="milestones">
+            @for (milestone of milestones(); track $index) {
+                @if (milestone.parent_id == roadmap.id?.toString()) {
+                    <div class="milestone" (click)="openPopup('milestone', milestone, $event)">
+                    <p><span class="item-type">MS</span> : {{milestone["title"]}}</p>
+
+                    <div class="goals">
+                        @for (goal of goals(); track $index) {
+                            @if (goal.parent_id == milestone.id?.toString()) {
+                                <div class="goal"  (click)="openPopup('goal', goal, $event)">
+                                    <p><span class="item-type">{{goal["type"][0]}}G</span> : {{goal["title"]}}</p>
+
+                                    <div class="actions">
+                                        @for (action of actions(); track $index) {
+                                            @if (action.parent_id == goal.id?.toString()) {
+                                                <div class="action" (click)="openPopup('action', action, $event)">
+                                                    <p><span class="item-type">A</span> : {{action["title"]}}</p>
+                                                </div>
+                                            }
+                                            
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            
+                        }
+                        
+                    </div>
+                </div>
+                }
+                
+            }
+            </div>
+
+            @for (todo of todos(); track $index) {
+                @if (todo.parent == roadmap.id?.toString()) {
+                    <div class="todo">
+                        <p>{{todo["title"]}}</p>
+                    </div>
+                }
+                
+            }
+        </div>
+    }
+</div>
