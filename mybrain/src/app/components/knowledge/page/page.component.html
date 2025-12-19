@@ -2,23 +2,24 @@
     <nav class="navbar-container">
         <ul class="navbar">
             <li class="back">back</li>
-            <li class="mode" (click)="setMode()">
+            <li class="mode" (click)="toggleEditMode()">
                 @if (mode === "view"){ edit }
                 @else { view }
             </li>
             <li class="info">info</li>
+            <li (click)="closePopup()" class="close">x</li>
         </ul>
     </nav>
     <div class="content {{mode}}">
         @if (mode == "view") {
             <div class="view-mode">
-                <markdown class="markdown" [data]="markdownContent()"></markdown>
+                <markdown class="markdown" [data]="markdownContent"></markdown>
             </div>
         }
         @else if (mode == "edit") {
             <div class="edit-mode">
                 <textarea class="text" [(ngModel)]="markdownContent"></textarea>
-                <markdown class="markdown" [data]="markdownContent()"></markdown>
+                <markdown class="markdown" [data]="markdownContent"></markdown>
             </div>
         }
         
