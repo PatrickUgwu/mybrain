@@ -4,6 +4,7 @@ import { RoadmapService } from '../../../services/roadmap.service';
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { Milestone } from '../../../models/interfaces/milestone.interface';
 import { Roadmap } from '../../../models/interfaces/roadmap.interface';
+import { KnowledgeService } from '../../../services/knowledge.service';
 
 @Component({
   selector: 'app-add-window',
@@ -14,6 +15,7 @@ import { Roadmap } from '../../../models/interfaces/roadmap.interface';
 })
 export class AddWindowComponent implements OnInit{
   roadmapService = inject(RoadmapService)
+  knowledgeService = inject(KnowledgeService)
   parent = input<[string, Roadmap|Milestone|Goal|any]>(["", null])
   item: string = ""
   parents: Roadmap[] | Milestone[] | Goal[] = []
@@ -40,7 +42,7 @@ export class AddWindowComponent implements OnInit{
   }
 
   buildForm(type: string){
-    if (type !== "roadmap" && type !== "todo") {
+    if (type !== "roadmap" && type !== "todo" && type !== "workspace") {
       this.itemForm.addControl("parent_id", new FormControl(this.parents[0]?.title, Validators.required))
     }
     if (type === "action") {
@@ -57,6 +59,10 @@ export class AddWindowComponent implements OnInit{
       this.itemForm.addControl("parent_id", new FormControl())
       this.itemForm.addControl("deadline", new FormControl())
     }
+    else if (type === "page") {
+      this.itemForm.addControl("content", new FormControl(""))
+    }
+
     this.getPossibleParents(type)
   }
 
@@ -65,7 +71,13 @@ export class AddWindowComponent implements OnInit{
   }
 
   addItem() {
-    this.roadmapService.addItem(this.itemForm.value, this.item)
+    if (this.item === "workspace" || this.item === "collection" || this.item === "page") {
+      this.knowledgeService.addItem(this.itemForm.value, this.item)
+    }
+    else {
+      this.roadmapService.addItem(this.itemForm.value, this.item)
+    }
+    
     this.closeAdd()  
   }
 
@@ -74,7 +86,10 @@ export class AddWindowComponent implements OnInit{
       if (this.parent()[0] === "roadmap") {this.item = "milestone"}
       else if (this.parent()[0] === "milestone") {this.item = "goal"}
       else if (this.parent()[0] === "goal") {this.item = "action"}
-      else if (this.parent()[0] === "none") {this.item = "roadmap"}
+      else if (this.parent()[0] === "none") {this.item = "roadmap"} /// correct !! dont use:
+      else if (this.parent()[0] === "noneWS") {this.item = "workspace"} /// "none"/"noneWS"
+      else if (this.parent()[0] === "workspace") {this.item = "collection"}
+      else if (this.parent()[0] === "collection") {this.item = "page"}
       this.parents = [this.parent()[1]]
       this.buildForm(this.item)
     }
