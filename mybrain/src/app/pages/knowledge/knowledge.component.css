@@ -34,6 +34,15 @@
     border-radius: 20px;
 }
 
+.navbar li:hover {
+    background-color: #355;
+    color: aliceblue;
+}
+
+.navbar li.active {
+    background-color: orangered;
+}
+
 .library {
     width: 100%;
     height: 92%;
@@ -58,6 +67,10 @@
     background-color: #355;
     border-radius: 0.5rem;
     box-shadow: 0.2rem 0.2rem 0.2rem aliceblue;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
 }
 
 .recent-page:hover {
@@ -72,6 +85,14 @@
     height: 100%;
     padding: 1rem;
     color: white;
+}
+
+.add-button{
+    margin-left: auto;
+    width: 5%;
+    height: 10%;
+    padding: 1rem;
+    color: black;
 }
 
 .workspace {
@@ -95,7 +116,8 @@
 }
 
 .collection {
-    background-color: #577;
+    margin-left: 3rem;
+    background-color: rgb(67, 104, 104);
     padding-left: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0.2rem 0.2rem 0.2rem aliceblue;
@@ -108,4 +130,21 @@
 
 .collection-header {
     font-size: 2rem;
+}
+
+.page {
+    margin-left: 6rem;
+    background-color: #577;
+    padding-left: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0.2rem 0.2rem 0.2rem aliceblue;
+}
+
+.page:hover {
+    background-color: #6aa;
+    color: black;
+}
+
+.page-header {
+    font-size: 1.5rem;
 }

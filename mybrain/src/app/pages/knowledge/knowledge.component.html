@@ -1,29 +1,59 @@
+@if (popup.display) {
+    @if (popup.itemType === "page") {
+        <app-page [page]="popup.item" (close)="closePopup()"></app-page>
+    }
+    @else if (popup.display) {
+        <app-item-overview [itemType]="popup.itemType" [item]="popup.item" (close)="closePopup()"></app-item-overview>
+    }
+}
+
 <div class="knowledge-container">
     <nav class="navbar-container">
         <ul class="navbar">
-            <li (click)="setView('recent')">Recent</li>
-            <li (click)="setView('workspaces')">All</li>
+            <li [class.active]="view === 'recent'"  (click)="setView('recent')">Recent</li>
+            <li [class.active]="view === 'workspaces'"  (click)="setView('workspaces')">All</li>
         </ul>
     </nav>
 
     <div class="library">
         @if (view === "recent") {
             <div class="recent">
-                @for (page of recentPages; track $index) {
-                    <p class="recent-page">{{page.title}} - {{page.lastEdit}}</p>
+                <!--<app-page class="recent-page" [page]="testPage"></app-page>-->
+                @for (page of recentPages(); track $index) {
+                    <p class="recent-page">{{page.title}} : {{page.last_edit}}</p>
+                }
+                @if (recentPages().length == 0) {
+                    <p style="background-color: red;"> jojojojojoj U HAVE NO PAGES</p>
                 }
             </div>
+            
         }
         @else if (view === "workspaces") {
             <div class="overview">
-                @for (workspace of knowledge; track $index) {
-                    <section class="workspace">
+                <div class="add-button">
+                    <app-add-button></app-add-button>
+                </div>
+
+                @for (workspace of workspaces(); track $index) {
+                    <section class="workspace" (click)="openPopup('workspace', workspace, $event)">
                         <p class="workspace-header">{{workspace["title"]}}</p>
-                        @for (collection of workspace["collections"]; track $index) {
-                            <div class="collection">
-                                <p class="collection-header">{{collection["title"]}}</p>
-                            </div> 
-                        }
+                        
+                        @for (collection of collections(); track $index) {
+                            @if (collection.parent_id == workspace.id?.toString()) {
+                                <div class="collection"  (click)="openPopup('collection', collection, $event)">
+                                    <p class="collection-header">{{collection["title"]}}</p>
+                                </div> 
+
+                                @for (page of pages(); track $index) {
+                                    @if (page.parent_id == collection.id?.toString()) {
+                                        <div class="page" (click)="openPopup('page', page, $event)">
+                                            <p class="page-header">{{page["title"]}}</p>
+                                        </div> 
+                                    }
+                                }
+                            }
+                            
+                        }   
                     </section>
                 }
             </div>    
