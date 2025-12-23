@@ -6,6 +6,9 @@ import { Action } from '../../../models/interfaces/action.interface';
 import { RoadmapService } from '../../../services/roadmap.service';
 import { AddButtonComponent } from "../../calendar/add-button/add-button.component";
 import { FormsModule } from '@angular/forms';
+import { Collection } from '../../../models/interfaces/collection.interface';
+import { Workspace } from '../../../models/interfaces/workspace.interface';
+import { Page } from '../../../models/interfaces/page.interface';
 
 @Component({
   selector: 'app-item-overview',
@@ -18,7 +21,7 @@ export class ItemOverviewComponent implements OnInit {
   roadmapService = inject(RoadmapService)
   itemType = input.required<string>()
   item = model.required<any>()
-  parent: Milestone | Goal | Action | ToDo | undefined
+  parent: Milestone | Goal | Action | ToDo | Workspace | Collection | Page | undefined
   editMode: boolean = false
   close = output()
   editCopy: any

@@ -13,6 +13,7 @@
                                 <option value="goal">Goal</option>
                                 <option value="milestone">Milestone</option>
                                 <option value="roadmap">Roadmap</option>
+                                <option value="workspace">Workspace</option>
                             </select>
                         </div>
                     }
@@ -33,7 +34,7 @@
                     <input class="description" formControlName="description" placeholder="Enter Title...">
                 </div>
 
-                @if (item !== "roadmap") {
+                @if (item !== "roadmap" && item != "workspace") {
                     <div class="form-item">
                         <label class="parent-label">Parent</label>
                         <select class="parent" formControlName="parent_id" placeholder="Enter Title...">
@@ -79,7 +80,6 @@
                         <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
                     </div>
                 }
-
                 <button [disabled]="!itemForm.valid" type="submit">Add</button>
             }
         </div>

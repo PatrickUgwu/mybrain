@@ -17,6 +17,7 @@ engine = create_engine(sqlite_url, connect_args=connect_args)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # on startup
+    # Workspace.__table__.drop(engine) - how u drop(=delete) a table
     SQLModel.metadata.create_all(engine)  
     yield
 
@@ -26,7 +27,86 @@ def get_session():
         yield session
 
 SessionDep = Annotated[Session, Depends(get_session)]
+"""
+    Models for knowledge components: Workspace, Collection, Page
+"""
+# Workspace models
+class WorkspaceBase(SQLModel):
+    title: str
+    description: str
 
+class Workspace(WorkspaceBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    title: str = Field(index=True)
+    first_edit: datetime = Field(default=datetime.today(), index=True)
+    last_edit: datetime = Field(default=datetime.today(), index=True)
+    completed: bool = Field(default=False, index=True)
+    collections: list["Collection"] = Relationship(back_populates="parent", cascade_delete=True)
+
+class WorkspaceCreate(WorkspaceBase):
+    pass
+
+class WorkspaceUpdate(WorkspaceBase):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
+
+# Collection models
+class CollectionBase(SQLModel):
+    title: str
+    description: str
+
+class Collection(CollectionBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    title: str = Field(index=True)
+    first_edit: datetime = Field(default=datetime.today(), index=True)
+    last_edit: datetime  = Field(default=datetime.today(), index=True)
+    parent_id: int = Field(foreign_key="workspace.id", ondelete="CASCADE")
+    parent: Workspace = Relationship(back_populates="collections")
+    pages: list["Page"] = Relationship(back_populates="parent", cascade_delete=True)
+    
+class CollectionCreate(CollectionBase):
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Workspace).where(Workspace.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+
+class CollectionUpdate(CollectionBase):
+    title: str | None = None
+    description: str | None = None
+
+# Page models
+class PageBase(SQLModel):
+    title: str
+    content: str
+
+class Page(PageBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    title: str = Field(index=True)
+    first_edit: datetime = Field(default=datetime.today(), index=True)
+    last_edit: datetime = Field(default=datetime.today(), index=True)
+    parent_id: int = Field(foreign_key="collection.id", ondelete="CASCADE")
+    parent: Collection = Relationship(back_populates="pages")
+
+class PageCreate(PageBase):
+    parent_id: int
+    @field_validator("parent_id", mode="before")
+    def validate_parent(cls, v):
+        with Session(engine) as session:
+            par = select(Collection).where(Collection.title == v)
+            parent = session.exec(par).first()
+            return parent.id
+
+class PageUpdate(PageBase):
+    title: str | None = None
+    content: str | None = None
+
+"""
+    Models for calendar components
+"""
 class Roadmap(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     title: str = Field(index=True)
@@ -73,9 +153,9 @@ class MilestoneUpdate(SQLModel):
     description: str | None = None
     completed: bool | None = None
     deadline: date | None = None
-    @field_validator("deadline", mode="before")
-    def validate_deadline(cls, v):
-        return date.fromisoformat(v)
+    # @field_validator("deadline", mode="before")
+    # def validate_deadline(cls, v):
+    #     return date.fromisoformat(v)
 
 class GoalBase(SQLModel):
     title: str
@@ -187,11 +267,155 @@ app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=["http://localhost:4200", "http://127.0.0.1:4200"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],  
 )
+
+"""
+    Methods for knowladge components
+"""
+@app.get("/workspaces")
+def get_workspaces(session: SessionDep):
+    workspaces = session.exec(select(Workspace)).all()
+    return workspaces
+
+@app.get("/workspace/{workspace_id}")
+def read_workspace(workspace_id: int, session: SessionDep) -> Workspace:
+    workspace = session.get(Workspace, workspace_id)
+    if not workspace:
+        raise HTTPException(status_code=404, detail="Workspace not found")
+    return workspace
+
+@app.post("/workspace")
+def create_workspace(workspace_data: WorkspaceCreate, session: SessionDep) -> Workspace:
+    workspace: Workspace = Workspace.model_validate(workspace_data)
+    session.add(workspace)
+    session.commit()
+    session.refresh(workspace)
+    return workspace
+
+@app.patch("/workspace/{workspace_id}")
+def update_workspace(workspace_id: int, workspace: WorkspaceUpdate, session: SessionDep):
+    db_workspace = session.get(Page, workspace_id)
+    if not db_workspace:
+            raise HTTPException(status_code=404, detail="Workspace not found")
+    workspace_data = workspace.model_dump(exclude_unset=True)
+    db_workspace.sqlmodel_update(workspace_data)
+    db_workspace.last_edit = datetime.today()
+
+    session.add(db_workspace)
+    session.commit()
+    session.refresh(db_workspace)
+    return db_workspace
+
+@app.delete("/workspace/{workspacee_id}")
+def delete_workspace(workspace_id: int, session: SessionDep):
+    workspace = session.get(Workspace, workspace_id)
+    if not workspace:
+            raise HTTPException(status_code=404, detail="Workspace not found")
+    session.delete(workspace)
+    session.commit()
+
+@app.get("/collections")
+def get_collections(session: SessionDep):
+    collections = session.exec(select(Collection)).all()
+    return collections
+
+@app.get("/collection/{collection_id}")
+def read_collection(collection_id: int, session: SessionDep) -> Collection:
+    collection = session.get(Collection, collection_id)
+    if not collection:
+        raise HTTPException(status_code=404, detail="Collection not found")
+    return collection
+
+@app.post("/collection")
+def create_collection(collection_data: CollectionCreate, session: SessionDep) -> Collection:
+    print("coll-test ", collection_data.model_dump())
+    collection: Collection = Collection.model_validate(collection_data)
+    session.add(collection)
+    session.commit()
+    session.refresh(collection)
+    return collection
+
+@app.patch("/collection/{collection_id}")
+def update_collection(collection_id: int, collection: CollectionUpdate, session: SessionDep):
+    db_collection = session.get(Collection, collection_id)
+    if not db_collection:
+            raise HTTPException(status_code=404, detail="Collection not found")
+    collection_data = collection.model_dump(exclude_unset=True)
+    db_collection.sqlmodel_update(collection_data)
+    db_collection.last_edit = datetime.today()
+
+    # Update parents
+    db_workspace = session.get(Workspace, db_collection.workspace_id)
+    db_workspace.last_edit = db_collection.last_edit
+
+    session.add(db_collection)
+    session.commit()
+    session.refresh(db_collection)
+    return db_collection
+
+@app.delete("/collection/{collection_id}")
+def delete_collection(collection_id: int, session: SessionDep):
+    collection = session.get(Collection, collection_id)
+    if not collection:
+            raise HTTPException(status_code=404, detail="Collection not found")
+    session.delete(collection)
+    session.commit()
+
+@app.get("/pages")
+def get_pages(session: SessionDep):
+    pages = session.exec(select(Page)).all()
+    return pages
+
+@app.get("/page/{page_id}")
+def read_page(page_id: int, session: SessionDep) -> Page:
+    page = session.get(Page, page_id)
+    if not page:
+        raise HTTPException(status_code=404, detail="Page not found")
+    return page
+
+@app.post("/page")
+def create_page(page_data: PageCreate, session: SessionDep) -> Page:
+    page: Page = Page.model_validate(page_data)
+    session.add(page)
+    session.commit()
+    session.refresh(page)
+    return page
+
+@app.patch("/page/{page_id}")
+def update_page(page_id: int, page: PageUpdate, session: SessionDep):
+    db_page = session.get(Page, page_id)
+    if not db_page:
+            raise HTTPException(status_code=404, detail="Page not found")
+    page_data = page.model_dump(exclude_unset=True)
+    db_page.sqlmodel_update(page_data)
+    db_page.last_edit = datetime.today()
+
+    # Update parents
+    db_collection = session.get(Collection, db_page.parent_id)
+    db_collection.last_edit = db_page.last_edit
+    db_workspace = session.get(Workspace, db_collection.parent_id)
+    db_workspace.last_edit = db_collection.last_edit
+
+    session.add(db_page)
+    session.commit()
+    session.refresh(db_page)
+    return db_page
+
+@app.delete("/page/{page_id}")
+def delete_page(page_id: int, session: SessionDep):
+    page = session.get(Page, page_id)
+    if not page:
+            raise HTTPException(status_code=404, detail="Page not found")
+    session.delete(page)
+    session.commit()
+
+"""
+    Methods for calendar components
+"""
 
 @app.post("/roadmap")
 def create_roadmap(roadmap_data: Roadmap, session: SessionDep):
@@ -309,7 +533,7 @@ def delete_todo(todo_id: int, session: SessionDep):
 def read_action(action_id: int, session: SessionDep) -> Action:
     action = session.get(Action, action_id)
     if not action:
-        raise HTTPException(status_code=404, detail="Hero not found")
+        raise HTTPException(status_code=404, detail="Action not found")
     return action
 
 @app.post("/action")
@@ -340,38 +564,6 @@ def delete_action(action_id: int, session: SessionDep):
     session.delete(action)
     session.commit()
 
-
-SAMPLE_WORKSPACES = [{
-    "title" : "sample workspace",
-    "collections" : [{
-        "title" : "collection 1",
-        "pages" : [{
-            "title" : "Col1 Page1",
-            "content" : """
-            # page content
-            ## info 
-            ### text
-            here
-            """
-        },
-        {
-            "title" : "Col1 Page2",
-            "content" : "content of page" 
-        }
-            ]
-    },
-    {
-        "title" : "collection 2",
-        "pages" : [{
-            "title" : "Col2 Page1",
-            "content" : "the content" 
-        }
-        ]
-    }]
-}]
-
-
-
 @app.get("/possible_parents")
 def get_possible_parents(type:str, session: SessionDep):
     parents: list[str] = []
@@ -389,6 +581,8 @@ def get_parent(item_type: str, item_id: int, session: SessionDep):
     elif item_type == "action": return session.get(Action, item_id).parent
     elif item_type == "goal": return session.get(Goal, item_id).parent
     elif item_type == "milestone": return session.get(Milestone, item_id).parent
+    elif item_type == "collection": return session.get(Collection, item_id).parent
+    elif item_type == "page": return session.get(Page, item_id).parent
 
 
 @app.get("/roadmaps")
@@ -419,8 +613,38 @@ def get_roadmaps(session: SessionDep):
     return all_roadmaps
 
 @app.get("/knowledge")
-def get_knowledge():
-    return SAMPLE_WORKSPACES
+def get_knowledge(session: SessionDep):
+    all_workspaces = [] # includes all nested elements (Collections and Pages)
+    workspaces = session.exec(select(Workspace)).all()
+    for workspace in workspaces:
+        deep_workspace = workspace.model_dump()
+        deep_workspace["collections"] = []
+        collections = workspace.collections
+        
+        for collection in collections:
+            deep_collection = collection.model_dump()
+            deep_collection["pages"] = []
+            pages = collection.pages
+            
+            for page in pages:
+                deep_page = page.model_dump()
+                deep_collection["pages"].append(deep_page)
+            deep_workspace["collections"].append(deep_collection)
+        all_workspaces.append(deep_workspace)
+
+    return all_workspaces
+
+@app.get("/recent_pages")
+def get_recent_pages(session: SessionDep):
+    all_pages: list["Page"] = session.exec(select(Page)).all()
+    all_pages.sort(key=lambda page: page.last_edit, reverse=True)
+
+    # change datetime into string
+    length = min(len(all_pages), 5)
+    for page in all_pages[:length]:
+        page.last_edit = page.last_edit.strftime("%a - %d / %m / %y - %H : %M : %S")
+
+    return all_pages[:5]
 
 @app.get("/milestones")
 def get_milestones(session: SessionDep):
@@ -486,8 +710,9 @@ def get_month(session: SessionDep):
 @app.get("/quarter") # for quarter
 def get_quarter():  
     today = date.today()
-    if x:=today.month%3 != 0:
-        first_quarter_month = today.month - (x - 1)
+    month = today.month
+    if month%3 != 0:
+        first_quarter_month = today.month - (month%3 - 1)
     else:
         first_quarter_month = today.month -2
     quarter_start = date(today.year, first_quarter_month, 1) 
@@ -504,4 +729,3 @@ def get_year():
 @app.get("/")
 def root():
     return "You found the backend."
-
