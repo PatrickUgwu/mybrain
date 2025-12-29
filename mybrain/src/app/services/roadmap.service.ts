@@ -25,11 +25,16 @@ export class RoadmapService {
   }
 
   getParent(itemType: string, itemID: any) : Observable<Milestone|Goal|Action|ToDo> {
-    return this.httpClient.get<Milestone|Goal|Action|ToDo>(this.url + "/parent?item_type=" + itemType + "&item_id=" + itemID)
+    if (itemType === "collection" || itemType === "page") { 
+      return this.httpClient.get<Milestone|Goal|Action|ToDo>(this.url + "/knowledge_parent?item_type=" + itemType + "&item_id=" + itemID) 
+    }
+    else {
+      return this.httpClient.get<Milestone|Goal|Action|ToDo>(this.url + "/calendar_parent?item_type=" + itemType + "&item_id=" + itemID)
+    }
   }
 
   updateItem(item: any, itemID: number, type: string): Observable<any> {
-     if (type === "action") { return this.updateAction(itemID, item) }
+    if (type === "action") { return this.updateAction(itemID, item) }
     else if (type === "roadmap") { return this.updateRoadmap(itemID, item) }
     else if (type === "milestone") { return this.updateMilestone(itemID, item) }
     else if (type === "goal") { return this.updateGoal(itemID, item) }
