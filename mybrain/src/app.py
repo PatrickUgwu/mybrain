@@ -2,9 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
-import calendar
 from backend.app.database import engine
-from backend.app.models import *
 from backend.app.api.knowledge import knowledge, workspace, collection, page
 from backend.app.api.calendar import calendar, roadmap, milestone, goal, action, todo
 
