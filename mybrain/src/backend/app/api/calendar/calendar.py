@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import APIRouter
 from backend.app.services.calendar import calendar_service
 from backend.app.database import SessionDep
@@ -36,3 +37,7 @@ def get_quarter():
 @router.get("/year") # for year
 def get_year():  
     return calendar_service.get_year()
+
+@router.get("/calendar_year_data")
+def get_calendar_year_data(session: SessionDep, year: int = date.today().year):  
+    return calendar_service.get_calendar_year_data(year, session)

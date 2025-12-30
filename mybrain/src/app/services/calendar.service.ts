@@ -35,5 +35,14 @@ export class CalendarService {
     return this.httpClient.get<string[][]>(this.url + "/year")
   }
 
+  getYearData(year?: number):Observable<any> {
+    if (year === undefined) {
+      return this.httpClient.get<any>(this.url + "/calendar_year_data")
+    }
+    else {
+      return this.httpClient.get<any>(this.url + "/calendar_year_data?year=" + year)
+    }
+  }
+
   constructor() { }
 }

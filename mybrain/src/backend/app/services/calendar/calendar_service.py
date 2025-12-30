@@ -1,6 +1,6 @@
 import calendar
 from datetime import date, timedelta
-from sqlmodel import select
+from sqlmodel import extract, select
 from backend.app.database import SessionDep
 from backend.app.models import Roadmap, Milestone, Goal, Action, Todo
 from backend.app.api.calendar.todo import get_todos
@@ -67,3 +67,34 @@ def get_year():
     january = date(today.year, 1, 1) 
     year = [[january.replace(month = 1 + i).strftime("%h"), january.replace(month = 1 + i).__str__()[5:7]] for i in range(12)]
     return year
+
+def get_calendar_year_data(year: int, session: SessionDep):  
+    calendar_year = []  # year consisting of 4 quarters with 3 months each
+    for i in range(4):
+        quarter = []
+        for j in range(3):
+            current_month_num = (i*3) + j + 1  # calculate current month based on jth-month in ith-quarter 
+            month = date(year, current_month_num, 1)
+            month_str = month.strftime("%h")
+            month_goals = session.exec(
+                select(Goal).where(
+                    extract("month", Goal.deadline) == month.month ,
+                    extract("year", Goal.deadline) == month.year ,
+                    Goal.type == "month"
+                    )
+                ).all()
+            month_quarter_goals = session.exec(
+                select(Goal).where(
+                    extract("month", Goal.deadline) == month.month ,
+                    extract("year", Goal.deadline) == month.year ,
+                    Goal.type == "quarter"
+                    )
+                ).all()
+            quarter.append({
+                "month_str": month_str, 
+                "month_goals": month_goals, 
+                "month_quarter_goals": month_quarter_goals
+            })
+        calendar_year.append(quarter) 
+    return calendar_year 
+

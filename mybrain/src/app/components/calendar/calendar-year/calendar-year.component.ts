@@ -19,44 +19,17 @@ export class CalendarYearComponent {
   roadmapService = inject(RoadmapService)
 
   milestones = computed<Milestone[]>( () => this.roadmapService.milestones())
-  quarterGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "quarter"))
-  monthGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "month"))
-  yearData = signal<string[][]>([])
-
-  year = computed<[string[], Goal[], Goal[][]][]>( () => {
-    let year: [string[], Goal[], Goal[][]][] = []
-    let yearQuarter: [string[], Goal[], Goal[][]] = [[], [], [[],[],[]]]
-    let monthGoalIndex:number = 0
-    for (let i = 0; i < this.yearData().length; i++) {
-      yearQuarter[0].push(this.yearData()[i][0])
-
-      this.quarterGoals().forEach( goal => {
-        if (this.yearData()[i][1] === goal.deadline.slice(5,7)) {
-          yearQuarter[1].push(goal)
-        }
-      })
-
-      this.monthGoals().forEach( goal => {
-        if (this.yearData()[i][1] === goal.deadline.slice(5,7)) {
-          yearQuarter[2][monthGoalIndex].push(goal)
-        }
-      })
-
-      monthGoalIndex++
-
-      if (Number(this.yearData()[i][1]) % 3 === 0) {
-        year.push(yearQuarter)
-        yearQuarter = [[], [], [[],[],[]]]
-        monthGoalIndex = 0
-      }
-    }
-    return year
-  })
+  year = signal<{
+    "month_str": string, 
+    "month_goals": Goal[], 
+    "month_quarter_goals": Goal[]
+  }[][]>([])
   
 
-  ngOnInit(): void {
-    this.calendarService.getYear().subscribe(data => {
-      this.yearData.set(data)
+  ngOnInit(): void {    
+    this.calendarService.getYearData().subscribe(data => {
+      this.year.set(data)
+      console.log("year ", this.year())
     })    
   }
 
