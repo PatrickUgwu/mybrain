@@ -1,15 +1,20 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ToDo } from '../models/interfaces/todo.interface';
+import { Goal } from '../models/interfaces/goal.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
-
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
+  year = signal<{
+    "month_str": string, 
+    "month_goals": Goal[], 
+    "month_quarter_goals": Goal[]
+  }[][]>([])
 
   getToday(): Observable<string> {
     return this.httpClient.get<string>(this.url + "/today")
@@ -43,6 +48,12 @@ export class CalendarService {
       return this.httpClient.get<any>(this.url + "/calendar_year_data?year=" + year)
     }
   }
+  
+  loadData(){
+    this.getYearData().subscribe(data => this.year.set(data))
+  }
 
-  constructor() { }
+  constructor() {
+    this.loadData()
+  }
 }

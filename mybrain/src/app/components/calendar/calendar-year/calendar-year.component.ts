@@ -24,12 +24,10 @@ export class CalendarYearComponent {
     "month_goals": Goal[], 
     "month_quarter_goals": Goal[]
   }[][]>([])
-  
 
   ngOnInit(): void {    
     this.calendarService.getYearData().subscribe(data => {
       this.year.set(data)
-      console.log("year ", this.year())
     })    
   }
 

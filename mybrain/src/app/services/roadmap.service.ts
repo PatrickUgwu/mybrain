@@ -6,6 +6,7 @@ import { Goal } from '../models/interfaces/goal.interface';
 import { Milestone } from '../models/interfaces/milestone.interface';
 import { ToDo } from '../models/interfaces/todo.interface';
 import { Roadmap } from '../models/interfaces/roadmap.interface';
+import { CalendarService } from './calendar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ import { Roadmap } from '../models/interfaces/roadmap.interface';
 export class RoadmapService {
   url = "http://127.0.0.1:8000"
   httpClient = inject(HttpClient)
+  calendarService = inject(CalendarService)
   todos = signal<ToDo[]>([])
   actions = signal<Action[]>([])
   goals = signal<Goal[]>([])
@@ -67,6 +69,7 @@ export class RoadmapService {
   addTodo(todo: ToDo): void {
     this.httpClient.post<ToDo>(this.url + "/todo", todo).subscribe(newTodo => {
         this.todos.update(current => [...current, newTodo])
+        this.calendarService.loadData()
     })
   }
 
@@ -81,6 +84,7 @@ export class RoadmapService {
   deleteTodo(todoID: number) {
     this.httpClient.delete(this.url + "/todo/" + todoID).subscribe(() => {
       this.todos.update(current => current.filter(todo => todo.id !== todoID))
+      this.calendarService.loadData()
     })
   }
 
@@ -91,6 +95,7 @@ export class RoadmapService {
   addAction(action: Action): void {
     this.httpClient.post<Action>(this.url + "/action", action).subscribe(newAction => {
         this.actions.update(current => [...current, newAction])
+        this.calendarService.loadData()
     })
   }
 
@@ -105,6 +110,7 @@ export class RoadmapService {
   deleteAction(actionID: number) {
     this.httpClient.delete(this.url + "/action/" + actionID).subscribe(() => {
       this.actions.update(current => current.filter(action => action.id !== actionID))
+      this.calendarService.loadData()
     })
   }
 
@@ -115,6 +121,7 @@ export class RoadmapService {
   addGoal(goal: Goal): void {
     this.httpClient.post<Goal>(this.url + "/goal", goal).subscribe(newGoal => {
       this.goals.update(current => [...current, newGoal])
+      this.calendarService.loadData()
     })
   }
 
@@ -130,6 +137,7 @@ export class RoadmapService {
     this.httpClient.delete(this.url + "/goal/" + goalID).subscribe(() => {
       this.goals.update(current => current.filter(goal => goal.id !== goalID))
       this.actions.update(current => current.filter(action => action.parent_id != goalID.toString()));
+      this.calendarService.loadData()
     })
   }
 
@@ -140,6 +148,7 @@ export class RoadmapService {
   addMilestone(milestone: Milestone): void {
     this.httpClient.post<Milestone>(this.url + "/milestone", milestone).subscribe(newMilestone => {
       this.milestones.update(current => [...current, newMilestone])
+      this.calendarService.loadData()
     })
   }
 
@@ -155,6 +164,7 @@ export class RoadmapService {
     this.httpClient.delete(this.url + "/milestone/" + milestoneID).subscribe(() => {
       this.milestones.update(current => current.filter(milestone => milestone.id !== milestoneID))
       this.goals.update(current => current.filter(goal => goal.parent_id != milestoneID.toString()))
+      this.calendarService.loadData()
     })
   }
 
@@ -165,6 +175,7 @@ export class RoadmapService {
   addRoadmap(roadmap: any): void {
     this.httpClient.post<any>(this.url + "/roadmap", roadmap).subscribe(newRoadmap => {
       this.roadmaps.update(current => [...current, newRoadmap])
+      this.calendarService.loadData()
     })
   }
 
@@ -180,6 +191,7 @@ export class RoadmapService {
     this.httpClient.delete(this.url + "/roadmap/" + roadmapID).subscribe(() => {
       this.roadmaps.update(current => current.filter(roadmap => roadmap.id !== roadmapID))
       this.milestones.update(current => current.filter(milestone => milestone.parent_id != roadmapID.toString()))
+      this.calendarService.loadData()
     })
   }
 

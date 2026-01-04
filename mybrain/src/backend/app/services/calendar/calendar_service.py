@@ -62,7 +62,7 @@ def get_quarter():
     quarter = [[quarter_start.replace(month=quarter_start.month + i).strftime("%h"), quarter_start.replace(month=quarter_start.month + i).__str__()[5:7]] for i in range(3)]
     return quarter
 
-def get_year():  
+def get_year():  # UNUSED
     today = date.today()
     january = date(today.year, 1, 1) 
     year = [[january.replace(month = 1 + i).strftime("%h"), january.replace(month = 1 + i).__str__()[5:7]] for i in range(12)]
