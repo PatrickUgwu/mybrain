@@ -51,7 +51,7 @@ def get_month(session: SessionDep):
                 month.append([date(today.year, today.month, day).isoformat(), todos])
     return month
 
-def get_quarter():  
+def get_quarter():  # UNUSED
     today = date.today()
     month = today.month
     if month%3 != 0:
@@ -61,6 +61,40 @@ def get_quarter():
     quarter_start = date(today.year, first_quarter_month, 1) 
     quarter = [[quarter_start.replace(month=quarter_start.month + i).strftime("%h"), quarter_start.replace(month=quarter_start.month + i).__str__()[5:7]] for i in range(3)]
     return quarter
+
+def get_calendar_quarter_data(year: int, quarter: int, session: SessionDep):  
+    calendar_quarter = []
+    first_quarter_month = quarter * 3 - 2
+    for i in range(3):
+        month = date(year, first_quarter_month + i, 1)
+        month_str = month.strftime("%h")
+        monthly_goals = session.exec(
+            select(Goal).where(
+                Goal.deadline >= month, 
+                Goal.deadline < month.replace(month = month.month + 1),
+                Goal.type == "month"
+            )
+        ).all()
+
+        all_week_goals = session.exec(
+            select(Goal).where(
+                Goal.deadline >= month, 
+                Goal.deadline < month.replace(month = month.month + 1),
+                Goal.type == "week"
+            )
+        ).all()
+        month_weekly_goals = []
+        monthcalendar = calendar.monthcalendar(year, month.month)
+        for week in monthcalendar:
+            week_goals = [goal for goal in all_week_goals if goal.deadline.day in week]
+            month_weekly_goals.append(week_goals)
+
+        calendar_quarter.append({
+            "month_str": month_str, 
+            "month_goals": monthly_goals, 
+            "week_goals": month_weekly_goals
+        })
+    return calendar_quarter
 
 def get_year():  # UNUSED
     today = date.today()

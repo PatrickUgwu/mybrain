@@ -15,6 +15,12 @@ export class CalendarService {
     "month_goals": Goal[], 
     "month_quarter_goals": Goal[]
   }[][]>([])
+  quarter = signal<{
+    "month_str": string, 
+    "month_goals": Goal[], 
+    "week_goals": Goal[][]
+  }[]>([])
+  
 
   getToday(): Observable<string> {
     return this.httpClient.get<string>(this.url + "/today")
@@ -36,6 +42,16 @@ export class CalendarService {
     return this.httpClient.get<string[][]>(this.url + "/quarter")
   }
 
+  getQuarterData(year?: number, quarter?: number):Observable<any> {
+    let params = ""
+    if (year !== undefined) { 
+      params = params + "?year=" + year 
+      if (quarter !== undefined) { params = params + "&quarter=" + quarter }
+    }
+     
+    return this.httpClient.get<any>(this.url + "/calendar_quarter_data" + params)
+  }
+
   getYear():Observable<string[][]> {
     return this.httpClient.get<string[][]>(this.url + "/year")
   }
@@ -51,6 +67,7 @@ export class CalendarService {
   
   loadData(){
     this.getYearData().subscribe(data => this.year.set(data))
+    this.getQuarterData().subscribe(data => this.quarter.set(data))
   }
 
   constructor() {

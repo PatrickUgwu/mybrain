@@ -34,6 +34,10 @@ def get_month(session: SessionDep):
 def get_quarter():  
     return calendar_service.get_quarter()
 
+@router.get("/calendar_quarter_data")
+def get_calendar_quarter_data(session: SessionDep, year: int = date.today().year , quarter: int = 1):  
+    return calendar_service.get_calendar_quarter_data(year, quarter, session)
+
 @router.get("/year") # for year
 def get_year():  
     return calendar_service.get_year()
