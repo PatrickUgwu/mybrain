@@ -1,5 +1,4 @@
 <div class="month-view">
-
     <div class="top-bar">
         @for (monthGoal of monthGoals(); track $index) {
             <div class="month-goal">
@@ -9,7 +8,6 @@
         <app-add-button class="add-button"></app-add-button>
     </div>
 
-
     <div class="month">
         <div class="weekdays">
             <div class="weekday-container">
@@ -18,41 +16,38 @@
                 }
             </div>
         </div>
-        @for (week of month(); track weekIndex; let weekIndex = $index) {
+
+        @for (week of calendarService.month(); track weekIndex; let weekIndex = $index) {
             <div class="week">
                 <div class="days">
-                    @for (day of week[0]; track dayIndex; let dayIndex = $index  ) {
+                    @for (day of week.week_days; track dayIndex; let dayIndex = $index  ) {
                         <div class="tile" [class.active]="todayIndex()[0] === weekIndex && todayIndex()[1] === dayIndex">       
                             <div class="header">
-                                <p>{{day[0]}}</p>
+                                <p>{{day}}</p>
                             </div>
                             
                             <div class="todo-container">
-                                @for (todo of day[1]; track $index) {
-                                    <div class="todo">
-                                        <app-calendar-todo [self]="todo"></app-calendar-todo>
-                                    </div>
+                                @for (todo of week.todos; track $index) {
+                                    @if (todo.deadline?.substring(8,10) == day) {
+                                        <div class="todo">
+                                            <app-calendar-todo [self]="todo"></app-calendar-todo>
+                                        </div>
+                                    }
                                 }
                             </div>
                         </div>
                     }
                 </div>
                 <div class="side-bar">
-                    @for (weekGoal of week[1]; track $index) {
+                    @for (weekGoal of week.week_goals; track $index) {
                         <div class="week-goal">
                             <app-calendar-goal [self]="weekGoal"></app-calendar-goal>
                         </div>
                     }
                 </div>
             </div>
-            
-            
         }
-        
     </div>
-
-    
-    
 </div>
 
 

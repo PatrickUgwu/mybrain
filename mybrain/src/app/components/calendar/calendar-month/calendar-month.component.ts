@@ -22,37 +22,7 @@ export class CalendarMonthComponent implements OnInit{
   monthData = signal<[string, ToDo[]][]>([])
 
   monthGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "month"))
-  weekGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "week"))
   actions = computed<Action[]>( () => this.roadmapService.actions())
-
-  month = computed<[[string, ToDo[]][], Goal[]][]>( () => {
-    let week:[[string, ToDo[]][], Goal[]] = [[],[]] // [ [Date, ToDos[]][], weekGoals[] ]
-    let month: [[string, ToDo[]][], Goal[]][] = []
-    for (let i = 0; i < this.monthData().length; i++) {
-      let dayTodos = this.roadmapService.todos().filter(todo => todo.deadline === this.monthData()[i][0])
-      // add day to week
-      if (this.monthData()[i][0] === null) {
-        week[0].push(["-", dayTodos]) // add day outside month
-      }
-      else {
-        week[0].push([this.monthData()[i][0].slice(8,10), dayTodos]) // add day inside month
-      }
-
-      // add to week goals
-      this.weekGoals().forEach(goal => {
-        if (this.monthData()[i][0] === goal.deadline) {
-          week[1].push(goal)
-        }
-      })
-      
-      // add and reset week
-      if (i % 7 === 6) {
-        month.push(week)
-        week = [[],[]]
-      }
-    }
-    return month
-  })
 
   todayIndex = computed<number[]>( () => { // [week, day]
     for (let i = 0; i < this.monthData().length; i++) {

@@ -30,6 +30,10 @@ def get_week(session: SessionDep):
 def get_month(session: SessionDep):  
     return calendar_service.get_month(session)
 
+@router.get("/calendar_month_data")
+def get_calendar_month_data(session: SessionDep, year: int = date.today().year, month: int = date.today().month):
+    return calendar_service.get_calendar_month_data(year, month, session)
+
 @router.get("/quarter") # for quarter
 def get_quarter():  
     return calendar_service.get_quarter()

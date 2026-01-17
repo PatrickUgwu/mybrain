@@ -51,6 +51,31 @@ def get_month(session: SessionDep):
                 month.append([date(today.year, today.month, day).isoformat(), todos])
     return month
 
+def get_calendar_month_data(year: int, month: int, session: SessionDep):
+    current_month = calendar.monthcalendar(year, month)
+    month_todos = session.exec(select(Todo).where(
+        Todo.deadline >= date(year, month, 1),
+        Todo.deadline < date(year, month + 1, 1)
+        )).all()
+    weekly_goals = session.exec(select(Goal).where(
+        Goal.deadline >= date(year, month, 1),
+        Goal.deadline < date(year, month + 1, 1),
+        Goal.type == "week"
+    )).all()
+
+    calendar_month = []
+    for week in current_month:
+        week_days = ["-" if day == 0 else day for day in week]
+        todos = [todo for todo in month_todos if todo.deadline.day in week]
+        week_goals = [goal for goal in weekly_goals if goal.deadline.day in week]
+        calendar_month.append({
+            "week_days": week_days, 
+            "todos": todos, 
+            "week_goals": week_goals
+        })
+    return calendar_month
+
+
 def get_quarter():  # UNUSED
     today = date.today()
     month = today.month

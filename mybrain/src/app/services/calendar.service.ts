@@ -20,6 +20,11 @@ export class CalendarService {
     "month_goals": Goal[], 
     "week_goals": Goal[][]
   }[]>([])
+  month = signal<{
+    "week_days": string[], 
+    "todos": ToDo[], 
+    "week_goals": Goal[]
+  }[]>([])
   
 
   getToday(): Observable<string> {
@@ -36,6 +41,16 @@ export class CalendarService {
 
   getMonth():Observable<[string,ToDo[]][]> {
     return this.httpClient.get<[string,ToDo[]][]>(this.url + "/month")
+  }
+
+  getMonthData(year?: number, month?: number):Observable<any> {
+    let params = ""
+    if (year !== undefined) { 
+      params = "?year=" + year 
+      if (month !== undefined) { params = params + "&month=" + month }
+    }
+     
+    return this.httpClient.get<any>(this.url + "/calendar_month_data" + params)
   }
 
   getQuarter():Observable<string[][]> {
@@ -68,6 +83,7 @@ export class CalendarService {
   loadData(){
     this.getYearData().subscribe(data => this.year.set(data))
     this.getQuarterData().subscribe(data => this.quarter.set(data))
+    this.getMonthData().subscribe(data => this.month.set(data))
   }
 
   constructor() {
