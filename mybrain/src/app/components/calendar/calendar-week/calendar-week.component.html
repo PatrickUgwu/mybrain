@@ -1,28 +1,23 @@
 <div class="week-view">
     <div class="topbar">
-        @for (goal of weekGoals(); track $index) {
+        @for (goal of calendarService.week().week_goals; track $index) {
             <div class="goal">
                 <app-calendar-goal [self]="goal"></app-calendar-goal>
             </div>
         }
         <app-add-button class="add-button"></app-add-button>
-        
     </div>
 
     <div class="tile-container">
-        
-        @for (day of week; track day; let weekDayIndex = $index) {
+        @for (day of calendarService.week().week_days; track day; let weekDayIndex = $index) {
             <div class="tile" [class.active]="todayIndex() === weekDayIndex">
             
                 <div class="header">
                     <p class="title">{{day}}</p>
                     <app-add-button class="add-button"></app-add-button>
-                    
-                    
                 </div>
             
                 <div class="content">
-                    
                     <div class="action-container">
                         @for (action of actions(); track $index) {
                             <div class="action">
@@ -32,13 +27,15 @@
                     </div>        
 
                     <div class="todo-container">
-                        @for (todo of todos()[weekDayIndex]; track $index) {
+                        @for (todo of calendarService.week().todos[weekDayIndex]; track $index) {
                             <div class="todo">
                                 <app-calendar-todo [self]="todo"></app-calendar-todo>
                             </div>
+                            
                         }
                     </div>
                 </div>
+
             </div>
         }
     </div>

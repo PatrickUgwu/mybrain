@@ -21,20 +21,10 @@ export class CalendarWeekComponent implements OnInit {
   roadmapService = inject(RoadmapService)
   calendarService = inject(CalendarService)
   today = input<string>("") // to mark the current day
-  week:string[] = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
   
   weekData = signal<[string,ToDo[]][]>([])
-  todos = computed<ToDo[][]>( () => {
-    let allTodos = this.roadmapService.todos()
-    let weekTodos: ToDo[][] = []
-    for (let index = 0; index < this.weekData().length; index++) {
-      let matches = allTodos.filter(todo => todo.deadline === this.weekData()[index][0])
-      weekTodos.push(matches)
-    }
-    return weekTodos
-  })
   actions = computed<Action[]>( () => this.roadmapService.actions() )
-  weekGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "week") )
+  
   todayIndex = computed<number>( () => {
     for (let index = 0; index < this.weekData().length; index++) {
       if (this.today() === this.weekData()[index][0]) {

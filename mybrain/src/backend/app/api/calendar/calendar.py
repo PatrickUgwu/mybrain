@@ -26,6 +26,10 @@ def get_weekday(day:str):
 def get_week(session: SessionDep):   
     return calendar_service.get_week(session)
 
+@router.get("/calendar_week_data")
+def get_calendar_week_data(session: SessionDep, today: date = date.today()):
+    return calendar_service.get_calendar_week_data(today, session)
+
 @router.get("/month") # for month comp
 def get_month(session: SessionDep):  
     return calendar_service.get_month(session)

@@ -37,6 +37,35 @@ def get_week(session: SessionDep):
     week = [[monday.__add__(timedelta(days=i)), get_todos(monday.__add__(timedelta(days=i)).__str__(), session=session)] for i in range(7)]
     return week
 
+def get_calendar_week_data(today: date, session: SessionDep):
+    week_days = ["Mon","Thu","Wed","Thu","Fri","Sat","Sun"]
+    start_of_week = today.day - today.weekday()
+    end_of_week = today.day + (6 - today.weekday())
+    todos = session.exec(select(Todo).where(
+        Todo.deadline >= today.replace(day = start_of_week),
+        Todo.deadline <= today.replace(day = end_of_week)
+    )).all()
+    week_goals = session.exec(select(Goal).where(
+        Goal.deadline >= today.replace(day = start_of_week),
+        Goal.deadline <= today.replace(day = end_of_week),
+        Goal.type == "week"
+    )).all()
+
+    week_todos = []
+    for i in range(7):
+        week_todos.append([])
+        for todo in todos:
+            
+            if todo.deadline == today.replace(day = start_of_week + i):
+                week_todos[i].append(todo)
+    
+    calendar_week = {
+        "week_days": week_days, 
+        "todos": week_todos, 
+        "week_goals": week_goals
+    }
+    return calendar_week
+
 def get_month(session: SessionDep):  
     today = date.today()
     month_calendar = calendar.monthcalendar(today.year, today.month)
