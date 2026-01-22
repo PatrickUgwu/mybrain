@@ -1,10 +1,9 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CalendarService } from '../../../services/calendar.service';
 import { CalendarActionComponent } from "../calendar-action/calendar-action.component";
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
 import { RoadmapService } from '../../../services/roadmap.service';
 import { AddButtonComponent } from "../add-button/add-button.component";
-import { ToDo } from '../../../models/interfaces/todo.interface';
 
 @Component({
   selector: 'app-calender-day',

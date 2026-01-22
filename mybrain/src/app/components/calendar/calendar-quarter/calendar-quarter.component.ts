@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CalendarService } from '../../../services/calendar.service';
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";

@@ -1,6 +1,5 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Action } from '../../../models/interfaces/action.interface';
-import { ToDo } from '../../../models/interfaces/todo.interface';
 import { CalendarService } from '../../../services/calendar.service';
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";

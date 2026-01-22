@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CalendarService } from '../../services/calendar.service';
 import { CalenderDayComponent } from "../../components/calendar/calendar-day/calender-day.component";
 import { CalendarWeekComponent } from '../../components/calendar/calendar-week/calendar-week.component';
