@@ -10,9 +10,9 @@
     </nav>
 
     <div class="calendar">    
-        @if (view() == "day") {<app-calender-day [day]="today()"></app-calender-day>}
-        @else if (view() == "week") {<app-calendar-week [today]="today()"></app-calendar-week>}
-        @else if (view() == "month") {<app-calendar-month [today]="today()"></app-calendar-month>}
+        @if (view() == "day") {<app-calender-day></app-calender-day>}
+        @else if (view() == "week") {<app-calendar-week></app-calendar-week>}
+        @else if (view() == "month") {<app-calendar-month></app-calendar-month>}
         @else if (view() == "quarter") {<app-calendar-quarter></app-calendar-quarter>}
         @else if (view() == "year") {<app-calendar-year></app-calendar-year>}
         @else {<p style="color: white;">not implemented yet</p>}

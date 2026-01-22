@@ -10,7 +10,7 @@
 
     <div class="tile-container">
         @for (day of calendarService.week().week_days; track day; let weekDayIndex = $index) {
-            <div class="tile" [class.active]="todayIndex() === weekDayIndex">
+            <div class="tile" [class.active]="todayIndex.day === weekDayIndex">
             
                 <div class="header">
                     <p class="title">{{day}}</p>

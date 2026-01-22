@@ -15,29 +15,11 @@ import { RoadmapService } from '../../../services/roadmap.service';
   templateUrl: './calendar-month.component.html',
   styleUrl: './calendar-month.component.css'
 })
-export class CalendarMonthComponent implements OnInit{
+export class CalendarMonthComponent{
   roadmapService = inject(RoadmapService)
   calendarService = inject(CalendarService)
-  today = input<string>("")
-  monthData = signal<[string, ToDo[]][]>([])
 
   monthGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "month"))
   actions = computed<Action[]>( () => this.roadmapService.actions())
-
-  todayIndex = computed<number[]>( () => { // [week, day]
-    for (let i = 0; i < this.monthData().length; i++) {
-      //check if day is today
-      
-      if (this.today() === this.monthData()[i][0]) {
-        return [Math.floor(i / 7), i % 7]
-      }
-    }
-    return [0,0]
-  }) 
-
-  ngOnInit(): void {
-    this.calendarService.getMonth().subscribe(data => {
-      this.monthData.set(data)
-    })
-  }
+  todayIndex = this.calendarService.today_idx()
 }

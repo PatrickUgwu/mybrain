@@ -41,6 +41,25 @@ export class CalendarService {
     weekday: "",
     todos: []
   })
+  today_idx = signal<{
+    "str": string,
+    "day" : number,
+    "week" : number,
+    "month" : number,
+    "quater" : number
+  }>({
+    str: "",
+    day : 0,
+    week : 0,
+    month : 0,
+    quater : 0
+  })
+  
+
+  getTodayIndices(): Observable<any> {
+    return this.httpClient.get<any>(this.url + "/today_idx")
+  }
+
   getDayData(): Observable<any> {
     return this.httpClient.get<any>(this.url + "/calendar_day_data")
   }
@@ -104,6 +123,7 @@ export class CalendarService {
     this.getMonthData().subscribe(data => this.month.set(data))
     this.getWeekData().subscribe(data => this.week.set(data))
     this.getDayData().subscribe(data => this.day.set(data))
+    this.getTodayIndices().subscribe(data => this.today_idx.set(data))
   }
 
   constructor() {

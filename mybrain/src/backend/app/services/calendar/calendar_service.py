@@ -22,8 +22,19 @@ def get_parent(item_type: str, item_id: int, session: SessionDep):
     elif item_type == "goal": return session.get(Goal, item_id).parent
     elif item_type == "milestone": return session.get(Milestone, item_id).parent
 
-def get_today():
-    return date.today().__str__()
+def get_today_idx():
+    today = date.today()
+    month = calendar.monthcalendar(today.year, today.month)
+    week_idx = next(idx for idx, week in enumerate(month) if today.day in week)
+    
+    today_idx = {
+        "str" : str(today) ,
+        "day" : today.weekday() ,
+        "week" : week_idx ,
+        "month" : (today.month-1) % 3 ,
+        "quater" : (today.month-1) // 3
+    }
+    return today_idx
 
 def get_weekday(day:str):
     if day == "":

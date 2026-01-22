@@ -17,26 +17,9 @@ import { RoadmapService } from '../../../services/roadmap.service';
   templateUrl: './calendar-week.component.html',
   styleUrl: './calendar-week.component.css'
 })
-export class CalendarWeekComponent implements OnInit { 
+export class CalendarWeekComponent { 
   roadmapService = inject(RoadmapService)
   calendarService = inject(CalendarService)
-  today = input<string>("") // to mark the current day
-  
-  weekData = signal<[string,ToDo[]][]>([])
-  actions = computed<Action[]>( () => this.roadmapService.actions() )
-  
-  todayIndex = computed<number>( () => {
-    for (let index = 0; index < this.weekData().length; index++) {
-      if (this.today() === this.weekData()[index][0]) {
-        return index
-      }
-    }
-    return -1
-  })
-
-  ngOnInit(): void {
-    this.calendarService.getWeek().subscribe(data => {
-      this.weekData.set(data)
-    })
-  }
+  actions = computed<Action[]>( () => this.roadmapService.actions() )  
+  todayIndex = this.calendarService.today_idx()
 }

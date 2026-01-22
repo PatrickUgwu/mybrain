@@ -21,7 +21,7 @@
             <div class="week">
                 <div class="days">
                     @for (day of week.week_days; track dayIndex; let dayIndex = $index  ) {
-                        <div class="tile" [class.active]="todayIndex()[0] === weekIndex && todayIndex()[1] === dayIndex">       
+                        <div class="tile" [class.active]="todayIndex.week === weekIndex && todayIndex.day === dayIndex">       
                             <div class="header">
                                 <p>{{day}}</p>
                             </div>

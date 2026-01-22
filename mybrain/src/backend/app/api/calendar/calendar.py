@@ -14,9 +14,9 @@ def get_possible_parents(type:str, session: SessionDep):
 def get_parent(item_type: str, item_id: int, session: SessionDep):
     return calendar_service.get_parent(item_type, item_id, session)
 
-@router.get("/today")
-def get_today():
-    return calendar_service.get_today()
+@router.get("/today_idx")
+def get_today_idx():
+    return calendar_service.get_today_idx()
 
 @router.get("/weekday") # for tile
 def get_weekday(day:str):

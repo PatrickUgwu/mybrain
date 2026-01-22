@@ -14,16 +14,9 @@ import { CalendarYearComponent } from "../../components/calendar/calendar-year/c
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent {
   calendarService = inject(CalendarService)
   view = signal("day")
-  today = signal("")
-  
-  ngOnInit(): void {
-    this.calendarService.getToday().subscribe(data => {
-      this.today.set(data)
-    })
-  }
 
   setView(view:string): void {
     this.view.set(view)
