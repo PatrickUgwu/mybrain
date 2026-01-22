@@ -31,6 +31,14 @@ def get_weekday(day:str):
     weekday = date.fromisoformat(day).strftime("%a")
     return weekday
 
+def get_calendar_day_data(day: date, session: SessionDep):
+    todos = session.exec(select(Todo).where(Todo.deadline == day)).all()
+    calendar_day = {
+        "weekday": day.strftime("%a") , 
+        "todos": todos
+    }
+    return calendar_day
+
 def get_week(session: SessionDep):   
     today = date.today()
     monday = today.__sub__(timedelta(days = today.weekday()))  
