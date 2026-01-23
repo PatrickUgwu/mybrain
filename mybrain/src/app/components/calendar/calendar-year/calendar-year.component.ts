@@ -1,7 +1,6 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CalendarService } from '../../../services/calendar.service';
 import { CalendarGoalComponent } from "../calendar-goal/calendar-goal.component";
-import { Goal } from '../../../models/interfaces/goal.interface';
 import { Milestone } from '../../../models/interfaces/milestone.interface';
 import { CalendarMilestoneComponent } from "../calendar-milestone/calendar-milestone.component";
 import { AddButtonComponent } from "../add-button/add-button.component";
@@ -19,16 +18,5 @@ export class CalendarYearComponent {
   roadmapService = inject(RoadmapService)
 
   milestones = computed<Milestone[]>( () => this.roadmapService.milestones())
-  year = signal<{
-    "month_str": string, 
-    "month_goals": Goal[], 
-    "month_quarter_goals": Goal[]
-  }[][]>([])
-
-  ngOnInit(): void {    
-    this.calendarService.getYearData().subscribe(data => {
-      this.year.set(data)
-    })    
-  }
 
 }
