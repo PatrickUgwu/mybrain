@@ -9,7 +9,7 @@
     </div>
     <div class="calendar">
         
-        @for (month of calendarService.quarter(); track $index) {
+        @for (month of calendarService.quarter(); track monthIndex; let monthIndex = $index) {
             <div class="month">
                 <div class="tile">       
                     <div class="tile-header">
@@ -17,10 +17,10 @@
                     </div>
                     
                     <div class="week-goal-container">
-                        @for (week of month.week_goals; track $index) {
-                            <div class="week-goals">
+                        @for (week of month.week_goals; track weekIndex; let weekIndex = $index) {
+                            <div class="week-goals" [class.active]="todayIndex.month === monthIndex && todayIndex.week === weekIndex">
                                 <div class="week-goal-header">
-                                    <p>W{{$index+1}}</p>
+                                    <p>W{{weekIndex+1}}</p>
                                 </div>
                                 @for (goal of week; track $index) {
                                     <div class="week-goal">

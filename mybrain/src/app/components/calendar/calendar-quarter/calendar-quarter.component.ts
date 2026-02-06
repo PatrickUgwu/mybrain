@@ -17,4 +17,5 @@ export class CalendarQuarterComponent {
   roadmapService = inject(RoadmapService)
 
   quarterGoals = computed<Goal[]>( () => this.roadmapService.goals().filter(goal => goal.type === "quarter"))
+  todayIndex = this.calendarService.today_idx()
 }
