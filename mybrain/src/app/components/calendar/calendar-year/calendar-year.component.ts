@@ -18,5 +18,5 @@ export class CalendarYearComponent {
   roadmapService = inject(RoadmapService)
 
   milestones = computed<Milestone[]>( () => this.roadmapService.milestones())
-
+  todayIndex = this.calendarService.today_idx()
 }

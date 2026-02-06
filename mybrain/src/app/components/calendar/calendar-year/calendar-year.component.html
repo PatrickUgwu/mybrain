@@ -10,11 +10,11 @@
     </div>
     <div class="calendar">
         
-        @for (quarter of calendarService.year(); track $index) {
+        @for (quarter of calendarService.year(); track quaterIndex; let quaterIndex = $index) {
             <div class="quarter">
                 <div class="months">
-                    @for (month of quarter; track $index) {
-                        <div class="month">
+                    @for (month of quarter; track monthIndex; let monthIndex = $index) {
+                        <div class="month" [class.active]="todayIndex.quater === quaterIndex && todayIndex.month === monthIndex">
                             <div class="header">
                                 <p>{{month.month_str}}</p>
                             </div>
