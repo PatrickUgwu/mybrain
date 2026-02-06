@@ -13,7 +13,8 @@ import { Milestone } from '../../../models/interfaces/milestone.interface';
 })
 export class AddButtonComponent {
   popup: string = ""
-  parent = input<[string, Roadmap|Milestone|Goal|any]>(["", null])
+  itemType = input<string>()
+  item = input<any>()
   openPopup(popupType: string) {
     this.popup = popupType
   }

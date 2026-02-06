@@ -72,7 +72,7 @@
 
             
             <div class="activity-bar">
-                <app-add-button class="add-button" [parent]="[this.itemType(), this.item()]"></app-add-button>
+                <app-add-button class="add-button" [item]="this.item()" [itemType]="this.itemType()"></app-add-button>
                 @if (editMode) {
                     <button class="save-button" (click)="saveEdit()">SAVE</button>
                     <button class="cancel-button" (click)="cancelEdit()">CANCEL</button>

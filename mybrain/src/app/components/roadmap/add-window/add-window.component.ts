@@ -16,8 +16,9 @@ import { KnowledgeService } from '../../../services/knowledge.service';
 export class AddWindowComponent implements OnInit{
   roadmapService = inject(RoadmapService)
   knowledgeService = inject(KnowledgeService)
-  parent = input<[string, Roadmap|Milestone|Goal|any]>(["", null])
-  item: string = ""
+  parentItemType = input<string>()
+  parent = input<any>()
+  itemType: string = ""
   parents: Roadmap[] | Milestone[] | Goal[] = []
   @Output() close = new EventEmitter<void>()
 
@@ -34,7 +35,8 @@ export class AddWindowComponent implements OnInit{
   //itemForm2: FormGroup = this.roadmapService.buildForm(this.item)
   
   getPossibleParents(type:string){
-    if (this.parent()[1] === null || this.parent()[0] === "action" || this.parent()[0] === "todo") {
+    // this.parent()[1] === null means no parent set yet
+    if (this.parent() === null || this.parentItemType() === "action" || this.parentItemType() === "todo") {
       this.roadmapService.getPossibleParents(type).subscribe(data => {
         this.parents = data
       })
@@ -71,27 +73,29 @@ export class AddWindowComponent implements OnInit{
   }
 
   addItem() {
-    if (this.item === "workspace" || this.item === "collection" || this.item === "page") {
-      this.knowledgeService.addItem(this.itemForm.value, this.item)
+    if (this.itemType === "workspace" || this.itemType === "collection" || this.itemType === "page") {
+      this.knowledgeService.addItem(this.itemForm.value, this.itemType)
     }
     else {
-      this.roadmapService.addItem(this.itemForm.value, this.item)
+      this.roadmapService.addItem(this.itemForm.value, this.itemType)
     }
     
     this.closeAdd()  
   }
 
   ngOnInit(): void {
-    if (this.parent()[0] !== "" && this.parent()[0] !== "action" && this.parent()[0] !== "todo") {
-      if (this.parent()[0] === "roadmap") {this.item = "milestone"}
-      else if (this.parent()[0] === "milestone") {this.item = "goal"}
-      else if (this.parent()[0] === "goal") {this.item = "action"}
-      else if (this.parent()[0] === "none") {this.item = "roadmap"} /// correct !! dont use:
-      else if (this.parent()[0] === "noneWS") {this.item = "workspace"} /// "none"/"noneWS"
-      else if (this.parent()[0] === "workspace") {this.item = "collection"}
-      else if (this.parent()[0] === "collection") {this.item = "page"}
-      this.parents = [this.parent()[1]]
-      this.buildForm(this.item)
+    // setting item as the type of the item (str) based on the parent[0] = parent type(str), parent[1] = actual parent
+    if (this.parentItemType() !== "" && this.parentItemType() !== "action" && this.parentItemType() !== "todo") {
+      if (this.parentItemType() === "roadmap") {this.itemType = "milestone"}
+      else if (this.parentItemType() === "milestone") {this.itemType = "goal"}
+      else if (this.parentItemType() === "goal") {this.itemType = "action"}
+      else if (this.parentItemType() === "none") {this.itemType = "roadmap"} /// correct !! dont use:
+      else if (this.parentItemType() === "noneWS") {this.itemType = "workspace"} /// "none"/"noneWS"
+      else if (this.parentItemType() === "workspace") {this.itemType = "collection"}
+      else if (this.parentItemType() === "collection") {this.itemType = "page"}
+      this.parents = [this.parent()]
+      this.buildForm(this.itemType)
+    }
     }
 
   }

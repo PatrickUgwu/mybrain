@@ -4,10 +4,10 @@
         <div class="header-container">
             <div class="header">
                 <div class="header-title">
-                    Add - {{item}}
-                    @if (item === "") {
+                    Add - {{itemType}}
+                    @if (itemType === "" || itemType === "none") {
                         <div>
-                            <select [(ngModel)]="item" class="type" [ngModelOptions]="{ standalone: true }" (ngModelChange)="buildForm(item)" placeholder="Choose Item..." style="background-color: red;">
+                            <select [(ngModel)]="itemType" class="type" [ngModelOptions]="{ standalone: true }" (ngModelChange)="buildForm(itemType)" placeholder="Choose Item..." style="background-color: red;">
                                 <option value="action">Action</option>
                                 <option value="todo">ToDo</option>
                                 <option value="goal">Goal</option>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="main-form">
-            @if (item !== "") {
+            @if (itemType !== "") {
                 <div class="form-item">
                     <label class="title-label">Title</label>
                     <input class="title" formControlName="title" placeholder="Enter Title...">
@@ -34,7 +34,7 @@
                     <input class="description" formControlName="description" placeholder="Enter Title...">
                 </div>
 
-                @if (item !== "roadmap" && item != "workspace") {
+                @if (itemType !== "roadmap" && itemType != "workspace") {
                     <div class="form-item">
                         <label class="parent-label">Parent</label>
                         <select class="parent" formControlName="parent_id" placeholder="Enter Title...">
@@ -49,7 +49,7 @@
                 
             
                 
-                @if (item === "action") {
+                @if (itemType === "action") {
                     <div class="form-item">
                         <label class="pattern-label">Pattern</label>
                         <select class="pattern" formControlName="pattern" placeholder="Enter Title...">
@@ -58,7 +58,7 @@
                     </div>
                 }
                 
-                @else if (item === "goal") {
+                @else if (itemType === "goal") {
                     <div class="form-item">
                         <label class="deadline-label">Deadline</label>
                         <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
@@ -74,7 +74,7 @@
                     </div>
                 }
 
-                @else if (item === "milestone" || item === "todo") {
+                @else if (itemType === "milestone" || itemType === "todo") {
                     <div class="form-item">
                         <label class="deadline-label">Deadline</label>
                         <input class="deadline" formControlName="deadline" placeholder="DD-MM-YYYY" type="date">
