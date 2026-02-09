@@ -77,6 +77,7 @@ export class RoadmapService {
     return this.httpClient.patch<ToDo>(this.url + "/todo/" + todoID, todo).pipe(
       tap(updatedTodo => {
         this.todos.update(current => current.map(todo => todo.id === todoID ? updatedTodo : todo))
+        this.calendarService.loadData()
       })
     )
   }
@@ -103,6 +104,7 @@ export class RoadmapService {
     return this.httpClient.patch<Action>(this.url + "/action/" + actionID, action).pipe(
       tap(updatedAction => {
         this.actions.update(current => current.map(action => action.id === actionID ? updatedAction : action))
+        this.calendarService.loadData()
       })
     )
   }
@@ -129,6 +131,7 @@ export class RoadmapService {
     return this.httpClient.patch<Goal>(this.url + "/goal/" + goalID, goal).pipe(
       tap(updatedGoal => {
         this.goals.update(current => current.map(goal => goal.id === goalID ? updatedGoal : goal))
+        this.calendarService.loadData()
       })
     )
   }
@@ -156,6 +159,7 @@ export class RoadmapService {
     return this.httpClient.patch<Milestone>(this.url + "/milestone/" + milestoneID, milestone).pipe(
       tap(updatedMilestone => {
         this.milestones.update(current => current.map(milestone => milestone.id === milestoneID ? updatedMilestone : milestone))
+        this.calendarService.loadData()
       })
     )
   }
@@ -183,6 +187,7 @@ export class RoadmapService {
     return this.httpClient.patch<Roadmap>(this.url + "/roadmap/" + roadmapID, roadmap).pipe(
       tap(updatedRoadmap => {
         this.roadmaps.update(current => current.map(roadmap => roadmap.id === roadmapID ? updatedRoadmap : roadmap))
+        this.calendarService.loadData()
       })
     )
   }
