@@ -41,20 +41,13 @@ export class CalendarService {
     weekday: "",
     todos: []
   })
-  today_idx = signal<{
-    "str": string,
-    "day" : number,
-    "week" : number,
-    "month" : number,
-    "quater" : number
-  }>({
+  today_idx = signal({
     str: "",
     day : 0,
     week : 0,
     month : 0,
     quater : 0
   })
-  
 
   getTodayIndices(): Observable<any> {
     return this.httpClient.get<any>(this.url + "/today_idx")
