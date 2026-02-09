@@ -13,8 +13,9 @@ import { Milestone } from '../../../models/interfaces/milestone.interface';
 })
 export class AddButtonComponent {
   popup: string = ""
-  itemType = input<string>()
-  item = input<any>()
+  itemType = input<string>("")
+  item = input<any>(null)
+  
   openPopup(popupType: string) {
     this.popup = popupType
   }
