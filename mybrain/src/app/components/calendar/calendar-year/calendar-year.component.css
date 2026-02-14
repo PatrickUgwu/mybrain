@@ -60,6 +60,10 @@
     background-color: aqua;
 }
 
+.month.active {
+    background-color: orangered;
+}
+
 .header {
     height:20%;
     display: flex;

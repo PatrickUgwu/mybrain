@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CalenderDayComponent } from "../../components/calendar/calendar-day/calender-day.component";
 import { CalendarService } from '../../services/calendar.service';
 import { KnowledgeService } from '../../services/knowledge.service';
-import { MarkdownComponent} from 'ngx-markdown';
 import { Page } from '../../models/interfaces/page.interface';
 
 @Component({

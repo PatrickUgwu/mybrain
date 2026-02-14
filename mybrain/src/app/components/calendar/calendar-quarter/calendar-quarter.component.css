@@ -58,6 +58,10 @@
     color: black;
 }
 
+.week-goals.active {
+    background-color: orangered;
+}
+
 .tile-header {
     width: 10%;
 }

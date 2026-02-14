@@ -1,10 +1,9 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CalendarService } from '../../../services/calendar.service';
 import { CalendarActionComponent } from "../calendar-action/calendar-action.component";
 import { CalendarTodoComponent } from "../calendar-todo/calendar-todo.component";
 import { RoadmapService } from '../../../services/roadmap.service';
 import { AddButtonComponent } from "../add-button/add-button.component";
-import { ToDo } from '../../../models/interfaces/todo.interface';
 
 @Component({
   selector: 'app-calender-day',
@@ -13,15 +12,11 @@ import { ToDo } from '../../../models/interfaces/todo.interface';
   templateUrl: './calender-day.component.html',
   styleUrl: './calender-day.component.css'
 })
-export class CalenderDayComponent implements OnInit{
+export class CalenderDayComponent{
   calendarService = inject(CalendarService)
   roadmapService = inject(RoadmapService)
-  weekday = ""
-  day = input.required<string>()
+  
   popup: [string, any] = ["", null]
-  todos = computed<ToDo[]>(() => 
-    this.roadmapService.todos().filter(todo => todo.deadline === this.day())
-  )
 
   openPopup(popupType: string, item?: unknown) {
     this.popup[0] = popupType
@@ -33,11 +28,4 @@ export class CalenderDayComponent implements OnInit{
   closePopup() {
     this.popup = ["", null]
   }
-
-  ngOnInit(): void {
-    this.calendarService.getWeekDay(this.day()).subscribe(day => {
-      this.weekday = day
-    })
-  }
-
 }

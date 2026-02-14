@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Goal } from '../../../models/interfaces/goal.interface';
 import { RoadmapService } from '../../../services/roadmap.service';
 import { ItemOverviewComponent } from "../../roadmap/item-overview/item-overview.component";

@@ -1,10 +1,15 @@
 import { Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoadmapService } from '../../../services/roadmap.service';
-import { Goal } from '../../../models/interfaces/goal.interface';
-import { Milestone } from '../../../models/interfaces/milestone.interface';
-import { Roadmap } from '../../../models/interfaces/roadmap.interface';
+import { createGoalForm } from '../../../models/interfaces/goal.interface';
+import { createMilestoneForm } from '../../../models/interfaces/milestone.interface';
+import { createRoadmapForm } from '../../../models/interfaces/roadmap.interface';
 import { KnowledgeService } from '../../../services/knowledge.service';
+import { createActionForm } from '../../../models/interfaces/action.interface';
+import { createWorkspaceForm } from '../../../models/interfaces/workspace.interface';
+import { createCollectionForm } from '../../../models/interfaces/collection.interface';
+import { createPageForm } from '../../../models/interfaces/page.interface';
+import { createToDoForm } from '../../../models/interfaces/todo.interface';
 
 @Component({
   selector: 'app-add-window',
@@ -16,54 +21,18 @@ import { KnowledgeService } from '../../../services/knowledge.service';
 export class AddWindowComponent implements OnInit{
   roadmapService = inject(RoadmapService)
   knowledgeService = inject(KnowledgeService)
-  parent = input<[string, Roadmap|Milestone|Goal|any]>(["", null])
-  item: string = ""
-  parents: Roadmap[] | Milestone[] | Goal[] = []
+  parentItemType = input<string>("")
+  parent = input<any>(null)
+  itemType: string = ""
+  parents: any = []
   @Output() close = new EventEmitter<void>()
 
-  itemForm:FormGroup = new FormGroup({
-    
-    title: new FormControl("", [
-      Validators.required
-    ]),
-    description: new FormControl("", [
-      Validators.required, 
-      Validators.minLength(3),
-    ])
-  })
-  //itemForm2: FormGroup = this.roadmapService.buildForm(this.item)
+  itemForm!:FormGroup 
   
-  getPossibleParents(type:string){
-    if (this.parent()[1] === null || this.parent()[0] === "action" || this.parent()[0] === "todo") {
-      this.roadmapService.getPossibleParents(type).subscribe(data => {
-        this.parents = data
-      })
-    }
-  }
-
-  buildForm(type: string){
-    if (type !== "roadmap" && type !== "todo" && type !== "workspace") {
-      this.itemForm.addControl("parent_id", new FormControl(this.parents[0]?.title, Validators.required))
-    }
-    if (type === "action") {
-      this.itemForm.addControl("pattern", new FormControl("daily", Validators.required))
-    }
-    else if (type === "goal") {
-      this.itemForm.addControl("deadline", new FormControl("", Validators.required))
-      this.itemForm.addControl("type", new FormControl("week", Validators.required))
-    }
-    else if (type === "milestone") {
-      this.itemForm.addControl("deadline", new FormControl("", Validators.required))
-    }
-    else if (type === "todo") {
-      this.itemForm.addControl("parent_id", new FormControl())
-      this.itemForm.addControl("deadline", new FormControl())
-    }
-    else if (type === "page") {
-      this.itemForm.addControl("content", new FormControl(""))
-    }
-
-    this.getPossibleParents(type)
+  getPossibleParents(type:string){  
+    this.roadmapService.getPossibleParents(type).subscribe(data => {
+      this.parents = data
+    })
   }
 
   closeAdd(){
@@ -71,28 +40,76 @@ export class AddWindowComponent implements OnInit{
   }
 
   addItem() {
-    if (this.item === "workspace" || this.item === "collection" || this.item === "page") {
-      this.knowledgeService.addItem(this.itemForm.value, this.item)
+    if (this.itemType === "workspace" || this.itemType === "collection" || this.itemType === "page") {
+      this.knowledgeService.addItem(this.itemForm.value, this.itemType)
     }
     else {
-      this.roadmapService.addItem(this.itemForm.value, this.item)
+      this.roadmapService.addItem(this.itemForm.value, this.itemType)
     }
-    
     this.closeAdd()  
   }
 
-  ngOnInit(): void {
-    if (this.parent()[0] !== "" && this.parent()[0] !== "action" && this.parent()[0] !== "todo") {
-      if (this.parent()[0] === "roadmap") {this.item = "milestone"}
-      else if (this.parent()[0] === "milestone") {this.item = "goal"}
-      else if (this.parent()[0] === "goal") {this.item = "action"}
-      else if (this.parent()[0] === "none") {this.item = "roadmap"} /// correct !! dont use:
-      else if (this.parent()[0] === "noneWS") {this.item = "workspace"} /// "none"/"noneWS"
-      else if (this.parent()[0] === "workspace") {this.item = "collection"}
-      else if (this.parent()[0] === "collection") {this.item = "page"}
-      this.parents = [this.parent()[1]]
-      this.buildForm(this.item)
+  getItemForm(itemType: string, parentTitle?: string) {
+    switch(itemType) {
+      case "roadmap":
+        this.itemForm = createRoadmapForm()
+        break
+      case "milestone":
+        this.itemForm = createMilestoneForm(parentTitle)
+        break
+      case "goal":
+        this.itemForm = createGoalForm(parentTitle)
+        break
+      case "action":
+        this.itemForm = createActionForm(parentTitle)
+        break
+      case "todo":
+        this.itemForm = createToDoForm()
+        break
+
+      case "workspace":
+        this.itemForm = createWorkspaceForm()
+        break
+      case "collection":
+        this.itemForm = createCollectionForm(parentTitle)
+        break
+      case "page":
+        this.itemForm = createPageForm(parentTitle)
+        break
     }
 
+    if (this.parent() === null) this.getPossibleParents(itemType)
+  }
+
+  ngOnInit(): void {
+    switch(this.parentItemType()) {
+      case "":
+        return
+      case "none_rm":
+        this.itemType = "roadmap"
+        break
+      case "roadmap":
+        this.itemType = "milestone"
+        break
+      case "milestone":
+        this.itemType = "goal"
+        break
+      case "goal":
+        this.itemType = "action"
+        break
+
+      case "none_ws":
+        this.itemType = "workspace"
+        break
+      case "workspace":
+        this.itemType = "collection"
+        break
+      case "collection":
+        this.itemType = "page"
+        break
+    }
+    this.parents = [this.parent()]
+    this.getItemForm(this.itemType, this.parent()?.title)
   }
 }
+
