@@ -1,14 +1,16 @@
-import { Component, inject, input, model, OnInit, output, signal } from '@angular/core';
-import { ToDo } from '../../../models/interfaces/todo.interface';
-import { Goal } from '../../../models/interfaces/goal.interface';
-import { Milestone } from '../../../models/interfaces/milestone.interface';
-import { Action } from '../../../models/interfaces/action.interface';
+import { Component, inject, input, model, OnInit, output } from '@angular/core';
+import { createToDoForm } from '../../../models/interfaces/todo.interface';
+import { createGoalForm } from '../../../models/interfaces/goal.interface';
+import { createMilestoneForm } from '../../../models/interfaces/milestone.interface';
+import { createActionForm } from '../../../models/interfaces/action.interface';
+import { createCollectionForm } from '../../../models/interfaces/collection.interface';
+import { createWorkspaceForm } from '../../../models/interfaces/workspace.interface';
+import { createPageForm } from '../../../models/interfaces/page.interface';
+import { createRoadmapForm } from '../../../models/interfaces/roadmap.interface';
 import { RoadmapService } from '../../../services/roadmap.service';
 import { AddButtonComponent } from "../../calendar/add-button/add-button.component";
-import { FormsModule } from '@angular/forms';
-import { Collection } from '../../../models/interfaces/collection.interface';
-import { Workspace } from '../../../models/interfaces/workspace.interface';
-import { Page } from '../../../models/interfaces/page.interface';
+import { FormGroup, FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-item-overview',
@@ -21,10 +23,41 @@ export class ItemOverviewComponent implements OnInit {
   roadmapService = inject(RoadmapService)
   itemType = input.required<string>()
   item = model.required<any>()
-  parent: Milestone | Goal | Action | ToDo | Workspace | Collection | Page | undefined
+  parent: any
   editMode: boolean = false
   close = output()
   editCopy: any
+  itemForm!: FormGroup
+
+  getItemForm(itemType: string) {
+    switch(itemType) {
+      case "roadmap":
+        this.itemForm = createRoadmapForm()
+        break
+      case "milestone":
+        this.itemForm = createMilestoneForm()
+        break
+      case "goal":
+        this.itemForm = createGoalForm()
+        break
+      case "action":
+        this.itemForm = createActionForm()
+        break
+      case "todo":
+        this.itemForm = createToDoForm()
+        break
+
+      case "workspace":
+        this.itemForm = createWorkspaceForm()
+        break
+      case "collection":
+        this.itemForm = createCollectionForm()
+        break
+      case "page":
+        this.itemForm = createPageForm()
+        break
+    }
+  }
 
   closePopup(){
     this.cancelEdit()
@@ -33,7 +66,6 @@ export class ItemOverviewComponent implements OnInit {
 
   editItem() {
     this.editMode = true
-    console.log(this.editCopy.deadline)
   }
 
   saveEdit() {
@@ -58,5 +90,6 @@ export class ItemOverviewComponent implements OnInit {
       this.parent = parent
     })
     this.editCopy = {...this.item()}
+    this.getItemForm(this.itemType())
   }
 }

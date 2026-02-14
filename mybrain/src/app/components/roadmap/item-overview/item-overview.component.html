@@ -1,7 +1,5 @@
 <div class="item-info">
    
-    
-    
     <div class="header-container">
         <div class="header">
             <div class="header-title">
@@ -22,10 +20,12 @@
                 @else {<p>{{editCopy.description}}</p>}
             </div>
 
-            <div class="item-detail">
-                <p>Parent:</p>
-                <p>{{parent?.title}}</p>
-            </div>
+            @if (itemForm.contains("parent_id")) {
+                <div class="item-detail">
+                    <p>Parent:</p>
+                    <p>{{parent?.title}}</p>
+                </div>
+            }
 
             <div class="item-detail">
                 <p>Completed:</p>
@@ -36,7 +36,7 @@
                 
             </div>
         
-            @if (itemType() === "goal") {
+            @if (itemForm.contains("type")) {
                 <div class="item-detail">
                     <p>Goal Type:</p>
                     @if (editMode) {
@@ -52,13 +52,13 @@
                     
                 </div>
             }
-            @if (itemType() === "action") {
+            @if (itemForm.contains("pattern")) {
                 <div class="item-detail">
                     <p>Pattern:</p>
                     <p>{{item().recurringPattern}}</p>
                 </div>
             }
-            @if (itemType() !== "action" && itemType() !== "roadmap") {
+            @if (itemForm.contains("deadline")) {
                 <div class="item-detail">
                     <p>Deadline:</p>
                     @if (editMode) {
