@@ -19,7 +19,7 @@ def create_action(action_data: ActionCreate, session: SessionDep) -> Action:
 
 @router.patch("/action/{action_id}")
 def update_action(action_id: int, action: ActionUpdate, session: SessionDep):
-    return action_service.updata_action(action_id, action, session)
+    return action_service.update_action(action_id, action, session)
 
 @router.delete("/action/{action_id}")
 def delete_action(action_id: int, session: SessionDep):
