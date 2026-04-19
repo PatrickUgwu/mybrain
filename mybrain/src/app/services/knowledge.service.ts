@@ -58,12 +58,14 @@ export class KnowledgeService {
   addPage(page: Page): void {
     this.httpClient.post<Page>(this.url + "/page", page).subscribe(newPage => {
         this.pages.update(current => [...current, newPage])
+        this.getRecentPages().subscribe(data => this.recentPages.set(data))
     })
   }
   updatePage(pageID: number, page: Page): Observable<Page> {
     return this.httpClient.patch<Page>(this.url + "/page/" + pageID, page).pipe(
       tap(updatedPage => {
         this.pages.update(current => current.map(page => page.id === pageID ? updatedPage : page))
+        this.getRecentPages().subscribe(data => this.recentPages.set(data))
       })
     )
   }
@@ -71,6 +73,7 @@ export class KnowledgeService {
   deletePage(pageID: number) {
     this.httpClient.delete(this.url + "/page/" + pageID).subscribe(() => {
       this.pages.update(current => current.filter(page => page.id !== pageID))
+      this.getRecentPages().subscribe(data => this.recentPages.set(data))
     })
   }
   

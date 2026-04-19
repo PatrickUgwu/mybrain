@@ -1,30 +1,37 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CalenderDayComponent } from "../../components/calendar/calendar-day/calender-day.component";
 import { CalendarService } from '../../services/calendar.service';
 import { KnowledgeService } from '../../services/knowledge.service';
 import { Page } from '../../models/interfaces/page.interface';
+import { PageComponent } from "../../components/knowledge/page/page.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CalenderDayComponent],
+  imports: [CalenderDayComponent, PageComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   calendarService = inject(CalendarService)
   knowledgeService = inject(KnowledgeService)
-  knowledge:any[] = []
-  recentPages = signal<Page[]>([])
+  recentPages = computed<Page[]>( () => this.knowledgeService.recentPages())
   day = ""
-  
-  ngOnInit(): void {
-    this.knowledgeService.getKnowledge().subscribe(data => {
-      this.knowledge = data
-    })
 
-    this.knowledgeService.getRecentPages().subscribe(pages => {
-      this.recentPages.set(pages)
-    })
+  // popup -> into component later
+  popup = {"display" : false, "itemType" : "", "item" : null}
+
+  openPopup(itemType: string, item: any, event: Event) {
+    event.stopPropagation();
+    this.popup.display = true
+    this.popup.itemType = itemType
+    this.popup.item = item
   }
+
+  closePopup(): void {
+    this.popup.display = false
+    this.popup.itemType = ""
+    this.popup.item = null
+  }
+  
 }
