@@ -51,7 +51,7 @@ export class PageComponent implements OnInit{
 
   saveEdit() {
     this.editCopy.content = this.markdownContent
-    this.knowledgeService.updatePage(this.editCopy.id, this.editCopy).subscribe(updatedPage => { // addupdateItem()
+    this.knowledgeService.updateItem(this.editCopy.id, this.editCopy, "page").subscribe(updatedPage => { 
       this.page.set(updatedPage)
     })
     this.editMode = false
