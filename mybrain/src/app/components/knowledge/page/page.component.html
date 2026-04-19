@@ -1,13 +1,14 @@
+
+
 <div class="page">
     <nav class="navbar-container">
         <ul class="navbar">
-            <li class="back">back</li>
+            <li class="back" (click)="closePopup()"><</li>
             <li class="mode" (click)="toggleEditMode()">
                 @if (mode === "view"){ edit }
                 @else { view }
             </li>
-            <li class="info">info</li>
-            <li (click)="closePopup()" class="close">x</li>
+            <li class="info" (click)="togglePageInfo()">info</li>
         </ul>
     </nav>
     <div class="content {{mode}}">
@@ -21,6 +22,20 @@
                 <textarea class="text" [(ngModel)]="markdownContent"></textarea>
                 <markdown class="markdown" [data]="markdownContent"></markdown>
             </div>
+        }
+
+        @if (displayPageInfo) {
+            <ul class="page-info">
+                <li>
+                    {{this.page().title}}
+                </li>
+                <li>
+                    {{this.page().first_edit}}
+                </li>
+                <li>
+                    {{this.page().last_edit}}
+                </li>
+            </ul>
         }
         
     </div>

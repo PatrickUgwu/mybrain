@@ -45,12 +45,4 @@ export class KnowledgeComponent {
     this.popup.itemType = ""
     this.popup.item = null
   }
-
-  // popup -> into component later
-  openPage(pageID: number, event: Event) {
-    event.stopPropagation();
-    this.router.navigate(["page", pageID])
-  }
-
-
 }

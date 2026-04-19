@@ -6,7 +6,12 @@ from backend.app.database import SessionDep
 from backend.app.models import Collection, Page, PageCreate, PageUpdate, Workspace
 
 def get_pages(session: SessionDep):
-    pages = session.exec(select(Page)).all()
+    pages: list["Page"] = session.exec(select(Page)).all()
+    # change datetime into string
+    for page in pages:
+        page.first_edit = page.first_edit.strftime("%a - %d / %m / %y - %H : %M : %S")
+        page.last_edit = page.last_edit.strftime("%a - %d / %m / %y - %H : %M : %S")
+
     return pages
 
 def read_page(page_id: int, session: SessionDep) -> Page:
