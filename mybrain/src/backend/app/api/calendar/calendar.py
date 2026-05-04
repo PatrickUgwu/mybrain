@@ -18,7 +18,7 @@ def get_parent(item_type: str, item_id: int, session: SessionDep):
 def get_today_idx():
     return calendar_service.get_today_idx()
 
-@router.get("/weekday") # for tile
+@router.get("/weekday") 
 def get_weekday(day:str):
     return calendar_service.get_weekday(day)
 
@@ -26,7 +26,7 @@ def get_weekday(day:str):
 def get_calendar_day_data(session: SessionDep, day: date = date.today()):
     return calendar_service.get_calendar_day_data(day, session)
 
-@router.get("/week") # for week
+@router.get("/week") 
 def get_week(session: SessionDep):   
     return calendar_service.get_week(session)
 
@@ -34,7 +34,7 @@ def get_week(session: SessionDep):
 def get_calendar_week_data(session: SessionDep, today: date = date.today()):
     return calendar_service.get_calendar_week_data(today, session)
 
-@router.get("/month") # for month comp
+@router.get("/month")
 def get_month(session: SessionDep):  
     return calendar_service.get_month(session)
 
@@ -42,7 +42,7 @@ def get_month(session: SessionDep):
 def get_calendar_month_data(session: SessionDep, year: int = date.today().year, month: int = date.today().month):
     return calendar_service.get_calendar_month_data(year, month, session)
 
-@router.get("/quarter") # for quarter
+@router.get("/quarter") 
 def get_quarter():  
     return calendar_service.get_quarter()
 
@@ -50,7 +50,7 @@ def get_quarter():
 def get_calendar_quarter_data(session: SessionDep, year: int = date.today().year , quarter: int = 1):  
     return calendar_service.get_calendar_quarter_data(year, quarter, session)
 
-@router.get("/year") # for year
+@router.get("/year") 
 def get_year():  
     return calendar_service.get_year()
 

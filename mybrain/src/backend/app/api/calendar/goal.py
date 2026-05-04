@@ -15,7 +15,7 @@ def create_goal(goal_data: GoalCreate, session: SessionDep) -> Goal:
 
 @router.patch("/goal/{goal_id}")
 def update_goal(goal_id: int, goal: GoalUpdate, session: SessionDep):
-    return goal_service.updata_goal(goal_id, goal ,session)
+    return goal_service.update_goal(goal_id, goal ,session)
 
 @router.delete("/goal/{goal_id}")
 def delete_goal(goal_id: int, session: SessionDep):

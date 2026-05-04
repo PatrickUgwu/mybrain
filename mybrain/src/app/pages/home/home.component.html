@@ -1,19 +1,26 @@
-<div class="homepage">
-    <div class="brain">
-        <div class="network">
-            <h1>My Brain</h1>
+@if (popup.display) {
+    @if (popup.itemType === "page") {
+        <app-page [page]="popup.item" (close)="closePopup()"></app-page>
+    }
+}
+@else {
+    <div class="homepage">
+        <div class="brain">
+            <div class="network">
+                <h1>My Brain</h1>
+            </div>
         </div>
-    </div>
-    
-    <div class="content">
-        <section class="day-overview">
-            <app-calender-day></app-calender-day>
-        </section>
-        <section class="recent-pages">
-            @for (page of recentPages(); track $index) {
-                <p class="recent-page">{{page.title}} - {{page.last_edit}}</p>
-            }
-        </section>
-    </div>
+        
+        <div class="content">
+            <section class="day-overview">
+                <app-calender-day></app-calender-day>
+            </section>
+            <section class="recent-pages">
+                @for (page of recentPages(); track $index) {
+                    <p class="recent-page" (click)="openPopup('page', page, $event)">{{page.title}} - {{page.last_edit}}</p>
+                }
+            </section>
+        </div>
 
-</div>
+    </div>
+}

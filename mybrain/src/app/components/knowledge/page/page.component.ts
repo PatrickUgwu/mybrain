@@ -1,7 +1,6 @@
-import { Component, inject, input, model, OnInit, output } from '@angular/core';
+import { Component, inject, model, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MarkdownComponent} from 'ngx-markdown';
-import { Page } from '../../../models/interfaces/page.interface';
 import { KnowledgeService } from '../../../services/knowledge.service';
 
 @Component({
@@ -19,6 +18,19 @@ export class PageComponent implements OnInit{
   mode: string = "view"
   close = output()
   editCopy: any
+  
+
+  displayPageInfo = false
+
+  togglePageInfo(): void {
+    if (this.displayPageInfo == false) {
+      this.displayPageInfo = true
+    } else {
+      this.displayPageInfo = false
+    }
+    
+  }
+
 
   closePopup(){
     this.cancelEdit()
@@ -39,7 +51,7 @@ export class PageComponent implements OnInit{
 
   saveEdit() {
     this.editCopy.content = this.markdownContent
-    this.knowledgeService.updatePage(this.editCopy.id, this.editCopy).subscribe(updatedPage => { // addupdateItem()
+    this.knowledgeService.updateItem(this.editCopy.id, this.editCopy, "page").subscribe(updatedPage => { 
       this.page.set(updatedPage)
     })
     this.editMode = false

@@ -19,4 +19,4 @@ def update_milestone(milestone_id: int, milestone: MilestoneUpdate, session: Ses
 
 @router.delete("/milestone/{milestone_id}")
 def delete_milestone(milestone_id: int, session: SessionDep):
-    return milestone_service.update_milestone(milestone_id, session)
+    return milestone_service.delete_milestone(milestone_id, session)
