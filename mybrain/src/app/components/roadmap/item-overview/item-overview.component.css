@@ -31,12 +31,13 @@
 
 .header-title {
     height: 100%;
-    font-size: 3rem;
+    font-size: 2vw;
     border-radius: 2rem;
     background-color: aliceblue;
     margin: auto;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 1rem;
     padding: 0 1rem;
 }
@@ -53,10 +54,14 @@
 }
 
 .close {
-    font-size: 3rem;
+    font-size: 2.5vw;
     width: 10%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: red;
+    text-align: center;
 }
 
 .main-info {
