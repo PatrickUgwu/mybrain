@@ -27,14 +27,16 @@
                 </div>
             }
 
-            <div class="item-detail">
-                <p>Completed:</p>
-                @if (editMode) {
-                    <input class="checkbox" type="checkbox" (change)="editCopy.completed = !editCopy.completed" [checked]="editCopy.completed">
-                }
-                @else {<input class="checkbox" type="checkbox" [checked]="editCopy.completed" disabled>}
-                
-            </div>
+            @if (itemType() !== "workspace" && itemType() !== "collection" && itemType() !== "page") {
+                <div class="item-detail">
+                    <p>Completed:</p>
+                    @if (editMode) {
+                        <input class="checkbox" type="checkbox" (change)="editCopy.completed = !editCopy.completed" [checked]="editCopy.completed">
+                    }
+                    @else {<input class="checkbox" type="checkbox" [checked]="editCopy.completed" disabled>}
+                    
+                </div>
+            }
         
             @if (itemForm.contains("type")) {
                 <div class="item-detail">
