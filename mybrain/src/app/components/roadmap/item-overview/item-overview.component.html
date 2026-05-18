@@ -10,84 +10,84 @@
         <p (click)="closePopup()" class="close">X</p>
     </div>
 
-        <section class="main-info">
+    <section class="main-info">
 
+        <div class="item-detail">
+            <p>Description:</p>
+            @if (editMode) {
+                <input [(ngModel)]="editCopy.description">
+            }
+            @else {<p>{{editCopy.description}}</p>}
+        </div>
+
+        @if (itemForm.contains("parent_id")) {
             <div class="item-detail">
-                <p>Description:</p>
-                @if (editMode) {
-                    <input [(ngModel)]="editCopy.description">
-                }
-                @else {<p>{{editCopy.description}}</p>}
+                <p>Parent:</p>
+                <p>{{parent?.title}}</p>
             </div>
+        }
 
-            @if (itemForm.contains("parent_id")) {
-                <div class="item-detail">
-                    <p>Parent:</p>
-                    <p>{{parent?.title}}</p>
-                </div>
-            }
-
-            @if (itemType() !== "workspace" && itemType() !== "collection" && itemType() !== "page") {
-                <div class="item-detail">
-                    <p>Completed:</p>
-                    @if (editMode) {
-                        <input class="checkbox" type="checkbox" (change)="editCopy.completed = !editCopy.completed" [checked]="editCopy.completed">
-                    }
-                    @else {<input class="checkbox" type="checkbox" [checked]="editCopy.completed" disabled>}
-                    
-                </div>
-            }
-        
-            @if (itemForm.contains("type")) {
-                <div class="item-detail">
-                    <p>Goal Type:</p>
-                    @if (editMode) {
-                        <select name="type" class="dropbox" [(ngModel)]="editCopy.type">
-                            <option value="week">Week</option>
-                            <option value="month">Month</option>
-                            <option value="quarter">Quarter</option>
-                        </select>
-                    } 
-                    @else {
-                        <p>{{item().type}}</p>
-                    }
-                    
-                </div>
-            }
-            @if (itemForm.contains("pattern")) {
-                <div class="item-detail">
-                    <p>Pattern:</p>
-                    <p>{{item().recurringPattern}}</p>
-                </div>
-            }
-            @if (itemForm.contains("deadline")) {
-                <div class="item-detail">
-                    <p>Deadline:</p>
-                    @if (editMode) {
-                        <input #newDate class="date" type="date" (change)="editCopy.deadline = newDate.value" [value]="editCopy.deadline">
-                    }
-                    @else {<input class="date" type="date" [value]="editCopy.deadline" disabled>}
-                    
-                </div>
-            }
-            
-
-            
-            <div class="activity-bar">
-                <app-add-button class="add-button" [item]="this.item()" [itemType]="this.itemType()"></app-add-button>
+        @if (itemType() !== "workspace" && itemType() !== "collection" && itemType() !== "page") {
+            <div class="item-detail">
+                <p>Completed:</p>
                 @if (editMode) {
-                    <button class="save-button" (click)="saveEdit()">SAVE</button>
-                    <button class="cancel-button" (click)="cancelEdit()">CANCEL</button>
+                    <input class="checkbox" type="checkbox" (change)="editCopy.completed = !editCopy.completed" [checked]="editCopy.completed">
                 }
+                @else {<input class="checkbox" type="checkbox" [checked]="editCopy.completed" disabled>}
+                
+            </div>
+        }
+    
+        @if (itemForm.contains("type")) {
+            <div class="item-detail">
+                <p>Goal Type:</p>
+                @if (editMode) {
+                    <select name="type" class="dropbox" [(ngModel)]="editCopy.type">
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        <option value="quarter">Quarter</option>
+                    </select>
+                } 
                 @else {
-                    <button class="edit-button" (click)="editItem()">EDIT</button>
-                    <p class="delete-button" (click)="deleteItem()">DELETE</p>
+                    <p>{{item().type}}</p>
                 }
                 
+            </div>
+        }
+        @if (itemForm.contains("pattern")) {
+            <div class="item-detail">
+                <p>Pattern:</p>
+                <p>{{item().recurringPattern}}</p>
+            </div>
+        }
+        @if (itemForm.contains("deadline")) {
+            <div class="item-detail">
+                <p>Deadline:</p>
+                @if (editMode) {
+                    <input #newDate class="date" type="date" (change)="editCopy.deadline = newDate.value" [value]="editCopy.deadline">
+                }
+                @else {<input class="date" type="date" [value]="editCopy.deadline" disabled>}
                 
             </div>
+        }
+        
+
+        
+        <div class="activity-bar">
+            <app-add-button class="add-button" [item]="this.item()" [itemType]="this.itemType()"></app-add-button>
+            @if (editMode) {
+                <button class="save-button" (click)="saveEdit()">SAVE</button>
+                <button class="cancel-button" (click)="cancelEdit()">CANCEL</button>
+            }
+            @else {
+                <button class="edit-button" (click)="editItem()">EDIT</button>
+                <p class="delete-button" (click)="deleteItem()">DELETE</p>
+            }
             
-        </section>
+            
+        </div>
+        
+    </section>
         
 </div>          
     

@@ -31,7 +31,9 @@
 
 .header-title {
     height: 100%;
-    font-size: 2vw;
+    width: auto;
+    max-width: 100%;
+    font-size: min(4vw,4vh);
     border-radius: 2rem;
     background-color: aliceblue;
     margin: auto;
@@ -42,19 +44,22 @@
     padding: 0 1rem;
 }
 
-.item-type {
+.header-title .item-type {
     width: auto;
     height: 80%;
+    overflow: hidden;
 }
 
 .header-title .item-title {
     width: auto;
     height: 80%;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .close {
-    font-size: 2.5vw;
+    font-size: min(4vw,4vh);
     width: 10%;
     height: 100%;
     display: flex;
@@ -64,8 +69,14 @@
     text-align: center;
 }
 
+.close:hover {
+    background-color: #dd9441;
+}
+
 .main-info {
     height: 90%;
+    width: auto;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -75,6 +86,7 @@
     border: 0.5rem solid aliceblue;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
+    overflow: hidden;
 }
 
 .item-detail {
@@ -86,11 +98,11 @@
     align-items: center;
     border: 0.2rem solid aliceblue;
     border-radius: 0.5rem;
+    font-size: min(4vw,4vh);
 }
 
 .item-detail p {
     height: 100%;
-    font-size: 2rem;
 }
 
 input {
@@ -100,50 +112,49 @@ input {
     text-align: center;
 }
 
-.checkbox {
-    width: 20%;
+.date, .dropbox, .checkbox {
+    width: auto;
+    min-width: 20%;
     height: 100%;
+    text-align: center;
 }
 
-.date, .dropbox {
-    width: 20%;
-    height: 100%;
-    font-size: 1.5rem;
-    text-align: center;
+.date {
+    font-size: min(4vw,4vh);
 }
 
 .activity-bar {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+    padding: 0.8rem;
 }
 
 .add-button {
-    width: 5%;
+    width: 10%;
     color: black;
 }
 
 .edit-button, .save-button, .cancel-button {
-    padding: 1rem;
+    height: 100%;
+    min-width: 20%;
     border-radius: 1rem;
     color: black;
 }
 
 .delete-button {
-    padding: 1rem;
-    align-self: self-end;
+    height: 100%;
     background-color: red;
     border-radius: 0.5rem;
     color: black;
+    padding: 1rem;
+}
+
+.delete-button p {
+    font-size: 3rem;
 }
 
 .delete-button:hover {
-    background-color: #ccc;
-}
-
-@media screen and (max-width: 1500px) {
-    .date, .dropbox {
-        width: 60%;
-    }
+    background-color: #dd9441;
 }
