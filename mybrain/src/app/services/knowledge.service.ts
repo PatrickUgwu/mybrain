@@ -39,7 +39,7 @@ export class KnowledgeService {
     else {throw new Error(`Unknown type ${type}`);}
   }
 
-  deleteItem(id: number, item: any, type: string): void {
+  deleteItem(id: number, type: string): void {
     if (type === "workspace") { this.deleteWorkspace(id) }
     else if (type === "collection") { this.deleteCollection(id) }
     else if (type === "page") { this.deletePage(id) }
