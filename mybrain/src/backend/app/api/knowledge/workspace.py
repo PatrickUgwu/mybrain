@@ -15,12 +15,12 @@ def read_workspace(workspace_id: int, session: SessionDep) -> Workspace:
 
 @router.post("/workspace")
 def create_workspace(workspace_data: WorkspaceCreate, session: SessionDep) -> Workspace:
-    return workspace_service.create_workspaces(workspace_data, session)
+    return workspace_service.create_workspace(workspace_data, session)
 
 @router.patch("/workspace/{workspace_id}")
 def update_workspace(workspace_id: int, workspace: WorkspaceUpdate, session: SessionDep):
-    return workspace_service.update_workspaces(workspace_id, workspace, session)
+    return workspace_service.update_workspace(workspace_id, workspace, session)
 
-@router.delete("/workspace/{workspacee_id}")
+@router.delete("/workspace/{workspace_id}")
 def delete_workspace(workspace_id: int, session: SessionDep):
-    return workspace_service.delete_workspaces(workspace_id, session)
+    return workspace_service.delete_workspace(workspace_id, session)
