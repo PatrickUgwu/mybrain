@@ -54,6 +54,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
     background-color: rgb(190, 190, 190);
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
@@ -119,5 +120,8 @@
         width: 20%;
         height: 60%;
         margin: 0 auto;
+    }
+    .topbar .add-button {
+        width: 10%;
     }
 }

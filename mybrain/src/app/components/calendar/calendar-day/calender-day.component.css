@@ -41,8 +41,9 @@
     border-radius: 1rem;
 }
 
-.header .add-button {
-    width: 10%;
+.add-button {
+    height: 50%;
+    width: max(4vh, 4vw);
 }
 
 .content {
