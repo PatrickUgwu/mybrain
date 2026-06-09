@@ -10,6 +10,7 @@ import { createRoadmapForm } from '../../../models/interfaces/roadmap.interface'
 import { RoadmapService } from '../../../services/roadmap.service';
 import { AddButtonComponent } from "../../calendar/add-button/add-button.component";
 import { FormGroup, FormsModule } from '@angular/forms';
+import { KnowledgeService } from '../../../services/knowledge.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ import { FormGroup, FormsModule } from '@angular/forms';
 })
 export class ItemOverviewComponent implements OnInit {
   roadmapService = inject(RoadmapService)
+  knowledgeService = inject(KnowledgeService)
   itemType = input.required<string>()
   item = model.required<any>()
   parent: any
@@ -81,7 +83,13 @@ export class ItemOverviewComponent implements OnInit {
   }
 
   deleteItem() {
-    this.roadmapService.deleteItem(this.item().id, this.itemType())
+    if (this.itemType() === "workspace" || this.itemType() === "collection" || this.itemType() === "page") {
+      this.knowledgeService.deleteItem(this.item().id, this.itemType())
+    }
+    else {
+      this.roadmapService.deleteItem(this.item().id, this.itemType())
+    }
+    
     this.closePopup()
   }
 

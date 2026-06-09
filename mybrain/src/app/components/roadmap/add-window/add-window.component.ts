@@ -27,7 +27,7 @@ export class AddWindowComponent implements OnInit{
   parents: any = []
   @Output() close = new EventEmitter<void>()
 
-  itemForm!:FormGroup 
+  itemForm:FormGroup = new FormGroup({})
   
   getPossibleParents(type:string){  
     this.roadmapService.getPossibleParents(type).subscribe(data => {

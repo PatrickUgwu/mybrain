@@ -17,7 +17,7 @@
             </section>
             <section class="recent-pages">
                 @for (page of recentPages(); track $index) {
-                    <p class="recent-page" (click)="openPopup('page', page, $event)">{{page.title}} - {{page.last_edit}}</p>
+                    <div class="recent-page" (click)="openPopup('page', page, $event)"><p>{{page.title}} - {{page.last_edit}}</p></div>
                 }
             </section>
         </div>

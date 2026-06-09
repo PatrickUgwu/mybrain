@@ -7,18 +7,19 @@
 
 .navbar-container {
     height: 8%;
-    padding: 1rem;
+    width: 100%;
     border-bottom: 5px solid aliceblue;
+    padding: 0.5rem;
 }
 
 .navbar {
     height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content:space-evenly;
-    gap: 1rem;
+    gap: 3vw;
     list-style-type: none;
-    border-radius: 2rem;
 }
 
 .navbar li {
@@ -26,14 +27,15 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content:center;
-    font-family:"Lucida Console", monospace;
-    font-size:xx-large;
-    font-weight: bold;
-    border: 0.3rem solid aliceblue;
+    justify-content: center;
+    border: 0.2rem solid aliceblue;
     background-color: aqua;
     box-shadow: 2px 2px 3px 0 #123;
     border-radius: 2rem;
+    font-family:"Lucida Console", monospace;
+    font-size: 4vh;
+    font-weight: bold;
+    padding: 0.2rem;
 }
 
 .navbar li:hover {

@@ -5,14 +5,14 @@
 }
 /* TOPBAR */
 .top-bar {
-    height: 8%;
+    height: 10%;
     width: 100%;
     display: flex;
     justify-content: space-evenly;
 }
 
 .month-goal {
-    width: 5%;
+    width: 10%;
     height: 60%;
     margin: 0 auto;
 }
@@ -31,7 +31,7 @@
 /* MONTH */
 .month {   
     width: 100%;
-    height: 92%; /* 100% - 8% topbar */
+    height: 90%; /* 100% - 10% topbar */
     display: flex;
     flex-direction: column;
 }

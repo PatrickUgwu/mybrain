@@ -36,9 +36,9 @@
 }
 
 .header-title {
-    width: 50%;
+    width: 80%;
     height: 100%;
-    font-size: 3rem;
+    font-size: min(4vh, 4vw);
     border-radius: 2rem;
     background-color: aliceblue;
     margin: auto;
@@ -97,7 +97,11 @@
 label {
     height: 100%;
     width: 30%;
-    font-size: 2rem;
+    font-size: min(3vh, 3vw);
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    overflow: hidden;
 }
 
 input, select {
@@ -108,7 +112,7 @@ input, select {
 }
 
 button {
-    width: 10%;
+    width: 15%;
     height: 10%;
     background-color: orangered;
 }

@@ -20,10 +20,10 @@
                 <div class="recent">
                     <!--<app-page class="recent-page" [page]="testPage"></app-page>-->
                     @for (page of recentPages(); track $index) {
-                        <p class="recent-page" (click)="openPopup('page', page, $event)">{{page.title}} : {{page.last_edit}}</p>
+                        <div class="recent-page" (click)="openPopup('page', page, $event)"><p>{{page.title}} : {{page.last_edit}}</p></div>
                     }
                     @if (recentPages().length == 0) {
-                        <p style="background-color: red;"> jojojojojoj U HAVE NO PAGES</p>
+                        <p style="background-color: red;">No pages found.</p>
                     }
                 </div>
                 
