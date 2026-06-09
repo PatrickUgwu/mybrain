@@ -10,8 +10,9 @@
 }
 
 .header-add-button {
-    width: 5%;
-    padding: 1rem;
+    width: max(6vw, 6vh);
+    height: 6vh;
+    padding-bottom: 1rem;
     color: black;
     align-self: self-end;
 }
